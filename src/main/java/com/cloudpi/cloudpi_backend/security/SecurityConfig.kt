@@ -1,38 +1,41 @@
-package com.cloudpi.cloudpi_backend.security
+package com.cloudpi.cloudpi_backend.security;
 
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationProvider
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
-class SecurityConfig(passwordEncoder: PasswordEncoder, userService: UserDetailsService) :
-    WebSecurityConfigurerAdapter() {
+class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private val authenticationProvider: DaoAuthenticationProvider = DaoAuthenticationProvider()
+    private PasswordEncoder passwordEncoder;
+    private DaoAuthenticationProvider authenticationProvider;
 
 
-    init {
-        authenticationProvider.setPasswordEncoder(passwordEncoder)
-        authenticationProvider.setUserDetailsService(userService)
+    public SecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userService) {
+        this.passwordEncoder = passwordEncoder;
+        authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        authenticationProvider.setUserDetailsService(userService);
     }
 
-    override fun configure(http: HttpSecurity?) {
-        http as HttpSecurity
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
         http
             .csrf().disable()
             .cors().disable()
-            .authorizeRequests().anyRequest().permitAll()
+            .authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean
-    fun getAuthenticationProvider(): AuthenticationProvider {
-        return authenticationProvider
+    public AuthenticationProvider getAuthenticationProvider() {
+        return authenticationProvider;
     }
 
 }

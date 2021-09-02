@@ -1,15 +1,15 @@
-package com.cloudpi.cloudpi_backend.security
+package com.cloudpi.cloudpi_backend.security;
 
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-class PasswordEncoderBean {
+public class PasswordEncoderBean {
 
     @Bean
-    fun createPasswordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder(10)
+    public PasswordEncoder createPasswordEncoder() {
+        return new BCryptPasswordEncoder(10);
     }
 }

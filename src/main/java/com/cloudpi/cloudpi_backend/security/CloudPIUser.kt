@@ -1,60 +1,62 @@
-package com.cloudpi.cloudpi_backend.security
+package com.cloudpi.cloudpi_backend.security;
 
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity
-import com.cloudpi.cloudpi_backend.user.entities.UserPermissionEntity
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-class CloudPIUser(
-    private val username: String,
-    private val password: String,
-    private val locked: Boolean,
-    userType: AccountType,
-    permissions: List<GrantedAuthority>,
-) : UserDetails {
-    private val permissions: MutableList<GrantedAuthority>
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    constructor(userEntity: UserEntity) :
-            this(userEntity.username, userEntity.password, userEntity.locked,
-                userEntity.accountType,
-                userEntity.permissions.map { p: UserPermissionEntity ->
-                    SimpleGrantedAuthority(p.permission)
-                }
-            )
+class CloudPIUser implements UserDetails {
+    private String username;
+    private String password;
+    private Boolean locked;
+    private List<GrantedAuthority> permissions;
 
-    init {
-        this.permissions = ArrayList(permissions.size + 1)
-        this.permissions.addAll(permissions)
-        this.permissions.add(SimpleGrantedAuthority(userType.name))
+
+    public CloudPIUser(String username, String password, Boolean locked, List<String> permissions) {
+        this.username = username;
+        this.password = password;
+        this.locked = locked;
+        this.permissions = permissions.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return permissions
+    @Override
+     public Collection<GrantedAuthority> getAuthorities() {
+        return permissions;
     }
 
-    override fun getPassword(): String {
-        return password
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    override fun getUsername(): String {
-        return username
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    override fun isAccountNonExpired(): Boolean {
-        return false
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
     }
 
-    override fun isAccountNonLocked(): Boolean {
-        return !locked
+    @Override
+    public boolean isAccountNonLocked() {
+        return locked;
     }
 
-    override fun isCredentialsNonExpired(): Boolean {
-        return false
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
     }
 
-    override fun isEnabled(): Boolean {
-        return true
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

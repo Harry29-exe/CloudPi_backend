@@ -1,14 +1,15 @@
-package com.cloudpi.cloudpi_backend.security
+package com.cloudpi.cloudpi_backend.security;
 
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.stereotype.Service
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 @Service
-class CloudPIUserDetailsService : UserDetailsService {
+public class CloudPIUserDetailsService implements UserDetailsService {
 
-    override fun loadUserByUsername(username: String): UserDetails {
-        throw UsernameNotFoundException("")
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        throw new UsernameNotFoundException("");
     }
 }
