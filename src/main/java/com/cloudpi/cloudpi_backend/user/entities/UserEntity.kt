@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
-import com.cloudpi.cloudpi_backend.files_info.entities.kotlin.FilesystemObjectEntity;
-import com.cloudpi.cloudpi_backend.files_info.entities.kotlin.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
 import com.cloudpi.cloudpi_backend.security.AccountType;
 import lombok.*;
 import org.hibernate.Hibernate;
