@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.files_info.entities;
 
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -10,8 +11,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
+@AllArgsConstructor
 @NoArgsConstructor
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "fs_type", discriminatorType = DiscriminatorType.STRING)

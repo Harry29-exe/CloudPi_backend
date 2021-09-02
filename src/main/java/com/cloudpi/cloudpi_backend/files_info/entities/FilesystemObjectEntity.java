@@ -1,8 +1,19 @@
 package com.cloudpi.cloudpi_backend.files_info.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @Entity
 @DiscriminatorValue(value = "FS_OBJECT")
 public class FilesystemObjectEntity extends FilesystemIdEntity {
