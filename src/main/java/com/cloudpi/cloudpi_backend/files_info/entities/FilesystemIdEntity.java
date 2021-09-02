@@ -28,8 +28,7 @@ public class FilesystemIdEntity {
             mappedBy = "file",
             cascade = {CascadeType.ALL},
             orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
+            fetch = FetchType.LAZY)
     @ToString.Exclude
     List<FilePermissionEntity> permissions;
 

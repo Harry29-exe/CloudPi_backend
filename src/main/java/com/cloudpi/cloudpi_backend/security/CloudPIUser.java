@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class CloudPIUser implements UserDetails {
+public class CloudPIUser implements UserDetails {
     private String username;
     private String password;
     private Boolean locked;
