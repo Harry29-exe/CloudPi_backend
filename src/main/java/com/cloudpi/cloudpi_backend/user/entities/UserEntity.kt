@@ -26,12 +26,12 @@ public class UserEntity {
     private String password;
     private Boolean locked;
     private AccountType accountType;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<UserPermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<FilesystemObjectEntity> files_info;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<FilePermissionEntity> filesPermissions;
 
 }

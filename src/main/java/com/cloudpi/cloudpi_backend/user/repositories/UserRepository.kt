@@ -1,14 +1,14 @@
-package com.cloudpi.cloudpi_backend.user.repositories
+package com.cloudpi.cloudpi_backend.user.repositories;
 
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
-import java.util.*
+import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.*;
 
 @Repository
-interface UserRepository : JpaRepository<UserEntity, String> {
+interface UserRepository extends JpaRepository<UserEntity, String> {
 
-    fun findByUsername(username: String): Optional<UserEntity>
+    Optional<UserEntity> findByUsername(String username);
 
 //    fun findByEmail(email: String): Optional<UserEntity>
 }

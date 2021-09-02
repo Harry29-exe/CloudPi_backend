@@ -1,11 +1,15 @@
-package com.cloudpi.cloudpi_backend.user.responses
+package com.cloudpi.cloudpi_backend.user.responses;
 
-import com.cloudpi.cloudpi_backend.security.AccountType
+import com.cloudpi.cloudpi_backend.security.AccountType;
+import lombok.Data;
 
-data class GetUsersResponse(
-    val username: String,
-    val nickname: String,
-    val locked: String,
-    val userRole: AccountType,
-    val permissions: List<String>
-)
+import java.util.List;
+
+@Data
+public class GetUsersResponse {
+    private String username;
+    private String nickname;
+    private String locked;
+    private AccountType userRole;
+    private List<String> permissions;
+}

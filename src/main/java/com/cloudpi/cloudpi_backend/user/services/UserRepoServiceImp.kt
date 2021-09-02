@@ -1,17 +1,19 @@
-package com.cloudpi.cloudpi_backend.user.services
-
-import com.cloudpi.cloudpi_backend.user.dto.UserDto
-import org.springframework.stereotype.Service
-import java.util.*
+package com.cloudpi.cloudpi_backend.user.services;
+;
+import com.cloudpi.cloudpi_backend.user.dto.UserDto;
+import org.springframework.stereotype.Service;
+import java.util.*;
 
 @Service
-class UserRepoServiceImp : UserRepoService {
+public class UserRepoServiceImp implements UserRepoService {
 
-    override fun getAllUsers(): List<UserDto> {
-        TODO("Not yet implemented")
+    @Override
+    public List<UserDto> getAllUsers() {
+        return null;
     }
 
-    override fun getUser(username: String): Optional<UserDto> {
-        TODO("Not yet implemented")
+    @Override
+    public Optional<UserDto> getUser(String username) {
+        return null;
     }
 }
