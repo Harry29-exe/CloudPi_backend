@@ -1,15 +1,15 @@
-package com.cloudpi.cloudpi_backend.files_info.services
+package com.cloudpi.cloudpi_backend.files_info.services;
 
-import com.cloudpi.cloudpi_backend.files_info.dto.DirectoryDto
-import com.cloudpi.cloudpi_backend.files_info.dto.FileDto
+import com.cloudpi.cloudpi_backend.files_info.dto.DirectoryDto;
+import com.cloudpi.cloudpi_backend.files_info.dto.FileDto;
 
-interface FileSystemInfoService {
+public interface FileSystemInfoService {
 
-    fun getFile(path: String): FileDto
+    FileDto getFile(String path);
 
-    fun getDirectoryChildren(path: String): Pair<List<DirectoryDto>, List<FileDto>>
+    DirectoryDto getDirectory(String path);
 
-    fun createNewFile(path: String, size: Long)
+    void createNewFile(String path, Long size);
 
-    fun deleteFile(path: String)
+    void deleteFile(String path);
 }

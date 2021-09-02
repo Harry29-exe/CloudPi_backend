@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files_info.entities.java;
+package com.cloudpi.cloudpi_backend.files_info.entities;
 
 import lombok.*;
 

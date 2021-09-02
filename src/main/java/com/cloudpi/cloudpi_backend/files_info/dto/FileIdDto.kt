@@ -1,9 +1,11 @@
-package com.cloudpi.cloudpi_backend.files_info.dto
+package com.cloudpi.cloudpi_backend.files_info.dto;
 
-import java.util.*
+import lombok.Data;
+import java.util.*;
 
-data class FileIdDto(
-    val fileId: Long,
-    val fileName: String,
-    var lastModified: Date
-)
+@Data
+public class FileIdDto {
+    private Long fileId;
+    private String fileName;
+    private Date lastModified;
+}

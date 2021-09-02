@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.files_info.pojo
+package com.cloudpi.cloudpi_backend.files_info.pojo;
 
-enum class FileType {
+public enum FileType {
     FILE,
     DIRECTORY,
 }

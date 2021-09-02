@@ -1,12 +1,12 @@
-package com.cloudpi.cloudpi_backend.files_info.controllers
+package com.cloudpi.cloudpi_backend.files_info.controllers;
 
-import com.cloudpi.cloudpi_backend.files_info.dto.DirectoryDto
-import com.cloudpi.cloudpi_backend.files_info.dto.FileDto
-import org.springframework.security.core.Authentication
+import com.cloudpi.cloudpi_backend.files_info.dto.DirectoryDto;
+import com.cloudpi.cloudpi_backend.files_info.dto.FileDto;
+import org.springframework.security.core.Authentication;
 
-interface FileInfoEndpoints {
+public interface FileInfoEndpoints {
 
-    fun getUsersFilesInfo(userAuth: Authentication): DirectoryDto
+    DirectoryDto getUsersFilesInfo(Authentication userAuth);
 
-    fun getFileInfo(userAuth: Authentication, filePath: String): FileDto
+    FileDto getFileInfo(Authentication userAuth, String filePath);
 }

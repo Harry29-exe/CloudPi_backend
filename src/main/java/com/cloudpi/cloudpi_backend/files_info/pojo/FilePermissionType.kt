@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.files_info.pojo
+package com.cloudpi.cloudpi_backend.files_info.pojo;
 
-enum class FilePermissionType {
+public enum FilePermissionType {
     CREATE,
     READ,
     UPDATE,

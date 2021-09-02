@@ -1,26 +1,15 @@
-package com.cloudpi.cloudpi_backend.files_info.dto.mappings
+package com.cloudpi.cloudpi_backend.files_info.dto.mappings;
 
-//class DirectoryMappings : MapFunction {
-//
-//    override fun addMappingToModelMapper(modelMapper: ModelMapper) {
-//        modelMapper.typeMap(DirectoryEntity::class.java, DirectoryDto::class.java)
-//            .addMappings { mapper ->
-//                mapper.map(
-//                    { src ->
-//                        var size = 0L
-//                        src.children.forEach { child -> size += child.size }
-//                        size
-//                    },
-//                    { dest: DirectoryDto, value: Long ->
-//                        dest.childrenSize = value
-//                    }
-//                )
-//                mapper.map(
-//                    { src -> src.children.filter { file: FileSystemObjectEntity -> file. }},
-//                    { dest: DirectoryDto, value:  ->
-//
-//                    }
-//                )
-//            }
-//    }
-//}
+import com.cloudpi.cloudpi_backend.configuration.model_mapper.MapFunction;
+import com.cloudpi.cloudpi_backend.files_info.dto.DirectoryDto;
+import com.cloudpi.cloudpi_backend.files_info.entities.DirectoryEntity;
+import lombok.val;
+import org.modelmapper.ModelMapper;
+
+public class DirectoryMappings implements MapFunction {
+
+    @Override
+    public void addMappingToModelMapper(ModelMapper modelMapper) {
+        modelMapper.typeMap(DirectoryEntity.class, DirectoryDto.class);
+    }
+}

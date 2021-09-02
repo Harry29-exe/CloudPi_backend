@@ -1,6 +1,4 @@
-package com.cloudpi.cloudpi_backend.files_info.entities.java;
-
-import com.cloudpi.cloudpi_backend.files_info.entities.kotlin.RootDirectoryEntity;
+package com.cloudpi.cloudpi_backend.files_info.entities;
 
 import javax.persistence.*;
 import java.util.Date;
