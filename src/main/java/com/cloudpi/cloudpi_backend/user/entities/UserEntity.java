@@ -6,6 +6,7 @@ import com.cloudpi.cloudpi_backend.security.AccountType;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -20,10 +21,17 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+    @NotBlank
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String nickname;
+    @NotBlank
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private Boolean locked;
     private AccountType accountType;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
