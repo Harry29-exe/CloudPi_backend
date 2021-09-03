@@ -1,11 +1,13 @@
 package com.cloudpi.cloudpi_backend.files_info.entities;
 
-import lombok.*;
+import com.cloudpi.cloudpi_backend.disc.entities.DiscEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -17,5 +19,12 @@ import javax.persistence.Entity;
 @DiscriminatorValue("DIRECTORY")
 public class RootDirectoryEntity extends FilesystemIdEntity {
     @Column(nullable = false)
-    String systemPath;
+    private String systemPath;
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DiscEntity disc;
+    @Column(nullable = false)
+    private Long assignedCapacity;
+    @Column(nullable = false)
+    private Long childrenSize;
 }
