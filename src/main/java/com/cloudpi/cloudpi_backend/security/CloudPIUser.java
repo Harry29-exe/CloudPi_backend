@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.security;
 
+import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,15 @@ public class CloudPIUser implements UserDetails {
         this.password = password;
         this.locked = locked;
         this.permissions = permissions.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    public CloudPIUser(UserDTO user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.locked = user.getLocked();
+        this.permissions = user.getPermissions().stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
