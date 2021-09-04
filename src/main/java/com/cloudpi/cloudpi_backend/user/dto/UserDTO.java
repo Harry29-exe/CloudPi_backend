@@ -1,18 +1,16 @@
 package com.cloudpi.cloudpi_backend.user.dto;
 
-import com.cloudpi.cloudpi_backend.security.AccountType;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
+import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class UserDto {
+public class UserDTO {
     private Long id;
     private String username;
     private String email;

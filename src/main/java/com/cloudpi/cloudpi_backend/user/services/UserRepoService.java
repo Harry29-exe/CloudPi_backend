@@ -1,11 +1,11 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.user.dto.UserDto;
+import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import java.util.*;
 
 public interface UserRepoService {
 
-    List<UserDto> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-    Optional<UserDto> getUser(String username);
+    Optional<UserDTO> getUser(String username);
 }

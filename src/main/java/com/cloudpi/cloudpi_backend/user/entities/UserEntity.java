@@ -2,9 +2,9 @@ package com.cloudpi.cloudpi_backend.user.entities;
 
 import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
-import com.cloudpi.cloudpi_backend.security.AccountType;
+import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
 import lombok.*;
-import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -35,7 +35,7 @@ public class UserEntity {
     private Boolean locked;
     private AccountType accountType;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<UserPermissionEntity> permissions;
+    private List<UserGrantedAuthorityEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<FilesystemObjectEntity> files_info;

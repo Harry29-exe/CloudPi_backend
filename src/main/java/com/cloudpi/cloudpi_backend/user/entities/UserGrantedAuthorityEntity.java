@@ -1,8 +1,8 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
-import com.cloudpi.cloudpi_backend.security.AccountType;
+import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
 import lombok.*;
-import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 
 @Getter
@@ -11,25 +11,25 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-public class UserPermissionEntity {
+public class UserGrantedAuthorityEntity {
     @Id
     @GeneratedValue
     private Long id;
     @Column
-    private String permission;
+    private String authority;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
 
 
-    public void setPermission(String permission) {
+    public void setAuthority(String authority) {
             for (var accountType : AccountType.values()) {
-                if (accountType.toString().equals(permission)) {
+                if (accountType.toString().equals(authority)) {
                     throw new RuntimeException();
                 }
             }
 
-            this.permission = permission;
+            this.authority = authority;
     }
 }
