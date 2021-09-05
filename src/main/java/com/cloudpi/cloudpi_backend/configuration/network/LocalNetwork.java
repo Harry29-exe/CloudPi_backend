@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.cloudpi.cloudpi_backend.configuration.network.NetworkAddressUtils.*;
@@ -15,11 +16,16 @@ public class LocalNetwork {
     private Integer mask;
 
     public LocalNetwork(String networkAddress, int maskLength) {
-        var addressParts = (Integer[]) Arrays.stream(networkAddress.split("\\."))
-                .map(Integer::parseInt).toArray();
-        this.address = convertFromBytesToInt(addressParts);
+        var addressParts = new Integer[4];
+        AtomicInteger i = new AtomicInteger();
+        Arrays.stream(networkAddress.split("\\."))
+                .forEach(integer ->
+                        addressParts[i.getAndIncrement()] = Integer.parseInt(integer)
+                );
+        this.address = convertFromBytesToInt( addressParts);
         this.mask = convertMaskLengthToMask(maskLength);
     }
+
 
     public boolean isAddressFromNetwork(Integer address) {
         return this.address == (address & mask);
