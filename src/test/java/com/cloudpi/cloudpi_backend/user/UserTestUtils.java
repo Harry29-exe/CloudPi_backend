@@ -9,7 +9,7 @@ public class UserTestUtils {
 
     public static UserDTO createDefaultUser() {
         return UserDTO.builder()
-                .userRole(AccountType.USER)
+                .accountType(AccountType.USER)
                 .id(2L)
                 .email("email")
                 .locked(false)
@@ -21,7 +21,7 @@ public class UserTestUtils {
 
     public static UserDTO createRootUser() {
         return UserDTO.builder()
-                .userRole(AccountType.ROOT)
+                .accountType(AccountType.ROOT)
                 .id(1L)
                 .email("email")
                 .locked(false)

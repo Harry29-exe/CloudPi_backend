@@ -29,9 +29,7 @@ public class CloudPIUser implements UserDetails {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.locked = user.getLocked();
-        this.permissions = user.getPermissions().stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        this.permissions = user.getPermissions();
     }
 
     @Override
