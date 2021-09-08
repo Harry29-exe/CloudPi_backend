@@ -13,8 +13,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
-import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createDefaultUser;
-import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createRootUser;
+import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createDefaultUserDTO;
+import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createRootUserDTO;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
@@ -24,7 +24,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
     void should_throw_Exception_when_user_does_not_have__USER_CREATE__permission() {
         //given
         setModificationsOnlyFromLocalNetwork(false);
-        var userDto = createDefaultUser();
+        var userDto = createDefaultUserDTO();
         var http = new MockHttpServletRequest();
         http.setRemoteAddr("192.168.0.101");
         var auth = new CloudPiAuthentication(new CloudPIUser(userDto));
@@ -43,7 +43,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
     void should_throw_Exception_when_request_not_from_local_network() {
         //given
         setModificationsOnlyFromLocalNetwork(true);
-        var userDto = createRootUser();
+        var userDto = createRootUserDTO();
         var http = new MockHttpServletRequest();
         http.setRemoteAddr("109.4.4.105");
         var auth = new CloudPiAuthentication(new CloudPIUser(userDto));
@@ -61,7 +61,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
     void should_throw_Exception_when_username_exists() {
         //given
         setModificationsOnlyFromLocalNetwork(true);
-        var userDto = createRootUser();
+        var userDto = createRootUserDTO();
         var http = new MockHttpServletRequest();
         http.setRemoteAddr("192.168.0.101");
         var auth = new CloudPiAuthentication(new CloudPIUser(userDto));
