@@ -21,15 +21,17 @@ public class UserGrantedAuthorityEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+//    public String getAuthority() {
+//        return authority;
+//    }
 
-
-    public void setAuthority(String authority) {
-            for (var accountType : AccountType.values()) {
-                if (accountType.toString().equals(authority)) {
-                    throw new RuntimeException();
-                }
-            }
-
-            this.authority = authority;
-    }
+    //    public void setAuthority(String authority) {
+//            for (var accountType : AccountType.values()) {
+//                if (accountType.toString().equals(authority)) {
+//                    throw new RuntimeException();
+//                }
+//            }
+//
+//            this.authority = authority;
+//    }
 }
