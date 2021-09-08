@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.security;
 
 import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.Authentication;
@@ -9,9 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 public class CloudPiAuthentication implements Authentication {
-    private String username;
-    private String password;
-    private Collection<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final Collection<GrantedAuthority> authorities;
     private Boolean isAuthenticated = false;
 
     public CloudPiAuthentication(CloudPIUser userDetails) {
@@ -57,7 +58,7 @@ public class CloudPiAuthentication implements Authentication {
 
     @Data
     @AllArgsConstructor
-    private class CloudPiAuthenticationDetails {
+    private static class CloudPiAuthenticationDetails {
         private AccountType userType;
     }
 }
