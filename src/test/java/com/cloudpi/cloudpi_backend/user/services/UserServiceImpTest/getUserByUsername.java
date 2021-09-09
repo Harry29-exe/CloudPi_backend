@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.services.UserServiceImpTest;
 
+import com.cloudpi.cloudpi_backend.user.UserEntityBuilder;
 import com.cloudpi.cloudpi_backend.user.UserTestUtils;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
@@ -29,7 +30,7 @@ public class getUserByUsername extends UserServiceImpTest {
     @Test
     void should_return_UserDTO() {
         //given
-        var userEntity = UserTestUtils.createDefaultUserEntity();
+        var userEntity = UserEntityBuilder.builder().build();
         when(userRepository.findByUsername(userEntity.getUsername()))
                 .thenReturn(Optional.of(userEntity));
 
