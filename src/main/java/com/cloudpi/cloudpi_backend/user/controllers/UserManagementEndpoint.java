@@ -1,10 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
+import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUsersResponse;
-import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

@@ -13,8 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private PasswordEncoder passwordEncoder;
-    private DaoAuthenticationProvider authenticationProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final DaoAuthenticationProvider authenticationProvider;
 
 
     public SecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userService) {
@@ -28,9 +28,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-            .csrf().disable()
-            .cors().disable()
-            .authorizeRequests().anyRequest().permitAll();
+                .csrf().disable()
+                .cors().disable()
+                .authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean

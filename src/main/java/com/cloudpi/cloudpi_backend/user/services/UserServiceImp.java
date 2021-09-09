@@ -1,21 +1,18 @@
 package com.cloudpi.cloudpi_backend.user.services;
-;
+
 import com.cloudpi.cloudpi_backend.security.permissions.CloudPiPermission;
 import com.cloudpi.cloudpi_backend.security.permissions.CloudPiRole;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.google.common.collect.ImmutableList;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
-    private UserRepository repository;
+    private final UserRepository repository;
 
     public UserServiceImp(UserRepository repository) {
         this.repository = repository;

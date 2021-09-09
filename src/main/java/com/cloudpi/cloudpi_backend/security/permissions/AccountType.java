@@ -13,7 +13,7 @@ public enum AccountType implements CloudPiRole {
     WORKER("ROLE_WORKER", List.of());
 
     public final String value;
-    public final Collection<? extends  GrantedAuthority> permissions;
+    public final Collection<? extends GrantedAuthority> permissions;
 
     AccountType(String value, Collection<? extends GrantedAuthority> permissions) {
         this.value = value;

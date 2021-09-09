@@ -24,11 +24,11 @@ public class DiscMappings implements MapFunction {
         mapper.createTypeMap(DiscEntity.class, DiscDTO.class)
                 .addMapping(
                         DiscEntity::getUsersDrives,
-                        (dest, value) -> dest.setUserDiscRoots(value == null?
+                        (dest, value) -> dest.setUserDiscRoots(value == null ?
                                 new ArrayList()
                                 :
                                 ((List<RootDirectoryEntity>) value).stream().map(
-                                rde -> mapper.map(rde, UserDriveDTO.class)
+                                        rde -> mapper.map(rde, UserDriveDTO.class)
                                 ).collect(Collectors.toList()))
                 );
     }
@@ -39,9 +39,9 @@ public class DiscMappings implements MapFunction {
                         src -> null,
                         (destination, value) -> destination.setUsersDrives(null)
                 ).addMapping(
-                        src -> null,
-                        (destination, value) -> destination.setId(0)
-                );
+                src -> null,
+                (destination, value) -> destination.setId(0)
+        );
     }
 
     private void mapRootDirectoryEntityToUserDriveDTO(ModelMapper modelMapper) {
@@ -50,8 +50,8 @@ public class DiscMappings implements MapFunction {
                         src -> src.getOwner().getUsername(),
                         (dest, value) -> dest.setOwnerUsername((String) value)
                 ).addMapping(
-                        RootDirectoryEntity::getChildrenSize,
-                        (dest, value) -> dest.setUsedCapacity((Long) value)
-                );
+                RootDirectoryEntity::getChildrenSize,
+                (dest, value) -> dest.setUsedCapacity((Long) value)
+        );
     }
 }

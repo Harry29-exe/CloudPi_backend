@@ -2,15 +2,12 @@ package com.cloudpi.cloudpi_backend.user.dto;
 
 import com.cloudpi.cloudpi_backend.security.CloudPIUser;
 import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
-
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -35,4 +32,6 @@ public class UserDTO {
     public CloudPIUser toCloudPiUser() {
         return new CloudPIUser(this);
     }
+
+
 }

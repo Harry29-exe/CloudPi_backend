@@ -40,7 +40,7 @@ public class CloudPIUser implements UserDetails {
     }
 
     @Override
-     public Collection<GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return permissions;
     }
 

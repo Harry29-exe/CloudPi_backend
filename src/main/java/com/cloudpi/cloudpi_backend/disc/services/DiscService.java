@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface DiscService {
     List<DiscDTO> scanDiscs();
+
     List<DiscDTO> getAllDiscs();
+
     void modifyDisc(DiscDTO disc);
 
 }

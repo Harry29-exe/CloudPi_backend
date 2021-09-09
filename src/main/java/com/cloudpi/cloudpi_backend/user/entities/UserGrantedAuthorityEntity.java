@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
 import lombok.*;
 
 import javax.persistence.*;

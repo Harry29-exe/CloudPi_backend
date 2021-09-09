@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ModelMapperConfig {
-    private Logger logger;
+    private final Logger logger;
 
     public ModelMapperConfig() {
         logger = LoggerFactory.getLogger("ModelMapper.Logger");
@@ -31,8 +31,8 @@ public class ModelMapperConfig {
         for (var result : results) {
             MapFunction instance = null;
 
-            for(var constructor : result.getConstructors()) {
-                if(constructor.getParameterCount() == 0) {
+            for (var constructor : result.getConstructors()) {
+                if (constructor.getParameterCount() == 0) {
                     Object temp = null;
                     try {
                         temp = constructor.newInstance();
@@ -40,14 +40,14 @@ public class ModelMapperConfig {
                         logger.error("Something went very wrong while configuring ModelMapper");
                     }
 
-                    if(temp instanceof MapFunction) {
+                    if (temp instanceof MapFunction) {
                         instance = (MapFunction) temp;
                         break;
                     }
                 }
             }
 
-            if(instance == null) {
+            if (instance == null) {
                 logger.error("MapFunction has to have no args constructor");
             } else {
                 instance.addMappingToModelMapper(modelMapper);

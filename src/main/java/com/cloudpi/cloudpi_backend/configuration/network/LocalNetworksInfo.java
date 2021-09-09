@@ -18,8 +18,8 @@ public class LocalNetworksInfo {
     }
 
     public boolean isAddressLocal(int address) {
-        for(var network : networks) {
-            if(network.isAddressFromNetwork(address)) {
+        for (var network : networks) {
+            if (network.isAddressFromNetwork(address)) {
                 return true;
             }
         }

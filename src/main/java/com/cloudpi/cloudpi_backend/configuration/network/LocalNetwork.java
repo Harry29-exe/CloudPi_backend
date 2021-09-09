@@ -5,9 +5,9 @@ import lombok.Data;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
-import static com.cloudpi.cloudpi_backend.configuration.network.NetworkAddressUtils.*;
+import static com.cloudpi.cloudpi_backend.configuration.network.NetworkAddressUtils.convertFromBytesToInt;
+import static com.cloudpi.cloudpi_backend.configuration.network.NetworkAddressUtils.convertMaskLengthToMask;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class LocalNetwork {
                 .forEach(integer ->
                         addressParts[i.getAndIncrement()] = Integer.parseInt(integer)
                 );
-        this.address = convertFromBytesToInt( addressParts);
+        this.address = convertFromBytesToInt(addressParts);
         this.mask = convertMaskLengthToMask(maskLength);
     }
 
@@ -32,11 +32,11 @@ public class LocalNetwork {
     }
 
     public boolean isAddressFromNetwork(byte[] address) {
-        if(address.length != 4) {
+        if (address.length != 4) {
             throw new IllegalArgumentException("Address has to ");
         }
         int intAddress = 0;
-        for(int i = 0; i < 3; i++ ) {
+        for (int i = 0; i < 3; i++) {
             intAddress += Byte.toUnsignedInt(address[i]);
             intAddress = intAddress << 8;
         }

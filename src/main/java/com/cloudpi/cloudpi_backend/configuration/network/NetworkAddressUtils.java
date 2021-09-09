@@ -2,10 +2,8 @@ package com.cloudpi.cloudpi_backend.configuration.network;
 
 import org.springframework.lang.Nullable;
 
-import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +40,7 @@ public class NetworkAddressUtils {
         return intAddress;
     }
 
-    public static List<LocalNetwork> scanForLocalNetworks()  {
+    public static List<LocalNetwork> scanForLocalNetworks() {
 
         List<InterfaceAddress> networkAddresses = new ArrayList<>();
         try {
@@ -63,7 +61,8 @@ public class NetworkAddressUtils {
         return 0xFFFFFFFF << (32 - maskLength);
     }
 
-    private static @Nullable LocalNetwork checkIfAddressIsLocalAndConvert(InterfaceAddress interfaceAddress) {
+    private static @Nullable
+    LocalNetwork checkIfAddressIsLocalAndConvert(InterfaceAddress interfaceAddress) {
         if (interfaceAddress.getAddress().isSiteLocalAddress()) {
             int mask = convertMaskLengthToMask(interfaceAddress.getNetworkPrefixLength());
             int intAddress = convertFromBytesToInt(interfaceAddress.getAddress().getAddress());
