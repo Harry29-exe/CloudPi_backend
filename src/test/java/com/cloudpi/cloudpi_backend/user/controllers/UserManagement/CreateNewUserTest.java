@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.controllers.UserManagement;
 
 import com.cloudpi.cloudpi_backend.exepctions.authorization.IllegalIPException;
-import com.cloudpi.cloudpi_backend.exepctions.authorization.PermissionNotFoundException;
+import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRequiredPermissionException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.UsernameIsTakenException;
 import com.cloudpi.cloudpi_backend.security.CloudPIUser;
 import com.cloudpi.cloudpi_backend.security.CloudPiAuthentication;
@@ -33,7 +33,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         doReturn(Optional.of(userDto)).when(userService).getUser("username");
 
         //then
-        Assertions.assertThrows(PermissionNotFoundException.class, () -> {
+        Assertions.assertThrows(NoRequiredPermissionException.class, () -> {
             //when
             userController.createNewUser(requestBody, auth, http);
         });

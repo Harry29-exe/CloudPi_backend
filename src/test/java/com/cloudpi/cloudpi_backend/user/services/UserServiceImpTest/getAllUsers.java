@@ -1,14 +1,12 @@
 package com.cloudpi.cloudpi_backend.user.services.UserServiceImpTest;
 
-import com.cloudpi.cloudpi_backend.security.CloudPiAuthentication;
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
-import com.cloudpi.cloudpi_backend.user.UserDTOBuilder;
+import com.cloudpi.cloudpi_backend.exepctions.authorization.AuthenticationRequiredException;
+import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRequiredPermissionException;
 import com.cloudpi.cloudpi_backend.user.UserEntityBuilder;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -16,22 +14,26 @@ import static org.mockito.Mockito.when;
 
 public class getAllUsers extends UserServiceImpTest {
 
-    @Test
-    void should_return_all_users() {
-        //given
-        var loggedUser = UserEntityBuilder.fastBuilder(2L, "Lucy")
-                .build();
-        Authentication auth = new CloudPiAuthentication(loggedUser.toUserDTO().toCloudPiUser());
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        var usersInDB = List.of(
-                UserEntityBuilder.fastBuilder(3L, "nick").build(),
-                UserEntityBuilder.fastBuilder(0L, "ROOT")
-                    .setAccountType(AccountType.ROOT).build(),
-                UserEntityBuilder.fastBuilder(4L, "steve").build(),
-                loggedUser
-        );
+    private List<UserEntity> usersInDB;
+
+    @BeforeEach
+    public void setUsersDB() {
+        this.removeAuthentication();
+        usersInDB = List.of(
+                UserEntityBuilder.fastBuilder(1L, "nick").build(),
+                UserEntityBuilder.fastBuilder(2L, "Lucy").build(),
+                UserEntityBuilder.fastBuilder(3L, "steve").build(),
+                UserEntityBuilder.fastBuilder(0L, "ROOT").build()
+                );
+
         when(userRepository.findAll()).thenReturn(usersInDB);
+    }
+
+    @Test
+    void should_return_all_users2() {
+        //given
+        var loggedUser = usersInDB.get(0);
+        this.setAuthentication(loggedUser.toUserDTO());
 
         //when
         var users = userService.getAllUsers();
@@ -41,6 +43,46 @@ public class getAllUsers extends UserServiceImpTest {
         for(int i = 0; i < users.size(); i++) {
             assert users.get(i).equals(usersInDB.get(i).toUserDTO());
         }
+    }
+
+    @Test
+    void should_return_all_users() {
+        //given
+        var loggedRootUser = usersInDB.get(3);
+        this.setAuthentication(loggedRootUser.toUserDTO());
+
+        //when
+        var users = userService.getAllUsers();
+
+        //then
+        assert users.size() == usersInDB.size();
+        for(int i = 0; i < users.size(); i++) {
+            assert users.get(i).equals(usersInDB.get(i).toUserDTO());
+        }
+    }
+
+    @Test
+    void should_throw_AuthenticationException() {
+        //given
+
+        //then
+        Assertions.assertThrows(AuthenticationRequiredException.class, () -> {
+            //when
+            var users = userService.getAllUsers();
+        });
+    }
+
+    @Test
+    void should_throw_NoRequiredPermissionException() {
+        //given
+        var loggedUser = usersInDB.get(0);
+        loggedUser.setLocked(true);
+        this.setAuthentication(loggedUser.toUserDTO());
+
+        //then
+        Assertions.assertThrows(NoRequiredPermissionException.class, () -> {
+            this.userService.getAllUsers();
+        });
     }
 
 }
