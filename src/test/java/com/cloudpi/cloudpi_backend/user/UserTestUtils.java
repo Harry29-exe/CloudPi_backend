@@ -1,12 +1,10 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserTestUtils {

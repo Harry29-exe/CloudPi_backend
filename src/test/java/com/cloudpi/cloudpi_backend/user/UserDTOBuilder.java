@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 

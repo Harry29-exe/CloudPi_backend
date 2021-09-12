@@ -1,15 +1,16 @@
 package com.cloudpi.cloudpi_backend.user;
 
+import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserGrantedAuthorityEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.cloudpi.cloudpi_backend.user.UserTestUtils.passwordEncoder;
 
@@ -21,7 +22,8 @@ public class UserEntityBuilder {
     private String password = passwordEncoder.encode("123");
     private Boolean locked = false;
     private AccountType accountType = AccountType.USER;
-    private List<UserGrantedAuthorityEntity> permissions = new ArrayList<>();
+    private Set<AuthorityRoleEntity> roles = new HashSet<>();
+    private Set<AuthorityPermissionEntity> permissions = new HashSet<>();
     private List<FilesystemObjectEntity> filesInfo = new ArrayList<>();
     private List<FilePermissionEntity> filesPermissions = new ArrayList<>();
 
@@ -73,7 +75,7 @@ public class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder setPermissions(List<UserGrantedAuthorityEntity> permissions) {
+    public UserEntityBuilder setPermissions(Set<AuthorityPermissionEntity> permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -89,6 +91,6 @@ public class UserEntityBuilder {
     }
 
     public UserEntity build() {
-        return new UserEntity(id, username, email, nickname, password, locked, accountType, permissions, filesInfo, filesPermissions);
+        return new UserEntity(id, username, email, nickname, password, locked, accountType, roles, permissions, filesInfo, filesPermissions);
     }
 }
