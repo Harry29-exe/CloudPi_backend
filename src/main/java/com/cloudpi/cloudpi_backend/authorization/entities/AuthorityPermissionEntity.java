@@ -1,5 +1,6 @@
-package com.cloudpi.cloudpi_backend.user.entities;
+package com.cloudpi.cloudpi_backend.authorization.entities;
 
+import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-public class UserGrantedAuthorityEntity {
+public class AuthorityPermissionEntity {
     @Id
     @GeneratedValue
     private Long id;

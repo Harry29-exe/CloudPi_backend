@@ -1,8 +1,8 @@
 package com.cloudpi.cloudpi_backend.user.mappers;
 
+import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserGrantedAuthorityEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -23,7 +23,7 @@ public interface UserMapper {
     })
     UserEntity userDTOToUserEntity(UserDTO userDTO);
 
-    default GrantedAuthority entityToGrantedAuthority(UserGrantedAuthorityEntity entity) {
+    default GrantedAuthority entityToGrantedAuthority(AuthorityPermissionEntity entity) {
         return new SimpleGrantedAuthority(entity.getAuthority());
     }
 }

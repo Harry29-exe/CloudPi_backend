@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.security;
 
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.Authentication;

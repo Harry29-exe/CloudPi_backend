@@ -2,7 +2,9 @@ package com.cloudpi.cloudpi_backend.user.entities;
 
 import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
-import com.cloudpi.cloudpi_backend.security.permissions.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,8 +43,10 @@ public class UserEntity {
     @Column(nullable = false, updatable = false)
     private AccountType accountType = AccountType.USER;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<UserGrantedAuthorityEntity> permissions;
+    @ManyToMany
+    private Set<AuthorityRoleEntity> roles;
+    @ManyToMany
+    private Set<AuthorityPermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<FilesystemObjectEntity> filesInfo;

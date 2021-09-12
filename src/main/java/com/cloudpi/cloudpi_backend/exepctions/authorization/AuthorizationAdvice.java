@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class AuthorizationAdvice {
 
     @ResponseBody
-    @ExceptionHandler(PermissionNotFoundException.class)
+    @ExceptionHandler(NoRequiredPermissionException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String noRightPermission(PermissionNotFoundException ex) {
+    public String noRightPermission(NoRequiredPermissionException ex) {
         return ex.getMessage();
     }
 }
