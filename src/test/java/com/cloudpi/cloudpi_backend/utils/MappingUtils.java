@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.utils.mapping;
+package com.cloudpi.cloudpi_backend.utils;
 
 import org.modelmapper.ModelMapper;
 

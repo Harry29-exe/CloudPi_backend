@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRequiredPermission
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.UsernameIsTakenException;
 import com.cloudpi.cloudpi_backend.security.CloudPIUser;
 import com.cloudpi.cloudpi_backend.security.CloudPiAuthentication;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createDefaultUserDT
 import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createRootUserDTO;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.security.test.context.TestSecurityContextHolder.setAuthentication;
 
 public class CreateNewUserTest extends UserManagementControllerTest {
 
@@ -27,7 +29,12 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         var userDto = createDefaultUserDTO();
         var http = new MockHttpServletRequest();
         http.setRemoteAddr("192.168.0.101");
-        var auth = new CloudPiAuthentication(new CloudPIUser(userDto));
+        var auth = new CloudPiAuthentication(
+                userDto.getUsername(),
+                userDto.getPassword(),
+                AccountType.USER.getAuthorities()
+        );
+        setAuthentication(auth);
         var requestBody = new PostUserRequest("newUsername", "nickname", "password");
 
         doReturn(Optional.of(userDto)).when(userService).getUser("username");
@@ -46,7 +53,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         var userDto = createRootUserDTO();
         var http = new MockHttpServletRequest();
         http.setRemoteAddr("109.4.4.105");
-        var auth = new CloudPiAuthentication(new CloudPIUser(userDto));
+        var auth = new CloudPiAuthentication(userDto, AccountType.USER.getAuthorities());
         var requestBody = new PostUserRequest("newUsername", "nickname", "password");
 
         doReturn(Optional.of(userDto)).when(userService).getUser("username");
@@ -64,7 +71,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         var userDto = createRootUserDTO();
         var http = new MockHttpServletRequest();
         http.setRemoteAddr("192.168.0.101");
-        var auth = new CloudPiAuthentication(new CloudPIUser(userDto));
+        var auth = new CloudPiAuthentication(userDto, AccountType.USER.getAuthorities());
         var requestBody = new PostUserRequest(userDto.getUsername(), "nickname", "password");
 
         doThrow(EntityExistsException.class).when(userService).getUser("username");

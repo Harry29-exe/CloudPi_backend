@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
-import static com.cloudpi.cloudpi_backend.utils.mapping.MappingUtils.testMapping;
+import static com.cloudpi.cloudpi_backend.utils.MappingUtils.testMapping;
 
 public class DiscMappingTest {
 
