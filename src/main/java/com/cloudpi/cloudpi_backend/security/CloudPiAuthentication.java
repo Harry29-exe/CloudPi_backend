@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.security;
 
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,26 @@ public class CloudPiAuthentication implements Authentication {
             this.authorities = (ImmutableCollection<? extends GrantedAuthority>) authorities;
         } else {
             this.authorities = ImmutableSet.copyOf(authorities);
+        }
+    }
+
+    public CloudPiAuthentication(UserDTO user, Collection<? extends GrantedAuthority> authorities) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        if(authorities instanceof ImmutableCollection) {
+            this.authorities = (ImmutableCollection<? extends GrantedAuthority>) authorities;
+        } else {
+            this.authorities = ImmutableSet.copyOf(authorities);
+        }
+    }
+
+    public CloudPiAuthentication(CloudPIUser user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        if(user.getAuthorities() instanceof ImmutableCollection) {
+            this.authorities = (ImmutableCollection<? extends GrantedAuthority>) user.getAuthorities();
+        } else {
+            this.authorities = ImmutableSet.copyOf(user.getAuthorities());
         }
     }
 
