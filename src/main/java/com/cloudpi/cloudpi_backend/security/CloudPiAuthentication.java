@@ -1,6 +1,8 @@
 package com.cloudpi.cloudpi_backend.security;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.Authentication;
@@ -11,13 +13,19 @@ import java.util.Collection;
 public class CloudPiAuthentication implements Authentication {
     private final String username;
     private final String password;
-    private final Collection<GrantedAuthority> authorities;
+    private final ImmutableCollection<? extends GrantedAuthority> authorities;
     private Boolean isAuthenticated = false;
 
-    public CloudPiAuthentication(CloudPIUser userDetails) {
-        this.username = userDetails.getUsername();
-        this.password = userDetails.getPassword();
-        this.authorities = userDetails.getAuthorities();
+    public CloudPiAuthentication(String username,
+                                 String password,
+                                 Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        if(authorities instanceof ImmutableCollection) {
+            this.authorities = (ImmutableCollection<? extends GrantedAuthority>) authorities;
+        } else {
+            this.authorities = ImmutableSet.copyOf(authorities);
+        }
     }
 
     @Override

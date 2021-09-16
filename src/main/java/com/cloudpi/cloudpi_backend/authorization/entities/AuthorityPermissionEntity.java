@@ -4,6 +4,7 @@ import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,25 +14,11 @@ import javax.persistence.*;
 @Entity
 public class AuthorityPermissionEntity {
     @Id
-    @GeneratedValue
-    private Long id;
-    @Column
+    @Column(unique = true, nullable = false)
     private String authority;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_permission_ownership")
+    private Set<UserEntity> authorised;
 
-//    public String getAuthority() {
-//        return authority;
-//    }
 
-    //    public void setAuthority(String authority) {
-//            for (var accountType : AccountType.values()) {
-//                if (accountType.toString().equals(authority)) {
-//                    throw new RuntimeException();
-//                }
-//            }
-//
-//            this.authority = authority;
-//    }
 }

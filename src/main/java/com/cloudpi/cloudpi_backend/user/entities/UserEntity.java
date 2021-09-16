@@ -2,7 +2,7 @@ package com.cloudpi.cloudpi_backend.user.entities;
 
 import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
 import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
@@ -43,9 +43,9 @@ public class UserEntity {
     @Column(nullable = false, updatable = false)
     private AccountType accountType = AccountType.USER;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "authorised", cascade = CascadeType.MERGE)
     private Set<AuthorityRoleEntity> roles;
-    @ManyToMany
+    @ManyToMany(mappedBy = "authorised", cascade = CascadeType.MERGE)
     private Set<AuthorityPermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)

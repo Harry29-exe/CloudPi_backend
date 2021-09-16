@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class CloudPIUserDetailsService implements UserDetailsService {
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public CloudPIUser loadUserByUsername(String username) {
         throw new UsernameNotFoundException("");
     }
 }

@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.authorization.dto;
+package com.cloudpi.cloudpi_backend.user.controllers;
 
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
 
 public enum UserAPIAuthorities {
     CREATE (new CPAuthorityPermission("USER_CREATE")),

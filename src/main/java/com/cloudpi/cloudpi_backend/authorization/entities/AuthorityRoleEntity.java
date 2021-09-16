@@ -17,12 +17,10 @@ import java.util.List;
 public class AuthorityRoleEntity {
 
     @Id
-    @GeneratedValue
-    private Long id;
-    @Column
+    @Column(unique = true)
     private String role;
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role_ownership")
     private List<UserEntity> authorised;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<AuthorityPermissionEntity> permissions;
+
 }

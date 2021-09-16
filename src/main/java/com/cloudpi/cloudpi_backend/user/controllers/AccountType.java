@@ -1,8 +1,8 @@
-package com.cloudpi.cloudpi_backend.authorization.dto;
+package com.cloudpi.cloudpi_backend.user.controllers;
 
+import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
 import com.cloudpi.cloudpi_backend.configuration.authorization.Roles;
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityRole;
+import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
 
 import java.util.ArrayList;
 import java.util.Collection;

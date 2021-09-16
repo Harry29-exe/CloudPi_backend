@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
 import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.google.common.collect.ImmutableList;

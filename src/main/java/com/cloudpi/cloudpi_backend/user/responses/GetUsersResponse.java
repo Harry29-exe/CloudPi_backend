@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.responses;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import lombok.Data;
 
 import java.util.List;

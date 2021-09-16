@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.authority;
+package com.cloudpi.cloudpi_backend.authorization.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,6 +15,6 @@ public abstract class CPAuthority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return null;
+        return authority;
     }
 }

@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.authorization.services;
 
 import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthority;
+import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthority;
 
 import java.util.Collection;
 

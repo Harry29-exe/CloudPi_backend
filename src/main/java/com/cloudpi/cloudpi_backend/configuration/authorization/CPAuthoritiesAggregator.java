@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.configuration.authorization;
 
 import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
 import org.reflections.Reflections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
