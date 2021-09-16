@@ -1,11 +1,16 @@
 package com.cloudpi.cloudpi_backend.user.services.UserServiceImpTest;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthority;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.UserEntityBuilder;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,6 +39,7 @@ public class updateUserDetails extends UserServiceImpTest {
                         .fastBuilder(1L, "Natale").build());
         var modifiedUser = userEntityInDB.get().toUserDTO();
         modifiedUser.setEmail("Natale@new.com");
+        setAuthentication(userEntityInDB.get().toUserDTO(), AccountType.USER.getAuthorities());
 
         //when
         userService.updateUserDetails(modifiedUser);

@@ -3,6 +3,7 @@ package com.cloudpi.cloudpi_backend.user.services.UserServiceImpTest;
 import com.cloudpi.cloudpi_backend.exepctions.authorization.AuthenticationRequiredException;
 import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRequiredPermissionException;
 import com.cloudpi.cloudpi_backend.user.UserEntityBuilder;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,7 @@ public class getAllUsers extends UserServiceImpTest {
     void should_return_all_users2() {
         //given
         var loggedUser = usersInDB.get(0);
-        this.setAuthentication(loggedUser.toUserDTO());
+        this.setAuthentication(loggedUser.toUserDTO(), AccountType.USER.getAuthorities());
 
         //when
         var users = userService.getAllUsers();
@@ -49,7 +50,7 @@ public class getAllUsers extends UserServiceImpTest {
     void should_return_all_users() {
         //given
         var loggedRootUser = usersInDB.get(3);
-        this.setAuthentication(loggedRootUser.toUserDTO());
+        this.setAuthentication(loggedRootUser.toUserDTO(), AccountType.USER.getAuthorities());
 
         //when
         var users = userService.getAllUsers();
@@ -77,7 +78,7 @@ public class getAllUsers extends UserServiceImpTest {
         //given
         var loggedUser = usersInDB.get(0);
         loggedUser.setLocked(true);
-        this.setAuthentication(loggedUser.toUserDTO());
+        this.setAuthentication(loggedUser.toUserDTO(), AccountType.USER.getAuthorities());
 
         //then
         Assertions.assertThrows(NoRequiredPermissionException.class, () -> {

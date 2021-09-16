@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,6 @@ public class UserTestUtils {
                 .id(2L)
                 .email("email")
                 .locked(false)
-                .permissions(List.of())
                 .nickname("nickname")
                 .password("password")
                 .username("username").build();
@@ -29,7 +28,6 @@ public class UserTestUtils {
                 .id(1L)
                 .email("email")
                 .locked(false)
-                .permissions(List.of())
                 .nickname("root")
                 .password("rootPassword")
                 .username("root").build();

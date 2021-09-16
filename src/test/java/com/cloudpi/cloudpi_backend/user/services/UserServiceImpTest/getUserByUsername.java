@@ -3,6 +3,7 @@ package com.cloudpi.cloudpi_backend.user.services.UserServiceImpTest;
 import com.cloudpi.cloudpi_backend.user.UserDTOBuilder;
 import com.cloudpi.cloudpi_backend.user.UserEntityBuilder;
 import com.cloudpi.cloudpi_backend.user.UserTestUtils;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public class getUserByUsername extends UserServiceImpTest {
         var loggedUser = UserDTOBuilder
                 .fastBuilder(1L, "Lucy")
                 .build();
-        this.setAuthentication(loggedUser);
+        this.setAuthentication(loggedUser, AccountType.USER.getAuthorities());
         var username = "steve";
         when(userRepository.findByUsername("steve"))
                 .thenReturn(Optional.empty());
@@ -40,7 +41,7 @@ public class getUserByUsername extends UserServiceImpTest {
         var loggedUser = UserDTOBuilder
                 .fastBuilder(1L, "Lucy")
                 .build();
-        this.setAuthentication(loggedUser);
+        this.setAuthentication(loggedUser, AccountType.USER.getAuthorities());
         var userEntity = UserEntityBuilder.builder().build();
         when(userRepository.findByUsername(userEntity.getUsername()))
                 .thenReturn(Optional.of(userEntity));

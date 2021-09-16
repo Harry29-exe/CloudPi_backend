@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,7 +17,6 @@ public final class UserDTOBuilder {
     private String password = passwordEncoder.encode("123");
     private Boolean locked = false;
     private AccountType accountType = AccountType.USER;
-    private List<GrantedAuthority> permissions = new ArrayList<>();
 
     private UserDTOBuilder() {
     }
@@ -76,10 +75,6 @@ public final class UserDTOBuilder {
         return this;
     }
 
-    public UserDTOBuilder withPermissions(List<GrantedAuthority> permissions) {
-        this.permissions = permissions;
-        return this;
-    }
 
     public UserDTO build() {
         UserDTO userDTO = new UserDTO();
@@ -90,7 +85,6 @@ public final class UserDTOBuilder {
         userDTO.setPassword(password);
         userDTO.setLocked(locked);
         userDTO.setAccountType(accountType);
-        userDTO.setPermissions(permissions);
         return userDTO;
     }
 }

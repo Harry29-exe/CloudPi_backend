@@ -1,16 +1,5 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AccountType;
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
-import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.cloudpi.cloudpi_backend.user.UserTestUtils.createDefaultUserDTO;
-
 class UserEntityTest {
 
 
