@@ -1,16 +1,22 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
 import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiPermission;
+import com.cloudpi.cloudpi_backend.configuration.authorization.Permissions;
 
-public enum UserAPIAuthorities {
-    CREATE (new CPAuthorityPermission("USER_CREATE")),
-    DELETE (new CPAuthorityPermission("USER_DELETE")),
-    LOCK (new CPAuthorityPermission("USER_LOCK"));
+@Permissions
+public enum UserAPIAuthorities implements CloudPiPermission {
+    GET,
+    GET_SELF,
+    CREATE,
+    DELETE,
+    DELETE_SELF,
+    LOCK;
 
     private final CPAuthorityPermission permission;
 
-    UserAPIAuthorities(CPAuthorityPermission permission) {
-        this.permission = permission;
+    UserAPIAuthorities() {
+        this.permission = new CPAuthorityPermission("USER_" + this.name());
     }
 
     public CPAuthorityPermission getPermission() {

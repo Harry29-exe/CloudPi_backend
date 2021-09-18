@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface UserManagementAPI {
 
-    List<GetUsersResponse> getAllUsers();
+    List<GetUsersResponse> getAllUsers(Authentication authentication);
 
-    GetUserResponse getUser(String name);
+    GetUserResponse getUser(String name, Authentication authentication);
 
     void createNewUser(PostUserRequest user, Authentication authentication, HttpServletRequest request);
 
-    void scheduleUserDelete(String name);
+    void scheduleUserDelete(String name, Authentication authentication);
 
-
+    void deleteUser();
 }
