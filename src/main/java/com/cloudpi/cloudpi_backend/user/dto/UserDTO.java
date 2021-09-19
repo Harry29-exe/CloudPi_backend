@@ -13,8 +13,8 @@ import lombok.*;
 public class UserDTO {
     private Long id;
     private String username;
-    private String email;
     private String nickname;
+    private String email;
     private String password;
     private Boolean locked;
     private AccountType accountType;

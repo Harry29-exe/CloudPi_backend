@@ -11,5 +11,4 @@ public class GetUsersResponse {
     private String nickname;
     private String locked;
     private AccountType userRole;
-    private List<String> permissions;
 }

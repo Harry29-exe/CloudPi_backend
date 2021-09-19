@@ -1,8 +1,10 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
 import com.cloudpi.cloudpi_backend.configuration.network.LocalNetworksInfo;
+import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
+import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUsersResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user-management")
@@ -41,15 +44,15 @@ public class UserManagementController implements UserManagementAPI {
     }
 
 
-    @GetMapping("/all")
     @Override
-    public List<GetUsersResponse> getAllUsers() {
-        return null;
+    public List<GetUserResponse> getAllUsers(Authentication authentication) {
+        return userService.getAllUsers().stream()
+                .map(UserMapper.INSTANCE::userDTOToResponse)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/get-one")
     @Override
-    public GetUserResponse getUser(@RequestParam String name) {
+    public GetUserResponse getUser(String name, Authentication authentication) {
         return null;
     }
 
@@ -59,7 +62,17 @@ public class UserManagementController implements UserManagementAPI {
     }
 
     @Override
-    public void scheduleUserDelete(String name) {
+    public void updateUserDetails(String username, UpdateUserDetailsRequest request) {
+
+    }
+
+    @Override
+    public void scheduleUserDelete(String name, Authentication authentication, HttpServletRequest request) {
+
+    }
+
+    @Override
+    public void deleteUser(String name, Authentication authentication, HttpServletRequest request) {
 
     }
 }
