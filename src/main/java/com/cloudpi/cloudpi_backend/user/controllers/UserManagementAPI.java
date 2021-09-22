@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/user-management/")
+
 public interface UserManagementAPI {
 
 
-    @PreAuthorize("")
+    @PreAuthorize("isAuthorized()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "get-all", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     List<GetUserResponse> getAllUsers();
@@ -30,11 +30,13 @@ public interface UserManagementAPI {
     @GetMapping("user/{username}")
     GetUserResponse getUser(@PathVariable(name = "username") String username);
 
-
+    @PreAuthorize("hasAuthority(USER_CREATE)")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("user")
     void createNewUser(@RequestBody @Valid PostUserRequest user);
 
+    @PreAuthorize("hasAuthority(USER_MODIFY) or" +
+            "")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("user/{id}")
     void updateUserDetails(@RequestParam String username,

@@ -27,7 +27,7 @@ public class UserManagementControllerTest {
         userService = Mockito.mock(UserService.class);
         modelMapper = new ModelMapper();
         LocalNetworksInfo networksInfo = new LocalNetworksInfo(List.of(new LocalNetwork("192.168.0.0", 24)));
-        userController = new UserManagementController(userService, modelMapper, "true", networksInfo, null);
+        userController = new UserManagementController(userService, networksInfo, null);
     }
 
     protected void setModificationsOnlyFromLocalNetwork(boolean value) {
