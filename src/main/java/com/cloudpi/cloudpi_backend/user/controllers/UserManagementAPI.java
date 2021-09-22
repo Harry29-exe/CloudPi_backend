@@ -5,7 +5,10 @@ import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUsersResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.MimeType;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,20 +18,22 @@ import java.util.List;
 @RequestMapping("/user-management/")
 public interface UserManagementAPI {
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("get-all")
-    List<GetUserResponse> getAllUsers(Authentication authentication);
 
+    @PreAuthorize("")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("user/{name}")
-    GetUserResponse getUser(@PathVariable String name,
-                            Authentication authentication);
+    @GetMapping(value = "get-all", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    List<GetUserResponse> getAllUsers();
+
+    @PreAuthorize("hasAuthority('USER_GET') or " +
+            "hasAuthority('USER_GET_SELF') and #username == authentication.principal")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("user/{username}")
+    GetUserResponse getUser(@PathVariable(name = "username") String username);
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("user")
-    void createNewUser(@RequestBody @Valid PostUserRequest user,
-                       Authentication authentication,
-                       HttpServletRequest request);
+    void createNewUser(@RequestBody @Valid PostUserRequest user);
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("user/{id}")
@@ -37,13 +42,9 @@ public interface UserManagementAPI {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("user/schedule-delete/{id}")
-    void scheduleUserDelete(@PathVariable String name,
-                            Authentication authentication,
-                            HttpServletRequest request);
+    void scheduleUserDelete(@PathVariable(name = "id") String name);
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("user/{id{")
-    void deleteUser(@PathVariable String name,
-                    Authentication authentication,
-                    HttpServletRequest request);
+    @DeleteMapping("user/{id}")
+    void deleteUser(@PathVariable(name = "id") String name);
 }

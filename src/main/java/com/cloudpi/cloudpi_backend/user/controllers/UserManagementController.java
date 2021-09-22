@@ -10,6 +10,7 @@ import com.cloudpi.cloudpi_backend.user.responses.GetUsersResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class UserManagementController implements UserManagementAPI {
 
     public UserManagementController(UserService userService,
                                     ModelMapper modelMapper,
-                                    @Value("cloud.pi.config.modifications-only-from-local-network")
+                                    @Value("${cloud.pi.config.modifications-only-from-local-network}")
                                             String managementFromLocalNetworkOnly,
                                     LocalNetworksInfo networksInfo,
                                     UserRepository userRepository) {
@@ -45,19 +46,19 @@ public class UserManagementController implements UserManagementAPI {
 
 
     @Override
-    public List<GetUserResponse> getAllUsers(Authentication authentication) {
+    public List<GetUserResponse> getAllUsers() {
         return userService.getAllUsers().stream()
                 .map(UserMapper.INSTANCE::userDTOToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public GetUserResponse getUser(String name, Authentication authentication) {
+    public GetUserResponse getUser(String username) {
         return null;
     }
 
     @Override
-    public void createNewUser(PostUserRequest user, Authentication authentication, HttpServletRequest request) {
+    public void createNewUser(PostUserRequest user) {
 
     }
 
@@ -67,12 +68,12 @@ public class UserManagementController implements UserManagementAPI {
     }
 
     @Override
-    public void scheduleUserDelete(String name, Authentication authentication, HttpServletRequest request) {
+    public void scheduleUserDelete(String name) {
 
     }
 
     @Override
-    public void deleteUser(String name, Authentication authentication, HttpServletRequest request) {
+    public void deleteUser(String name) {
 
     }
 }

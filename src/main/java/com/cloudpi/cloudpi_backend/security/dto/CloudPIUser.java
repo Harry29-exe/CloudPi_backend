@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security;
+package com.cloudpi.cloudpi_backend.security.dto;
 
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.google.common.collect.ImmutableCollection;

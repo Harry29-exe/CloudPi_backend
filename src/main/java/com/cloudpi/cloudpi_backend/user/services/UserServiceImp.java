@@ -1,7 +1,5 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
@@ -33,46 +31,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void updateUserDetails(UserDTO userDTO) {
-
-    }
-
-    @Override
-    public void giveUserRole(UserDTO userDTO, CloudPiRole role) {
-
-    }
-
-    @Override
-    public void giveUserRole(Long userId, CloudPiRole role) {
-
-    }
-
-    @Override
-    public void removeUserRole(UserDTO userDTO, CloudPiRole role) {
-
-    }
-
-    @Override
-    public void removeUserRole(Long userID, CloudPiRole role) {
-
-    }
-
-    @Override
-    public void giveUserPermission(UserDTO userDTO, CPAuthorityPermission permission) {
-
-    }
-
-    @Override
-    public void giveUserPermission(Long userId, CPAuthorityPermission permission) {
-
-    }
-
-    @Override
-    public void removeUserPermission(UserDTO userDTO, CPAuthorityPermission permission) {
-
-    }
-
-    @Override
-    public void removeUserPermission(Long userID, CPAuthorityPermission permission) {
 
     }
 

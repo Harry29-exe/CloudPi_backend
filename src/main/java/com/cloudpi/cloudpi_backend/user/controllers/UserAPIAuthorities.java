@@ -1,13 +1,14 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiPermission;
-import com.cloudpi.cloudpi_backend.configuration.authorization.Permissions;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.security.CloudPiPermission;
+import com.cloudpi.cloudpi_backend.security.Permissions;
 
 @Permissions
 public enum UserAPIAuthorities implements CloudPiPermission {
     GET,
     GET_SELF,
+    MODIFY,
     CREATE,
     DELETE,
     DELETE_SELF,

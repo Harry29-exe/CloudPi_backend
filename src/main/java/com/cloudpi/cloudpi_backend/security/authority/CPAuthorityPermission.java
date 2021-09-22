@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.authorization.dto;
+package com.cloudpi.cloudpi_backend.security.authority;
 
 public class CPAuthorityPermission extends CPAuthority {
 

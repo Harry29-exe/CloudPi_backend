@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.configuration.authorization;
+package com.cloudpi.cloudpi_backend.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

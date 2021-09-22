@@ -3,8 +3,7 @@ package com.cloudpi.cloudpi_backend.user.controllers.UserManagement;
 import com.cloudpi.cloudpi_backend.exepctions.authorization.IllegalIPException;
 import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRequiredPermissionException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.UsernameIsTakenException;
-import com.cloudpi.cloudpi_backend.security.CloudPIUser;
-import com.cloudpi.cloudpi_backend.security.CloudPiAuthentication;
+import com.cloudpi.cloudpi_backend.security.dto.CloudPiAuthentication;
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +41,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         //then
         Assertions.assertThrows(NoRequiredPermissionException.class, () -> {
             //when
-            userController.createNewUser(requestBody, auth, http);
+            userController.createNewUser(requestBody);
         });
     }
 
@@ -60,7 +59,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         //then
         Assertions.assertThrows(IllegalIPException.class, () -> {
             //when
-            userController.createNewUser(requestBody, auth, http);
+            userController.createNewUser(requestBody);
         });
     }
 
@@ -78,7 +77,7 @@ public class CreateNewUserTest extends UserManagementControllerTest {
         //then
         Assertions.assertThrows(UsernameIsTakenException.class, () -> {
             //when
-            userController.createNewUser(requestBody, auth, http);
+            userController.createNewUser(requestBody);
         });
     }
 }

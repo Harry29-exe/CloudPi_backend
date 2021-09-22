@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security;
+package com.cloudpi.cloudpi_backend.security.dto;
 
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;

@@ -1,10 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiPermission;
-import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
-import com.cloudpi.cloudpi_backend.configuration.authorization.Roles;
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
-import com.google.common.collect.ImmutableList;
+import com.cloudpi.cloudpi_backend.security.CloudPiPermission;
+import com.cloudpi.cloudpi_backend.security.CloudPiRole;
+import com.cloudpi.cloudpi_backend.security.Roles;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,11 +23,13 @@ public enum AccountType implements CloudPiRole {
             ),
     WORKER("ROLE_WORKER");
 
-    public final String value;
-    public final Collection<? extends CPAuthorityPermission> permissions;
+    private final String value;
+    private final Collection<? extends CPAuthorityPermission> permissions;
+    private final Collection<CloudPiPermission> cloudPiPermissions;
 
     AccountType(String value, CloudPiPermission... permissions) {
         this.value = value;
+        this.cloudPiPermissions = List.of(permissions);
         this.permissions = CloudPiRole.authorityListOf(permissions);
     }
 
@@ -44,8 +45,11 @@ public enum AccountType implements CloudPiRole {
         return permissions;
     }
 
+    public Collection<CloudPiPermission> getCloudPiPermissions() {
+        return cloudPiPermissions;
+    }
 
-//    @Override
+    //    @Override
 //    public CPAuthorityRole getRoleAuthority() {
 //        return new CPAuthorityRole(value);
 //    }

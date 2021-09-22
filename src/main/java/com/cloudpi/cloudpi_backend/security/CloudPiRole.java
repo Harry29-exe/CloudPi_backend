@@ -1,13 +1,17 @@
-package com.cloudpi.cloudpi_backend.authorization.dto;
+package com.cloudpi.cloudpi_backend.security;
 
-import com.cloudpi.cloudpi_backend.authorization.pojo.CPAuthorityFactory;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthority;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityRole;
+import com.cloudpi.cloudpi_backend.security.pojo.CPAuthorityFactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public interface CloudPiRole {
+
+    Collection<CloudPiPermission> getCloudPiPermissions();
 
     Collection<? extends CPAuthorityPermission> getPermissions();
 

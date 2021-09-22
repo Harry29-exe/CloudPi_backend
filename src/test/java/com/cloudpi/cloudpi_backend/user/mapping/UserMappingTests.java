@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.mapping;
 
-import com.cloudpi.cloudpi_backend.security.CloudPIUser;
+import com.cloudpi.cloudpi_backend.security.dto.CloudPIUser;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import org.junit.jupiter.api.BeforeEach;

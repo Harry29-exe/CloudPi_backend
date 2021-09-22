@@ -1,9 +1,8 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.google.common.collect.ImmutableList;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Optional;
 
@@ -13,23 +12,9 @@ public interface UserService {
 
     Optional<UserDTO> getUser(String username);
 
+    @PreAuthorize("hasAuthority('USER_MODIFY')")
     void updateUserDetails(UserDTO userDTO);
 
-    void giveUserRole(UserDTO userDTO, CloudPiRole role);
-
-    void giveUserRole(Long userId, CloudPiRole role);
-
-    void removeUserRole(UserDTO userDTO, CloudPiRole role);
-
-    void removeUserRole(Long userID, CloudPiRole role);
-
-    void giveUserPermission(UserDTO userDTO, CPAuthorityPermission permission);
-
-    void giveUserPermission(Long userId, CPAuthorityPermission permission);
-
-    void removeUserPermission(UserDTO userDTO, CPAuthorityPermission permission);
-
-    void removeUserPermission(Long userID, CPAuthorityPermission permission);
 
     void lockUser(UserDTO userDTO);
 

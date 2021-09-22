@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.security;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.cloudpi.cloudpi_backend.security.dto.CloudPIUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

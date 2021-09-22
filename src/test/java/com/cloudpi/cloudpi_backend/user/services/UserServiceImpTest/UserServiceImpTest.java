@@ -1,12 +1,11 @@
 package com.cloudpi.cloudpi_backend.user.services.UserServiceImpTest;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthority;
-import com.cloudpi.cloudpi_backend.security.CloudPiAuthentication;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthority;
+import com.cloudpi.cloudpi_backend.security.dto.CloudPiAuthentication;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.cloudpi.cloudpi_backend.user.services.UserServiceImp;
-import com.google.common.collect.ImmutableCollection;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;

@@ -1,26 +1,19 @@
-package com.cloudpi.cloudpi_backend.authorization.pojo;
+package com.cloudpi.cloudpi_backend.security.pojo;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthority;
-import com.cloudpi.cloudpi_backend.authorization.dto.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.authorization.dto.CloudPiRole;
-import com.cloudpi.cloudpi_backend.configuration.authorization.CPAuthoritiesAggregator;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Component;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthority;
+import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
+import com.cloudpi.cloudpi_backend.security.CloudPiRole;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Configuration
 public class CPAuthorityFactory {
 
-    private static AtomicReference<CPAuthorityFactory> factory;
+    private static final AtomicReference<CPAuthorityFactory> factory = new AtomicReference<>();
     private final Map<String, CloudPiRole> roleMap;
     private final Map<String, CPAuthorityPermission> permissionMap;
 
-    protected CPAuthorityFactory(Map<String, CloudPiRole> roleMap, Map<String, CPAuthorityPermission> permissionMap) {
+    private CPAuthorityFactory(Map<String, CloudPiRole> roleMap, Map<String, CPAuthorityPermission> permissionMap) {
         this.roleMap = roleMap;
         this.permissionMap = permissionMap;
         factory.set(this);

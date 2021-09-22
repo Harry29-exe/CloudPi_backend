@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security;
+package com.cloudpi.cloudpi_backend.security.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
