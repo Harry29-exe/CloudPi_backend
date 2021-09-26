@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,6 +39,11 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationProvider getAuthenticationProvider() {
         return authenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager getAuthenticationManager() throws Exception {
+        return this.authenticationManager();
     }
 
 }

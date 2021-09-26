@@ -21,6 +21,6 @@ public class AuthorityRoleEntity {
     private String role;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_ownership")
-    private List<UserEntity> authorised;
+    private List<UserEntity> roleHolder;
 
 }

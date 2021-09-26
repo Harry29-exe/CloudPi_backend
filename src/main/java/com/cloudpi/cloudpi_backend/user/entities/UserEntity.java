@@ -43,7 +43,7 @@ public class UserEntity {
     @Column(nullable = false, updatable = false)
     private AccountType accountType = AccountType.USER;
 
-    @ManyToMany(mappedBy = "authorised", cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "roleHolder", cascade = CascadeType.MERGE)
     private Set<AuthorityRoleEntity> roles;
     @ManyToMany(mappedBy = "authorised", cascade = CascadeType.MERGE)
     private Set<AuthorityPermissionEntity> permissions;
