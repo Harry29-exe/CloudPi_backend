@@ -1,17 +1,21 @@
-package com.cloudpi.cloudpi_backend.security.pojo;
+package com.cloudpi.cloudpi_backend.authorization.pojo;
 
 import com.cloudpi.cloudpi_backend.security.CloudPiRole;
 import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
 import com.cloudpi.cloudpi_backend.security.Permissions;
 import com.cloudpi.cloudpi_backend.security.Roles;
 import org.reflections.Reflections;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+@Configuration
 public class CPAuthoritiesAggregator {
 
+    @Bean
     public Map<String, CloudPiRole> getAllRoles() {
         var reflections = new Reflections("com.cloudpi.cloudpi_backend");
         var roleClasses = reflections.getTypesAnnotatedWith(Roles.class);
@@ -37,6 +41,7 @@ public class CPAuthoritiesAggregator {
         return roleMap;
     }
 
+    @Bean
     public Map<String, CPAuthorityPermission> getAllPermissions() {
         var reflections = new Reflections("com.cloudpi.cloudpi_backend");
         var permissionClasses = reflections.getTypesAnnotatedWith(Permissions.class);

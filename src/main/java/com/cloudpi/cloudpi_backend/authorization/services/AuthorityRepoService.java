@@ -6,6 +6,8 @@ import java.util.Set;
 
 public interface AuthorityRepoService {
 
-    Set<AuthorityDTO> getUsersAuthorities();
+    Set<AuthorityDTO> getUsersAuthorities(String username);
+
+    Set<AuthorityDTO> getUsersAuthorities(Long userId);
 
 }
