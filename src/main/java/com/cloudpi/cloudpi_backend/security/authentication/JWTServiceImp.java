@@ -6,22 +6,19 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cloudpi.cloudpi_backend.exepctions.authentication.JWTTokenExpiredException;
-import com.cloudpi.cloudpi_backend.security.dto.CloudPIUser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.security.sasl.AuthenticationException;
 import java.util.Date;
 
 @Service
-public class AuthenticationServiceImp implements AuthenticationService {
+public class JWTServiceImp implements JWTService {
     private String secret;
     private Algorithm jwtAlgorithm;
     private Long jwtExpireTime;
     private Long refreshExpireTime;
 
-    public AuthenticationServiceImp(
+    public JWTServiceImp(
             @Value("${cloud.pi.auth.jwt-secret}") String secret,
             @Value("${cloud.pi.auth.jwt-expire-time}") String jwtExpireTime,
             @Value("${cloud.pi.auth.refresh-expire-time}") String refreshExpireTime) {

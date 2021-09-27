@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.security.authentication;
 
-public interface AuthenticationService {
+public interface JWTService {
 
     String createJWTToken(String userPrincipal);
 
