@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserManagementAPI {
 
 
-    @PreAuthorize("isAuthorized()")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "get-all", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     List<GetUserResponse> getAllUsers();
@@ -36,7 +36,7 @@ public interface UserManagementAPI {
     void createNewUser(@RequestBody @Valid PostUserRequest user);
 
     @PreAuthorize("hasAuthority(USER_MODIFY) or" +
-            "")
+            "#username == principal")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("user/{id}")
     void updateUserDetails(@RequestParam String username,

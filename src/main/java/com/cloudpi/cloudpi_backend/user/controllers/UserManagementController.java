@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
 import com.cloudpi.cloudpi_backend.configuration.network.LocalNetworksInfo;
+import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
@@ -22,24 +23,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user-management")
+@RequestMapping("/user-management/")
 public class UserManagementController implements UserManagementAPI {
     private final UserRepository userRepository;
     private final UserService userService;
-    private final ModelMapper modelMapper;
     private final LocalNetworksInfo networksInfo;
 
-    private final Boolean managementFromLocalNetworkOnly;
-
     public UserManagementController(UserService userService,
-                                    ModelMapper modelMapper,
-                                    @Value("${cloud.pi.config.modifications-only-from-local-network}")
-                                            String managementFromLocalNetworkOnly,
                                     LocalNetworksInfo networksInfo,
                                     UserRepository userRepository) {
         this.userService = userService;
-        this.modelMapper = modelMapper;
-        this.managementFromLocalNetworkOnly = managementFromLocalNetworkOnly.equals("true");
         this.networksInfo = networksInfo;
         this.userRepository = userRepository;
     }
@@ -74,6 +67,7 @@ public class UserManagementController implements UserManagementAPI {
 
     @Override
     public void deleteUser(String name) {
-
+        System.out.println("we1");
+        userService.updateUserDetails(new UserDTO());
     }
 }
