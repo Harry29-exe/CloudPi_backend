@@ -79,7 +79,8 @@ public class JWTServiceImp implements JWTService {
         }
     }
 
-    private void validateRefreshToken(DecodedJWT refreshToken) {
+    @Override
+    public void validateRefreshToken(DecodedJWT refreshToken) {
         try {
             var verifier = createVerifier(
                     refreshToken.getClaim("user").asString(),
@@ -90,6 +91,7 @@ public class JWTServiceImp implements JWTService {
         }
     }
 
+    @Override
     public void validateJWTToken(DecodedJWT jwtToken) {
         try {
             var verifier = createVerifier(

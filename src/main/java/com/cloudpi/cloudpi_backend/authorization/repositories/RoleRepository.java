@@ -27,18 +27,10 @@ public interface RoleRepository extends JpaRepository<AuthorityRoleEntity, Strin
             """)
     List<AuthorityRoleEntity> findAllByRoleHolder(@Param("id") Long userId);
 
-    @Query("""
-            SELECT r.role from AuthorityRoleEntity r
-            JOIN UserEntity u
-            WHERE u.username = :username
-            """)
+    @Query("SELECT new java.lang.String(r.role) from AuthorityRoleEntity r JOIN r.roleHolder u WHERE u.username = :username ")
     List<String> getAllRolesByRoleHolder(@Param("username") String roleHolderUsername);
 
-    @Query("""
-            SELECT r.role from AuthorityRoleEntity r
-            JOIN UserEntity u
-            WHERE u.id = :id
-            """)
+    @Query("SELECT new java.lang.String(r.role) from AuthorityRoleEntity r JOIN r.roleHolder u WHERE u.id = :id")
     List<String> getAllRolesByRoleHolder(@Param("id") Long userId);
 
 }

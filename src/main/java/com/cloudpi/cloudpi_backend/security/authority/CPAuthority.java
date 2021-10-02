@@ -17,8 +17,9 @@ public abstract class CPAuthority implements GrantedAuthority {
     public String getAuthority() {
         return authority;
     }
-    
-    public boolean equals(CPAuthority authority) {
-        return  this.authority.equals(authority.authority);
+
+    @Override
+    public boolean equals(Object authority) {
+        return authority instanceof CPAuthority && this.authority.equals(((CPAuthority) authority).authority);
     }
 }

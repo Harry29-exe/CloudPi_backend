@@ -21,6 +21,7 @@ public class AuthorityRepoServiceImp implements AuthorityRepoService {
 
     @Override
     public Set<AuthorityDTO> getUsersAuthorities(String username) {
+        //TODO()
         Set<AuthorityDTO> authorities = new HashSet<>();
         roleRepository.getAllRolesByRoleHolder(username)
                 .forEach(r -> authorities.add(new AuthorityDTO(AuthorityType.ROLE, r)));

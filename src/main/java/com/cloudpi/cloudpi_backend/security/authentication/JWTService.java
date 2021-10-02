@@ -1,5 +1,7 @@
 package com.cloudpi.cloudpi_backend.security.authentication;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 public interface JWTService {
 
     String createJWTToken(String userPrincipal);
@@ -12,6 +14,10 @@ public interface JWTService {
 
     void validateRefreshToken(String refreshToken);
 
+    void validateRefreshToken(DecodedJWT refreshToken);
+
     void validateJWTToken(String jwtToken);
+
+    void validateJWTToken(DecodedJWT jwtToken);
 
 }

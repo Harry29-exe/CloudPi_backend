@@ -28,7 +28,7 @@ public interface PermissionRepository extends JpaRepository<AuthorityPermissionE
 
     @Query("""
             SELECT r.authority from AuthorityPermissionEntity r
-            JOIN UserEntity u
+            JOIN r.authorised u
             WHERE u.username = :username
             """)
     List<String> getAuthoritiesByAuthorised(@Param("username") String authorisedUsername);
@@ -36,7 +36,7 @@ public interface PermissionRepository extends JpaRepository<AuthorityPermissionE
 
     @Query("""
             SELECT r.authority from AuthorityPermissionEntity r
-            JOIN UserEntity u
+            JOIN r.authorised u
             WHERE u.id = :id
             """)
     List<String> getAuthoritiesByAuthorised(@Param("id") Long id);

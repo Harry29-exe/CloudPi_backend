@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.dto;
+package com.cloudpi.cloudpi_backend.security.deprecated;
 
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
@@ -8,9 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Deprecated
 public class CloudPiAuthentication implements Authentication {
     private final String username;
     private final String password;
@@ -39,7 +41,7 @@ public class CloudPiAuthentication implements Authentication {
         }
     }
 
-    public CloudPiAuthentication(CloudPIUser user) {
+    public CloudPiAuthentication(UserDetails user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         if(user.getAuthorities() instanceof ImmutableCollection) {
