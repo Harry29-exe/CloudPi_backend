@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.utils;
 
-import com.cloudpi.cloudpi_backend.security.dto.CloudPiAuthentication;
+import com.cloudpi.cloudpi_backend.security.deprecated.CloudPiAuthentication;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import org.springframework.security.core.Authentication;
