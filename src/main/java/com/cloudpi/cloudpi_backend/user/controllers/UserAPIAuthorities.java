@@ -1,11 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.security.CloudPiPermission;
-import com.cloudpi.cloudpi_backend.security.Permissions;
+import com.cloudpi.cloudpi_backend.security.authority.PermissionClass;
+import com.cloudpi.cloudpi_backend.security.authority.PermissionModel;
 
-@Permissions
-public enum UserAPIAuthorities implements CloudPiPermission {
+public enum UserAPIAuthorities implements PermissionClass {
     GET,
     GET_SELF,
     MODIFY,
@@ -14,13 +12,10 @@ public enum UserAPIAuthorities implements CloudPiPermission {
     DELETE_SELF,
     LOCK;
 
-    private final CPAuthorityPermission permission;
 
-    UserAPIAuthorities() {
-        this.permission = new CPAuthorityPermission("USER_" + this.name());
-    }
-
-    public CPAuthorityPermission getPermission() {
-        return permission;
+    @Override
+    public String getPermissionName() {
+        //TODO
+        return null;
     }
 }

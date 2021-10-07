@@ -1,23 +1,20 @@
 package com.cloudpi.cloudpi_backend.authorization.controllers;
 
-import com.cloudpi.cloudpi_backend.security.authority.CPAuthorityPermission;
-import com.cloudpi.cloudpi_backend.security.CloudPiPermission;
-import com.cloudpi.cloudpi_backend.security.Permissions;
+import com.cloudpi.cloudpi_backend.security.authority.PermissionClass;
+import com.cloudpi.cloudpi_backend.security.authority.PermissionModel;
 
-@Permissions
-public enum AuthoritiesAPIAuthorities implements CloudPiPermission {
+public enum AuthoritiesAPIAuthorities implements PermissionClass {
     GIVE("AUTHORITY_GIVE"),
     REMOVE("AUTHORITY_REMOVE");
 
+    private String name;
 
-    private final CPAuthorityPermission permission;
-
-    AuthoritiesAPIAuthorities(String permission) {
-        this.permission = new CPAuthorityPermission(permission);
+    AuthoritiesAPIAuthorities(String name) {
+        this.name = name;
     }
 
     @Override
-    public CPAuthorityPermission getPermission() {
-        return null;
+    public String getPermissionName() {
+        return name;
     }
 }

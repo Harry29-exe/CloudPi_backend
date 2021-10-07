@@ -12,6 +12,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/")
@@ -30,6 +33,7 @@ public class LoginController {
     public String login(@Valid LoginRequest request, HttpServletResponse httpResponse) {
         var userDetails = userDetailsService.loadUserByUsername(request.username());
         if(! (userDetails.isAccountNonLocked())) {
+            Logger.getGlobal().log(new LogRecord(Level.WARNING, "Account is locked"));
 //            throw new
         }
         var auth = new UsernamePasswordAuthenticationToken(request.username(), request.password(), userDetails.getAuthorities());

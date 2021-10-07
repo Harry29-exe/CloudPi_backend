@@ -1,9 +1,9 @@
-package com.cloudpi.cloudpi_backend.disc.mapping;
+package com.cloudpi.cloudpi_backend.disk.mapping;
 
 import com.cloudpi.cloudpi_backend.configuration.model_mapper.ModelMapperConfig;
-import com.cloudpi.cloudpi_backend.disc.dto.DiscDTO;
-import com.cloudpi.cloudpi_backend.disc.dto.UserDriveDTO;
-import com.cloudpi.cloudpi_backend.disc.entities.DiscEntity;
+import com.cloudpi.cloudpi_backend.disk.dto.DiscDTO;
+import com.cloudpi.cloudpi_backend.disk.dto.UserDriveDTO;
+import com.cloudpi.cloudpi_backend.disk.entities.DiscEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.RootDirectoryEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

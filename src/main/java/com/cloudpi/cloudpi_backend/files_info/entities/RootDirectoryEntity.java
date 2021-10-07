@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.files_info.entities;
 
-import com.cloudpi.cloudpi_backend.disc.entities.DiscEntity;
+import com.cloudpi.cloudpi_backend.disk.entities.DiscEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

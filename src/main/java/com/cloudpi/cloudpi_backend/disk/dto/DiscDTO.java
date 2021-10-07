@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.disc.dto;
+package com.cloudpi.cloudpi_backend.disk.dto;
 
-import com.cloudpi.cloudpi_backend.disc.pojo.DiscType;
+import com.cloudpi.cloudpi_backend.disk.pojo.DiscType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
