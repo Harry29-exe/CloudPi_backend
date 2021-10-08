@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.user.services.CPUserDetailsService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +31,7 @@ public class LoginController {
     }
 
     @PostMapping("login")
-    public String login(@Valid LoginRequest request, HttpServletResponse httpResponse) {
+    public String login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
         var userDetails = userDetailsService.loadUserByUsername(request.username());
         if(! (userDetails.isAccountNonLocked())) {
             Logger.getGlobal().log(new LogRecord(Level.WARNING, "Account is locked"));
