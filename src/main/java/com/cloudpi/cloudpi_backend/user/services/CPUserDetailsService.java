@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.security.authority.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.security.dto.CloudPIUser;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
@@ -11,14 +11,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class CloudPiUserDetailsService implements UserDetailsService {
+public class CPUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public CloudPiUserDetailsService(UserRepository userRepository) {
+    public CPUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -32,7 +33,24 @@ public class CloudPiUserDetailsService implements UserDetailsService {
     }
 
     public Set<GrantedAuthority> getUsersAuthorities(UserEntity userEntity) {
-        //TODO
-        return null;
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        AuthorityModelsAggregator
+                .getRolesByRoleEntities(userEntity.getRoles())
+                .forEach(roleModel ->
+                        authorities.addAll(roleModel.getAuthorities()));
+
+        AuthorityModelsAggregator
+                .getPermissionsByPermissionEntities(userEntity.getPermissions())
+                .forEach(permissionModel ->
+                        authorities.add(permissionModel.getAuthority()));
+
+        authorities.addAll(
+                AuthorityModelsAggregator
+                    .getRoleModelByRoleName(userEntity.getAccountType().getRoleName())
+                    .getAuthorities()
+        );
+
+        return authorities;
     }
 }

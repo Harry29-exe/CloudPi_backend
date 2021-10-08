@@ -3,8 +3,8 @@ package com.cloudpi.cloudpi_backend.user.entities;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.AllArgsConstructor;
@@ -44,9 +44,9 @@ public class UserEntity {
     private AccountType accountType = AccountType.USER;
 
     @ManyToMany(mappedBy = "roleHolder", cascade = CascadeType.MERGE)
-    private Set<AuthorityRoleEntity> roles;
+    private Set<RoleEntity> roles;
     @ManyToMany(mappedBy = "authorised", cascade = CascadeType.MERGE)
-    private Set<AuthorityPermissionEntity> permissions;
+    private Set<PermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<FilesystemObjectEntity> filesInfo;

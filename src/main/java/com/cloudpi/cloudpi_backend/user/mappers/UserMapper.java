@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.mappers;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
@@ -28,7 +28,7 @@ public interface UserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserEntity(UserDTO userDTO, @MappingTarget UserEntity userEntity);
 
-    default GrantedAuthority entityToGrantedAuthority(AuthorityPermissionEntity entity) {
+    default GrantedAuthority entityToGrantedAuthority(PermissionEntity entity) {
         return new SimpleGrantedAuthority(entity.getAuthority());
     }
 }

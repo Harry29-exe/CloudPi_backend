@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.security.authentication;
 
 import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRefreshTokenException;
-import com.cloudpi.cloudpi_backend.user.services.CloudPiUserDetailsService;
+import com.cloudpi.cloudpi_backend.user.services.CPUserDetailsService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 public class LoginController {
     private final JWTService jwtService;
     private final AuthenticationManager authManager;
-    private final CloudPiUserDetailsService userDetailsService;
+    private final CPUserDetailsService userDetailsService;
 
-    public LoginController(JWTService jwtService, AuthenticationManager authManager, CloudPiUserDetailsService userDetailsService) {
+    public LoginController(JWTService jwtService, AuthenticationManager authManager, CPUserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.authManager = authManager;
         this.userDetailsService = userDetailsService;

@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.authorization.repositories;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,24 +9,24 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PermissionRepository extends JpaRepository<AuthorityPermissionEntity, String> {
+public interface PermissionRepository extends JpaRepository<PermissionEntity, String> {
 
     @Query("""
-            SELECT r from AuthorityPermissionEntity r
+            SELECT r from PermissionEntity r
             JOIN UserEntity u
             WHERE u.username = :username
             """)
-    List<AuthorityPermissionEntity> findAllByAuthorised(@Param("username") String authorisedUsername);
+    List<PermissionEntity> findAllByAuthorised(@Param("username") String authorisedUsername);
 
     @Query("""
-            SELECT r from AuthorityPermissionEntity r
+            SELECT r from PermissionEntity r
             JOIN UserEntity u
             WHERE u.id = :id
             """)
-    List<AuthorityPermissionEntity> findAllByAuthorised(@Param("id") Long authorisedId);
+    List<PermissionEntity> findAllByAuthorised(@Param("id") Long authorisedId);
 
     @Query("""
-            SELECT r.authority from AuthorityPermissionEntity r
+            SELECT r.authority from PermissionEntity r
             JOIN r.authorised u
             WHERE u.username = :username
             """)
@@ -35,7 +34,7 @@ public interface PermissionRepository extends JpaRepository<AuthorityPermissionE
 
 
     @Query("""
-            SELECT r.authority from AuthorityPermissionEntity r
+            SELECT r.authority from PermissionEntity r
             JOIN r.authorised u
             WHERE u.id = :id
             """)

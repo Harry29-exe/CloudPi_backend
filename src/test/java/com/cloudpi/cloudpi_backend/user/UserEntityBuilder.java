@@ -1,10 +1,10 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityRoleEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files_info.entities.FilesystemObjectEntity;
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
-import com.cloudpi.cloudpi_backend.authorization.entities.AuthorityPermissionEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public class UserEntityBuilder {
     private String password = passwordEncoder.encode("123");
     private Boolean locked = false;
     private AccountType accountType = AccountType.USER;
-    private Set<AuthorityRoleEntity> roles = new HashSet<>();
-    private Set<AuthorityPermissionEntity> permissions = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<PermissionEntity> permissions = new HashSet<>();
     private List<FilesystemObjectEntity> filesInfo = new ArrayList<>();
     private List<FilePermissionEntity> filesPermissions = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder setPermissions(Set<AuthorityPermissionEntity> permissions) {
+    public UserEntityBuilder setPermissions(Set<PermissionEntity> permissions) {
         this.permissions = permissions;
         return this;
     }

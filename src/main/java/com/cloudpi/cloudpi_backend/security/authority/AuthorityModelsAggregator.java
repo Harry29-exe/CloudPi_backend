@@ -1,14 +1,18 @@
 package com.cloudpi.cloudpi_backend.security.authority;
 
+import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
+import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.ImmutableSortedSet;
 import org.reflections.Reflections;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class AuthorityModelsAggregator {
     private static ImmutableSortedMap<String, RoleModel> roleModelMap = null;
@@ -29,6 +33,24 @@ public class AuthorityModelsAggregator {
         return roles;
     }
 
+    public static Collection<RoleModel> getRolesByRoleNames(Stream<String> names) {
+        initIfNeeded();
+        ArrayList<RoleModel> roles = new ArrayList<>();
+        names.forEach(roleName ->
+            roles.add(roleModelMap.get(roleName)));
+
+        return roles;
+    }
+
+    public static Collection<RoleModel> getRolesByRoleEntities(Collection<RoleEntity> roleEntities) {
+        initIfNeeded();
+        ArrayList<RoleModel> roles = new ArrayList<>(roleEntities.size());
+        roleEntities.forEach(roleName ->
+                roles.add(roleModelMap.get(roleName.getRole())));
+
+        return roles;
+    }
+
     public static PermissionModel getPermissionByName(String permissionName) {
         initIfNeeded();
         return permissionModelMap.get(permissionName);
@@ -40,6 +62,25 @@ public class AuthorityModelsAggregator {
         for(String name : permissionNames) {
             permissions.add(permissionModelMap.get(name));
         }
+        return permissions;
+    }
+
+    public static Collection<PermissionModel> getPermissionsByNames(Stream<String> permissionNames) {
+        initIfNeeded();
+        ArrayList<PermissionModel> permissions = new ArrayList<>();
+        permissionNames.forEach(permissionName ->
+            permissions.add(permissionModelMap.get(permissionName)));
+
+        return permissions;
+    }
+
+    public static Collection<PermissionModel> getPermissionsByPermissionEntities(Collection<PermissionEntity> permissionEntities) {
+        initIfNeeded();
+        ArrayList<PermissionModel> permissions = new ArrayList<>(permissionEntities.size());
+
+        permissionEntities.forEach(permissionEntity ->
+                permissions.add(permissionModelMap.get(permissionEntity.getAuthority())));
+
         return permissions;
     }
 

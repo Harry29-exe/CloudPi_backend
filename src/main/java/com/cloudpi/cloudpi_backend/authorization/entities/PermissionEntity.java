@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
-public class AuthorityPermissionEntity {
+public class PermissionEntity {
     @Id
     @Column(unique = true, nullable = false)
     private String authority;

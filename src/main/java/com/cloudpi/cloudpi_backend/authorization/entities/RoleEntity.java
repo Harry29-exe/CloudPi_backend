@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorityRoleEntity {
+public class RoleEntity {
 
     @Id
     @Column(unique = true)
