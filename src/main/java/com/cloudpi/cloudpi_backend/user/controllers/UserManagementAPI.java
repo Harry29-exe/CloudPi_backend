@@ -30,7 +30,9 @@ public interface UserManagementAPI {
     List<GetUserResponse> getAllUsers();
 
     @SecurityRequirement(name = "")
-    @PreAuthorize("hasAuthority('GET_USERS_DETAILS')")
+    //TODO(test)
+    @PreAuthorize("hasAuthority(' "+ RoleDemo.ROLE_DEMO_ROLE  + "')")
+//    @PreAuthorize("hasAuthority('GET_USERS_DETAILS')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("user/{username}")
     GetUserResponse getUser(@PathVariable(name = "username") String username);
