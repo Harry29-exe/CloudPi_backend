@@ -1,28 +1,25 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
-import com.cloudpi.cloudpi_backend.security.authority.RoleClass;
+
+import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
 
-public enum AccountType implements RoleClass {
+@ContainsRoles
+public class AccountType {
 
     @Role(
             permissions = {},
             mayBeGivenBy = {})
-    USER,
+    public static final String USER = "";
 
     @Role(
             permissions = {},
             mayBeGivenBy = {})
-    SERVICE_WORKER,
+    public static final String SERVICE_WORKER = "";
 
     @Role(
             permissions = {},
             mayBeGivenBy = {})
-    ROOT
-    ;
+    public static final String ROOT = "";
 
-    @Override
-    public String getRoleName() {
-        return "ROLE_" + this.name();
-    }
 }

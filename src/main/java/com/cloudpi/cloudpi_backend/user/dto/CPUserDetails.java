@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.dto;
+package com.cloudpi.cloudpi_backend.user.dto;
 
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.google.common.collect.ImmutableCollection;
@@ -10,13 +10,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CloudPIUser implements UserDetails {
+public class CPUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final Boolean locked;
     private final ImmutableCollection<GrantedAuthority> permissions;
 
-    public CloudPIUser(String username, String password, Boolean locked, ImmutableCollection<GrantedAuthority> permissions) {
+    public CPUserDetails(String username, String password, Boolean locked, ImmutableCollection<GrantedAuthority> permissions) {
         this.username = username;
         this.password = password;
         this.locked = locked;

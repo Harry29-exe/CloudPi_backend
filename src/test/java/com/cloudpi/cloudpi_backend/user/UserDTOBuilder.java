@@ -2,10 +2,6 @@ package com.cloudpi.cloudpi_backend.user;
 
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.cloudpi.cloudpi_backend.user.UserTestUtils.passwordEncoder;
 
@@ -16,7 +12,7 @@ public final class UserDTOBuilder {
     private String nickname = "n steve";
     private String password = passwordEncoder.encode("123");
     private Boolean locked = false;
-    private AccountType accountType = AccountType.USER;
+    private String accountType = AccountType.USER;
 
     private UserDTOBuilder() {
     }
@@ -70,7 +66,7 @@ public final class UserDTOBuilder {
         return this;
     }
 
-    public UserDTOBuilder withAccountType(AccountType accountType) {
+    public UserDTOBuilder withAccountType(String accountType) {
         this.accountType = accountType;
         return this;
     }

@@ -41,7 +41,7 @@ public class UserEntity {
     @Column(nullable = false)
     private Boolean locked = false;
     @Column(nullable = false, updatable = false)
-    private AccountType accountType = AccountType.USER;
+    private String accountType = AccountType.USER;
 
     @ManyToMany(mappedBy = "roleHolder", cascade = CascadeType.MERGE)
     private Set<RoleEntity> roles;

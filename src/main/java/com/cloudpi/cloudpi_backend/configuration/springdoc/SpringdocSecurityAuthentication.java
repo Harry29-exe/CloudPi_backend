@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.Optional;
 
 @Configuration
-public class SpringdocPreAuthorize {
+public class SpringdocSecurityAuthentication {
     @Bean
     public OperationCustomizer operationCustomizer() {
         //TODO(Analyze code copied from stack overflow
@@ -25,7 +25,9 @@ public class SpringdocPreAuthorize {
                 sb.append("This api is **public**");
             }
             sb.append("<br /><br />");
-            sb.append(operation.getDescription());
+            if (operation.getDescription() != null) {
+                sb.append(operation.getDescription());
+            }
             operation.setDescription(sb.toString());
             return operation;
         };

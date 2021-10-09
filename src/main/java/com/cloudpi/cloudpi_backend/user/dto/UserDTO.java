@@ -17,7 +17,7 @@ public class UserDTO {
     private String email;
     private String password;
     private Boolean locked;
-    private AccountType accountType;
+    private String accountType;
 
     public UserEntity toUserEntity() {
         return UserMapper.INSTANCE.userDTOToUserEntity(this);

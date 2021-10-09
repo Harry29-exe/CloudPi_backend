@@ -2,6 +2,8 @@ package com.cloudpi.cloudpi_backend.security.authority;
 
 import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
+import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
 import com.google.common.collect.ImmutableCollection;
@@ -122,17 +124,16 @@ public class AuthorityModelsAggregator {
 
     private static ImmutableSortedMap<String, RoleModel> getAllRoles() throws IllegalAccessException {
         var reflections = new Reflections("com.cloudpi.cloudpi_backend");
-        var roleClasses = reflections.getSubTypesOf(RoleClass.class);
+        var roleClasses = reflections.getTypesAnnotatedWith(ContainsRoles.class);
 
         Map<String, RoleModel> roleMap = new HashMap<>();
-        Map<String, Class<? extends  RoleClass>> duplicationCheckMap = new HashMap<>();
+        Map<String, Class<?>> duplicationCheckMap = new HashMap<>();
 
         for(var roleClass : roleClasses) {
             var fields = getAllRoleFields(roleClass);
             for(var field : fields) {
-                RoleClass value = (RoleClass) field.get(null);
+                String roleName = (String) field.get(null);
                 var fieldAnnotation = field.getAnnotation(Role.class);
-                var roleName = value.getRoleName();
 
                 if(duplicationCheckMap.containsKey(roleName)) {
                     throw new IllegalStateException(
@@ -153,17 +154,17 @@ public class AuthorityModelsAggregator {
 
     private static ImmutableSortedMap<String, PermissionModel> getAllPermissions() throws IllegalAccessException {
         var reflections = new Reflections("com.cloudpi.cloudpi_backend");
-        var permissionClasses = reflections.getSubTypesOf(PermissionClass.class);
+        var permissionClasses = reflections.getTypesAnnotatedWith(ContainsPermissions.class);
 
         Map<String, PermissionModel> permissionMap = new HashMap<>();
-        Map<String, Class<? extends PermissionClass>> duplicatesCheckMap = new HashMap<>();
+        Map<String, Class<?>> duplicatesCheckMap = new HashMap<>();
 
         for(var permissionClass : permissionClasses) {
             var fields = getAllPermissionFields(permissionClass);
             for(var field : fields) {
-                var value = (PermissionClass) field.get(null);
-                var permissionName = value.getPermissionName();
+                var permissionName = (String) field.get(null);
                 var permissionAnnotation = field.getAnnotation(Permission.class);
+
                 if(duplicatesCheckMap.containsKey(permissionName)) {
                     throw new IllegalStateException(
                             "Permission with name: " + permissionName +
@@ -184,12 +185,14 @@ public class AuthorityModelsAggregator {
 
 
 
-    private static List<Field> getAllPermissionFields(Class<? extends PermissionClass> permissionClass) {
+    private static List<Field> getAllPermissionFields(Class<?> permissionClass) {
         LinkedList<Field> fields = new LinkedList<>();
+
         for(var field : permissionClass.getFields()) {
-            if(field.isAnnotationPresent(Permission.class) &&
-                    PermissionClass.class.isAssignableFrom(field.getDeclaringClass()) &&
-                    (field.isEnumConstant() || Modifier.isStatic(field.getModifiers()))
+            int fieldModifiers = field.getModifiers();
+
+            if (field.isAnnotationPresent(Permission.class) && String.class.isAssignableFrom(field.getDeclaringClass())
+                    && Modifier.isStatic(fieldModifiers) && Modifier.isFinal(fieldModifiers)
             ) {
                 fields.addLast(field);
             }
@@ -198,12 +201,14 @@ public class AuthorityModelsAggregator {
         return fields;
     }
 
-    private static List<Field> getAllRoleFields(Class<? extends RoleClass> roleClass) {
+    private static List<Field> getAllRoleFields(Class<?> roleClass) {
         LinkedList<Field> fields = new LinkedList<>();
+
         for(var field : roleClass.getFields()) {
-            if (field.isAnnotationPresent(Role.class) &&
-                    RoleClass.class.isAssignableFrom(field.getDeclaringClass()) &&
-                    (field.isEnumConstant() || Modifier.isStatic(field.getModifiers()))
+            int fieldModifiers = field.getModifiers();
+
+            if (field.isAnnotationPresent(Role.class) && String.class.isAssignableFrom(field.getDeclaringClass())
+                    && Modifier.isStatic(fieldModifiers) && Modifier.isFinal(fieldModifiers)
             ) {
                 fields.addLast(field);
             }

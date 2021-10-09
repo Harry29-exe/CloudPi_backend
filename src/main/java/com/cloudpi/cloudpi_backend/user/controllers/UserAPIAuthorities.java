@@ -1,21 +1,20 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
-import com.cloudpi.cloudpi_backend.security.authority.PermissionClass;
-import com.cloudpi.cloudpi_backend.security.authority.PermissionModel;
+import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
+import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 
-public enum UserAPIAuthorities implements PermissionClass {
-    GET,
-    GET_SELF,
-    MODIFY,
-    CREATE,
-    DELETE,
-    DELETE_SELF,
-    LOCK;
-
-
-    @Override
-    public String getPermissionName() {
-        //TODO
-        return null;
-    }
+@ContainsPermissions
+public class UserAPIAuthorities{
+    @Permission
+    public static final String GET_USERS_DETAILS = "GET_USER_DETAILS";
+    @Permission
+    public static final String MODIFY = "";
+    @Permission
+    public static final String CREATE = "";
+    @Permission
+    public static final String DELETE = "";
+    @Permission
+    public static final String DELETE_SELF = "";
+    @Permission
+    public static final String LOCK = "";
 }

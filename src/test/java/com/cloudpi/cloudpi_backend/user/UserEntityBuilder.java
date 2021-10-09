@@ -21,7 +21,7 @@ public class UserEntityBuilder {
     private String nickname = "n steve";
     private String password = passwordEncoder.encode("123");
     private Boolean locked = false;
-    private AccountType accountType = AccountType.USER;
+    private String accountType = AccountType.USER;
     private Set<RoleEntity> roles = new HashSet<>();
     private Set<PermissionEntity> permissions = new HashSet<>();
     private List<FilesystemObjectEntity> filesInfo = new ArrayList<>();
@@ -70,7 +70,7 @@ public class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder setAccountType(AccountType accountType) {
+    public UserEntityBuilder setAccountType(String accountType) {
         this.accountType = accountType;
         return this;
     }
