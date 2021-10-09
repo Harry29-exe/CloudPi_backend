@@ -45,7 +45,7 @@ public class CPUserDetailsService implements UserDetailsService {
 
         authorities.addAll(
                 AuthorityModelsAggregator
-                    .getRoleModelByRoleName(userEntity.getAccountType().getRoleName())
+                    .getRoleModelByRoleName(userEntity.getAccountType())
                     .getAuthorities()
         );
 

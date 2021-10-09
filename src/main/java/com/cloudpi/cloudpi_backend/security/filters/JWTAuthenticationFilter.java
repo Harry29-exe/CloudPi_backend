@@ -2,7 +2,7 @@ package com.cloudpi.cloudpi_backend.security.filters;
 
 import com.auth0.jwt.JWT;
 import com.cloudpi.cloudpi_backend.security.authentication.JWTService;
-import com.cloudpi.cloudpi_backend.security.deprecated.CloudPiAuthentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -33,7 +33,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         jwtService.validateJWTToken(decodedToken);
 
         var userDetails = userDetailsService.loadUserByUsername(decodedToken.getClaim("user").asString());
-        var authentication = new CloudPiAuthentication(userDetails);
+        var authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         authentication.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
