@@ -1,10 +1,10 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.files.structure.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files.structure.entities.FilesystemObjectEntity;
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
-import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
+import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 
 import java.util.ArrayList;

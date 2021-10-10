@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.authorization.dto;
+package com.cloudpi.cloudpi_backend.authorities.dto;
 
-import com.cloudpi.cloudpi_backend.authorization.pojo.AuthorityType;
+import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

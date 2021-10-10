@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.authorization.entities;
+package com.cloudpi.cloudpi_backend.authorities.entities;
 
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;

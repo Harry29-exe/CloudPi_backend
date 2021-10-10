@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.authorization.repositories;
+package com.cloudpi.cloudpi_backend.authorities.repositories;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

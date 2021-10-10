@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.authorization.pojo;
+package com.cloudpi.cloudpi_backend.authorities.pojo;
 
 public enum AuthorityType {
     ROLE,

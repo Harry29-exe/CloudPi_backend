@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.authorization.services;
+package com.cloudpi.cloudpi_backend.authorities.services;
 
-import com.cloudpi.cloudpi_backend.authorization.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.security.authority.RoleModel;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import org.springframework.security.access.prepost.PreAuthorize;

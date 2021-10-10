@@ -1,14 +1,12 @@
 package com.cloudpi.cloudpi_backend.security.authority;
 
-import com.cloudpi.cloudpi_backend.authorization.entities.PermissionEntity;
-import com.cloudpi.cloudpi_backend.authorization.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
+import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.ImmutableSortedSet;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
