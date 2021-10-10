@@ -29,10 +29,7 @@ public interface UserManagementAPI {
     @GetMapping(value = "get-all", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     List<GetUserResponse> getAllUsers();
 
-    @SecurityRequirement(name = "")
-    //TODO(test)
-    @PreAuthorize("hasAuthority(' "+ RoleDemo.ROLE_DEMO_ROLE  + "')")
-//    @PreAuthorize("hasAuthority('GET_USERS_DETAILS')")
+    @PreAuthorize("hasAuthority('GET_USERS_DETAILS')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("user/{username}")
     GetUserResponse getUser(@PathVariable(name = "username") String username);
