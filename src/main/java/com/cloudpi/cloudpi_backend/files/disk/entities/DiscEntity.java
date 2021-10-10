@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.disk.entities;
 
 import com.cloudpi.cloudpi_backend.files.disk.pojo.DiscType;
-import com.cloudpi.cloudpi_backend.files.structure.entities.RootDirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.RootDirectoryEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "discs")
 public class DiscEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

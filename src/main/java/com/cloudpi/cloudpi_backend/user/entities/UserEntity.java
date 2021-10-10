@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
-import com.cloudpi.cloudpi_backend.files.structure.entities.FilePermissionEntity;
-import com.cloudpi.cloudpi_backend.files.structure.entities.FilesystemObjectEntity;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
@@ -22,11 +22,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "app_user")
+@Table(name = "users")
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id = 0L;
     @Column(nullable = false, unique = true)
@@ -49,7 +48,7 @@ public class UserEntity {
     private Set<PermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<FilesystemObjectEntity> filesInfo;
+    private List<DriveObjectEntity> filesInfo;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<FilePermissionEntity> filesPermissions;
 

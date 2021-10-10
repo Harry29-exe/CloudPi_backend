@@ -1,0 +1,31 @@
+package com.cloudpi.cloudpi_backend.files.filesystem.entities;
+
+import com.cloudpi.cloudpi_backend.files.disk.entities.DiscEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+
+@Entity
+@Table(name = "root_directories")
+@DiscriminatorValue("DIRECTORY")
+public class RootDirectoryEntity extends DiscObjectIdEntity {
+    @Column(nullable = false)
+    private String systemPath;
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DiscEntity disc;
+    @Column(nullable = false)
+    private Long assignedCapacity;
+    @Column(nullable = false)
+    private Long childrenSize;
+}

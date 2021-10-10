@@ -1,8 +1,8 @@
 package com.cloudpi.cloudpi_backend.user;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
-import com.cloudpi.cloudpi_backend.files.structure.entities.FilePermissionEntity;
-import com.cloudpi.cloudpi_backend.files.structure.entities.FilesystemObjectEntity;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
@@ -24,7 +24,7 @@ public class UserEntityBuilder {
     private String accountType = AccountType.USER;
     private Set<RoleEntity> roles = new HashSet<>();
     private Set<PermissionEntity> permissions = new HashSet<>();
-    private List<FilesystemObjectEntity> filesInfo = new ArrayList<>();
+    private List<DriveObjectEntity> filesInfo = new ArrayList<>();
     private List<FilePermissionEntity> filesPermissions = new ArrayList<>();
 
     public static UserEntityBuilder builder() {
@@ -80,7 +80,7 @@ public class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder setFilesInfo(List<FilesystemObjectEntity> filesInfo) {
+    public UserEntityBuilder setFilesInfo(List<DriveObjectEntity> filesInfo) {
         this.filesInfo = filesInfo;
         return this;
     }

@@ -4,7 +4,7 @@ import com.cloudpi.cloudpi_backend.configuration.model_mapper.MapFunction;
 import com.cloudpi.cloudpi_backend.files.disk.dto.DiscDTO;
 import com.cloudpi.cloudpi_backend.files.disk.dto.UserDriveDTO;
 import com.cloudpi.cloudpi_backend.files.disk.entities.DiscEntity;
-import com.cloudpi.cloudpi_backend.files.structure.entities.RootDirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.RootDirectoryEntity;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
