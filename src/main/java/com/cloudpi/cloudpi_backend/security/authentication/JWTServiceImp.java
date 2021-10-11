@@ -14,9 +14,9 @@ import java.util.Date;
 @Service
 public class JWTServiceImp implements JWTService {
     private String secret;
-    private Algorithm jwtAlgorithm;
-    private Long jwtExpireTime;
-    private Long refreshExpireTime;
+    private final Algorithm jwtAlgorithm;
+    private final Long jwtExpireTime;
+    private final Long refreshExpireTime;
 
     public JWTServiceImp(
             @Value("${cloud.pi.auth.jwt-secret}") String secret,
@@ -118,10 +118,10 @@ public class JWTServiceImp implements JWTService {
                 .withIssuedAt(new Date())
                 .withExpiresAt(
                         new Date(System.currentTimeMillis() +
-                        (type == TokenType.AUTH?
-                                this.jwtExpireTime:
-                                this.refreshExpireTime)
-                ))
+                                (type == TokenType.AUTH ?
+                                        this.jwtExpireTime :
+                                        this.refreshExpireTime)
+                        ))
                 .withIssuer("CloudPi")
                 .withClaim("type", type.name())
                 .sign(jwtAlgorithm);

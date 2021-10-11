@@ -33,7 +33,7 @@ public class LoginController {
     @PostMapping("login")
     public String login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
         var userDetails = userDetailsService.loadUserByUsername(request.username());
-        if(! (userDetails.isAccountNonLocked())) {
+        if (!(userDetails.isAccountNonLocked())) {
             Logger.getGlobal().log(new LogRecord(Level.WARNING, "Account is locked"));
 //            throw new
         }
@@ -41,7 +41,7 @@ public class LoginController {
         authManager.authenticate(auth);
 
         httpResponse.addCookie(createRefreshTokenCookie(
-                        jwtService.createRefreshToken(auth.getPrincipal().toString())
+                jwtService.createRefreshToken(auth.getPrincipal().toString())
         ));
 
         return jwtService.createJWTToken(auth.getPrincipal().toString());
@@ -65,14 +65,14 @@ public class LoginController {
 
     private String getRefreshToken(Cookie[] cookies) {
         String refreshToken = null;
-        for(Cookie cookie : cookies) {
-            if(cookie.getName().equals("refresh-token")) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("refresh-token")) {
                 refreshToken = cookie.getValue();
                 break;
             }
         }
 
-        if(refreshToken == null) {
+        if (refreshToken == null) {
             throw new NoRefreshTokenException();
         }
         return refreshToken;

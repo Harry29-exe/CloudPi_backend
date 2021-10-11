@@ -1,10 +1,10 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
-import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
-import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.AllArgsConstructor;

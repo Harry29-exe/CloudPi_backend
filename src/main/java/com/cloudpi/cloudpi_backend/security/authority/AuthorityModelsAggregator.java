@@ -26,7 +26,7 @@ public class AuthorityModelsAggregator {
     public static Collection<RoleModel> getRolesByRoleNames(String... names) {
         initIfNeeded();
         ArrayList<RoleModel> roles = new ArrayList<>(names.length);
-        for( String name : names) {
+        for (String name : names) {
             roles.add(roleModelMap.get(name));
         }
 
@@ -37,7 +37,7 @@ public class AuthorityModelsAggregator {
         initIfNeeded();
         ArrayList<RoleModel> roles = new ArrayList<>();
         names.forEach(roleName ->
-            roles.add(roleModelMap.get(roleName)));
+                roles.add(roleModelMap.get(roleName)));
 
         return roles;
     }
@@ -59,7 +59,7 @@ public class AuthorityModelsAggregator {
     public static Collection<PermissionModel> getPermissionsByNames(String... permissionNames) {
         initIfNeeded();
         ArrayList<PermissionModel> permissions = new ArrayList<>(permissionNames.length);
-        for(String name : permissionNames) {
+        for (String name : permissionNames) {
             permissions.add(permissionModelMap.get(name));
         }
         return permissions;
@@ -69,7 +69,7 @@ public class AuthorityModelsAggregator {
         initIfNeeded();
         ArrayList<PermissionModel> permissions = new ArrayList<>();
         permissionNames.forEach(permissionName ->
-            permissions.add(permissionModelMap.get(permissionName)));
+                permissions.add(permissionModelMap.get(permissionName)));
 
         return permissions;
     }
@@ -85,7 +85,7 @@ public class AuthorityModelsAggregator {
     }
 
     private static void initIfNeeded() {
-        if(permissionModelMap == null || roleModelMap == null) {
+        if (permissionModelMap == null || roleModelMap == null) {
             try {
                 permissionModelMap = getAllPermissions();
                 roleModelMap = getAllRoles();
@@ -97,10 +97,10 @@ public class AuthorityModelsAggregator {
     }
 
     private static void checkIntegrityOfAuthorities() {
-        for(var roleModel : roleModelMap.values()) {
-            for(var canBeGivenBy : roleModel.mayBeGivenBy()) {
-                if(!permissionModelMap.containsKey(canBeGivenBy.getAuthority())
-                    || !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
+        for (var roleModel : roleModelMap.values()) {
+            for (var canBeGivenBy : roleModel.mayBeGivenBy()) {
+                if (!permissionModelMap.containsKey(canBeGivenBy.getAuthority())
+                        || !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
                     throw new IllegalStateException("Role: " + roleModel.getName() +
                             " have property canBeGivenBy assigned to non existed authority:" +
                             canBeGivenBy.getAuthority());
@@ -108,9 +108,9 @@ public class AuthorityModelsAggregator {
             }
         }
 
-        for(var permissionModel : permissionModelMap.values()) {
-            for(var canBeGivenBy : permissionModel.mayBeGivenBy()) {
-                if(!permissionModelMap.containsKey(canBeGivenBy.getAuthority())
+        for (var permissionModel : permissionModelMap.values()) {
+            for (var canBeGivenBy : permissionModel.mayBeGivenBy()) {
+                if (!permissionModelMap.containsKey(canBeGivenBy.getAuthority())
                         || !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
                     throw new IllegalStateException("Permission: " + permissionModel.getName() +
                             " have property canBeGivenBy assigned to non existed authority:" +
@@ -127,17 +127,17 @@ public class AuthorityModelsAggregator {
         Map<String, RoleModel> roleMap = new HashMap<>();
         Map<String, Class<?>> duplicationCheckMap = new HashMap<>();
 
-        for(var roleClass : roleClasses) {
+        for (var roleClass : roleClasses) {
             var fields = getAllRoleFields(roleClass);
-            for(var field : fields) {
+            for (var field : fields) {
                 String roleName = (String) field.get(null);
                 var fieldAnnotation = field.getAnnotation(Role.class);
 
-                if(duplicationCheckMap.containsKey(roleName)) {
+                if (duplicationCheckMap.containsKey(roleName)) {
                     throw new IllegalStateException(
                             "Permission with name: " + roleName +
-                            "exist in class: " + duplicationCheckMap.get(roleName).getName() +
-                            " and  in class: " + roleClass.getName());
+                                    "exist in class: " + duplicationCheckMap.get(roleName).getName() +
+                                    " and  in class: " + roleClass.getName());
                 }
                 duplicationCheckMap.put(roleName, roleClass);
                 roleMap.put(roleName, new SimpleRoleModel(roleName,
@@ -157,17 +157,17 @@ public class AuthorityModelsAggregator {
         Map<String, PermissionModel> permissionMap = new HashMap<>();
         Map<String, Class<?>> duplicatesCheckMap = new HashMap<>();
 
-        for(var permissionClass : permissionClasses) {
+        for (var permissionClass : permissionClasses) {
             var fields = getAllPermissionFields(permissionClass);
-            for(var field : fields) {
+            for (var field : fields) {
                 var permissionName = (String) field.get(null);
                 var permissionAnnotation = field.getAnnotation(Permission.class);
 
-                if(duplicatesCheckMap.containsKey(permissionName)) {
+                if (duplicatesCheckMap.containsKey(permissionName)) {
                     throw new IllegalStateException(
                             "Permission with name: " + permissionName +
-                            "exist in class: " + duplicatesCheckMap.get(permissionName).getName() +
-                            " and  in class: " + permissionClass.getName());
+                                    "exist in class: " + duplicatesCheckMap.get(permissionName).getName() +
+                                    " and  in class: " + permissionClass.getName());
                 }
                 duplicatesCheckMap.put(permissionName, permissionClass);
                 permissionMap.put(permissionName, new SimplePermissionModel(
@@ -181,12 +181,10 @@ public class AuthorityModelsAggregator {
     }
 
 
-
-
     private static List<Field> getAllPermissionFields(Class<?> permissionClass) {
         LinkedList<Field> fields = new LinkedList<>();
 
-        for(var field : permissionClass.getFields()) {
+        for (var field : permissionClass.getFields()) {
             int fieldModifiers = field.getModifiers();
 
             if (field.isAnnotationPresent(Permission.class) && String.class.isAssignableFrom(field.getDeclaringClass())
@@ -202,7 +200,7 @@ public class AuthorityModelsAggregator {
     private static List<Field> getAllRoleFields(Class<?> roleClass) {
         LinkedList<Field> fields = new LinkedList<>();
 
-        for(var field : roleClass.getFields()) {
+        for (var field : roleClass.getFields()) {
             int fieldModifiers = field.getModifiers();
 
             if (field.isAnnotationPresent(Role.class) && String.class.isAssignableFrom(field.getDeclaringClass())

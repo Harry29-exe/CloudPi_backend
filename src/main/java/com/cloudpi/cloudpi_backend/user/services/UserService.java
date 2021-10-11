@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.user.controllers.UserAPIAuthorities;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.annotation.Secured;
@@ -14,7 +13,7 @@ public interface UserService {
 
     Optional<UserDTO> getUser(String username);
 
-//    @PreAuthorize("""
+    //    @PreAuthorize("""
 //            hasAuthority('USER_MODIFY') or
 //            #userDTO.username == principal
 //            """)

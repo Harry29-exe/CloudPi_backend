@@ -17,7 +17,7 @@ public interface DiscInfoEndpoint {
     @Secured(DiscApiAuthorities.GET_DISC_INFO)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{discId}")
-    public DiscDetails getDiscInfo(@RequestParam("discId") Long discId);
+    DiscDetails getDiscInfo(@RequestParam("discId") Long discId);
 
     @Secured(DiscApiAuthorities.GET_DISC_INFO)
     @ResponseStatus(HttpStatus.OK)

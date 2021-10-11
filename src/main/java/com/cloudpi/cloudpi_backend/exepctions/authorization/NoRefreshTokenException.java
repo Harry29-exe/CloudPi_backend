@@ -7,7 +7,7 @@ public class NoRefreshTokenException extends RuntimeException {
     }
 
     public NoRefreshTokenException(String action) {
-        super("This action("+action+") requires refresh token");
+        super("This action(" + action + ") requires refresh token");
     }
 
 }

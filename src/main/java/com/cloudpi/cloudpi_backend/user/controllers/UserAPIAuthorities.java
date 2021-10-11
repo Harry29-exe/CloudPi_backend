@@ -4,7 +4,7 @@ import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermis
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 
 @ContainsPermissions
-public class UserAPIAuthorities{
+public class UserAPIAuthorities {
     @Permission
     public static final String GET_USERS_DETAILS = "GET_USER_DETAILS";
     @Permission

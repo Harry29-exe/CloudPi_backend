@@ -9,8 +9,9 @@ public record GetFilePermissionsResponse(
         List<UserFilePermissions> permissions
 ) {
 
-    public record UserFilePermissions (
+    public record UserFilePermissions(
             String username,
             List<FilePermissionType> usersPermissions
-    ) {}
+    ) {
+    }
 }
