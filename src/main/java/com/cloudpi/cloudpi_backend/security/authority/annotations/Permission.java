@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Permission {
 
+    //strings with names of role and permission
     String[] mayBeGivenBy() default {};
+
+    //account types witch gets this role when user is created
+    String[] havingItByDefault() default {};
 
 }

@@ -15,4 +15,7 @@ public @interface Role {
     //strings with names of role and permission
     String[] mayBeGivenBy() default {};
 
+    //account types witch gets this role when user is created
+    String[] havingItByDefault() default {};
+
 }

@@ -61,8 +61,7 @@ public class NetworkAddressUtils {
         return 0xFFFFFFFF << (32 - maskLength);
     }
 
-    private static @Nullable
-    LocalNetwork checkIfAddressIsLocalAndConvert(InterfaceAddress interfaceAddress) {
+    private static @Nullable LocalNetwork checkIfAddressIsLocalAndConvert(InterfaceAddress interfaceAddress) {
         if (interfaceAddress.getAddress().isSiteLocalAddress()) {
             int mask = convertMaskLengthToMask(interfaceAddress.getNetworkPrefixLength());
             int intAddress = convertFromBytesToInt(interfaceAddress.getAddress().getAddress());
@@ -74,14 +73,3 @@ public class NetworkAddressUtils {
 
 
 }
-
-//NetworkInterface.networkInterfaces().forEach(networkInterface -> {
-//        var interfaceAddresses = networkInterface.getInterfaceAddresses();
-//        for(var interfaceAddress: interfaceAddresses) {
-//        if(interfaceAddress.getAddress().isSiteLocalAddress()) {
-//        int mask = 0xFFFFFFFF << (32 - interfaceAddress.getNetworkPrefixLength());
-//        int intAddress = convertFromBytesToInt(interfaceAddress.getAddress().getAddress());
-//        networks.add(new LocalNetwork(intAddress & mask, mask));
-//        }
-//        }
-//        });

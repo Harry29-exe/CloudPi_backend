@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.cloudpi.cloudpi_backend.configuration.network.NetworkAddressUtils.convertFromBytesToInt;
 import static com.cloudpi.cloudpi_backend.configuration.network.NetworkAddressUtils.convertMaskLengthToMask;
-
+//TODO rewrite whole directory
 @Data
 @AllArgsConstructor
 public class LocalNetwork {
@@ -25,7 +25,6 @@ public class LocalNetwork {
         this.address = convertFromBytesToInt(addressParts);
         this.mask = convertMaskLengthToMask(maskLength);
     }
-
 
     public boolean isAddressFromNetwork(Integer address) {
         return this.address == (address & mask);

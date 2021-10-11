@@ -9,14 +9,22 @@ import com.cloudpi.cloudpi_backend.user.controllers.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.controllers.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.controllers.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
+@RequestMapping("/user-management/")
 public class UserManagementController implements UserManagementAPI {
-    private final UserRepository userRepository;
-    private final UserService userService;
-    private final LocalNetworksInfo networksInfo;
+    private UserRepository userRepository;
+    private UserService userService;
+    private LocalNetworksInfo networksInfo;
+
+    public UserManagementController() {
+    }
 
     public UserManagementController(UserService userService,
                                     LocalNetworksInfo networksInfo,
@@ -41,6 +49,11 @@ public class UserManagementController implements UserManagementAPI {
 
     @Override
     public GetUserResponse getUser(String username) {
+        return null;
+    }
+
+    @Override
+    public GetUserWithDetailsResponse getSelfDetails(Authentication authentication) {
         return null;
     }
 
