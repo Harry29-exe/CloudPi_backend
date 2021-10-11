@@ -3,7 +3,7 @@ package com.cloudpi.cloudpi_backend.user.mappers;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
+import com.cloudpi.cloudpi_backend.user.controllers.responses.GetUserResponse;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
