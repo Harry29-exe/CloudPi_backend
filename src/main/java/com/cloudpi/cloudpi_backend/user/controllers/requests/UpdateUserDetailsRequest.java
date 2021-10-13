@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.user.requests;
+package com.cloudpi.cloudpi_backend.user.controllers.requests;
 
 import lombok.Data;
 

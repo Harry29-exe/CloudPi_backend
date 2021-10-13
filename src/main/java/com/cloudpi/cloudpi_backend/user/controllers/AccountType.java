@@ -1,25 +1,12 @@
 package com.cloudpi.cloudpi_backend.user.controllers;
 
 
-import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
-
-@ContainsRoles
 public class AccountType {
 
-    @Role(
-            permissions = {},
-            mayBeGivenBy = {})
-    public static final String USER = "";
+    public static final String USER = "USER";
 
-    @Role(
-            permissions = {},
-            mayBeGivenBy = {})
-    public static final String SERVICE_WORKER = "";
+    public static final String SERVICE_WORKER = "SERVICE_WORKER";
 
-    @Role(
-            permissions = {},
-            mayBeGivenBy = {})
-    public static final String ROOT = "";
+    public static final String ROOT = "ROOT";
 
 }
