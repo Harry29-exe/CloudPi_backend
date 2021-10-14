@@ -12,6 +12,7 @@ import com.cloudpi.cloudpi_backend.user.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,12 +20,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user-management/")
 public class UserManagementController implements UserManagementAPI {
-    private UserRepository userRepository;
-    private UserService userService;
-    private LocalNetworksInfo networksInfo;
-
-    public UserManagementController() {
-    }
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final LocalNetworksInfo networksInfo;
 
     public UserManagementController(UserService userService,
                                     LocalNetworksInfo networksInfo,
