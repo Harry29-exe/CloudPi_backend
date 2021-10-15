@@ -30,7 +30,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         var decodedToken = JWT.decode(authHeader);
-        jwtService.validateJWTToken(decodedToken);
+        jwtService.validateAccessToken(decodedToken);
 
         var userDetails = userDetailsService.loadUserByUsername(decodedToken.getClaim("user").asString());
         var authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());

@@ -43,12 +43,6 @@ public class CPUserDetailsService implements UserDetailsService {
                 .forEach(permissionModel ->
                         authorities.add(permissionModel.getAuthority()));
 
-        authorities.addAll(
-                AuthorityModelsAggregator
-                        .getRoleModelByRoleName(userEntity.getAccountType())
-                        .getAuthorities()
-        );
-
         return authorities;
     }
 }

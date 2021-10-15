@@ -15,29 +15,29 @@ import java.util.Date;
 public class JWTServiceImp implements JWTService {
     private String secret;
     private final Algorithm jwtAlgorithm;
-    private final Long jwtExpireTime;
+    private final Long accessTokenExpireTime;
     private final Long refreshExpireTime;
 
     public JWTServiceImp(
             @Value("${cloud.pi.auth.jwt-secret}") String secret,
-            @Value("${cloud.pi.auth.jwt-expire-time}") String jwtExpireTime,
+            @Value("${cloud.pi.auth.jwt-expire-time}") String accessTokenExpireTime,
             @Value("${cloud.pi.auth.refresh-expire-time}") String refreshExpireTime) {
         jwtAlgorithm = Algorithm.HMAC256(secret);
-        this.jwtExpireTime = (long) Integer.parseInt(jwtExpireTime) * 1000L;
+        this.accessTokenExpireTime = (long) Integer.parseInt(accessTokenExpireTime) * 1000L;
         this.refreshExpireTime = (long) Integer.parseInt(refreshExpireTime) * 1000L;
     }
 
     @Override
-    public String createJWTToken(String userPrincipal) {
-        return this.createToken(userPrincipal, TokenType.AUTH);
+    public String createAccessToken(String userPrincipal) {
+        return this.createToken(userPrincipal, TokenType.ACCESS);
     }
 
     @Override
-    public String refreshJWTToken(String refreshToken) {
+    public String refreshAccessToken(String refreshToken) {
         var decodedToken = JWT.decode(refreshToken);
         this.validateRefreshToken(decodedToken);
 
-        return this.createToken(decodedToken.getClaim("user").asString(), TokenType.AUTH);
+        return this.createToken(decodedToken.getClaim("user").asString(), TokenType.ACCESS);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class JWTServiceImp implements JWTService {
     }
 
     @Override
-    public void validateJWTToken(String jwtToken) {
+    public void validateAccessToken(String jwtToken) {
         try {
             var jwt = JWT.decode(jwtToken);
             var verifier = createVerifier(
                     jwt.getClaim("user").asString(),
-                    TokenType.AUTH.name());
+                    TokenType.ACCESS.name());
             verifier.verify(jwt);
 
         } catch (JWTVerificationException ex) {
@@ -92,11 +92,11 @@ public class JWTServiceImp implements JWTService {
     }
 
     @Override
-    public void validateJWTToken(DecodedJWT jwtToken) {
+    public void validateAccessToken(DecodedJWT jwtToken) {
         try {
             var verifier = createVerifier(
                     jwtToken.getClaim("user").asString(),
-                    TokenType.AUTH.name());
+                    TokenType.ACCESS.name());
             verifier.verify(jwtToken);
 
         } catch (JWTVerificationException ex) {
@@ -118,8 +118,8 @@ public class JWTServiceImp implements JWTService {
                 .withIssuedAt(new Date())
                 .withExpiresAt(
                         new Date(System.currentTimeMillis() +
-                                (type == TokenType.AUTH ?
-                                        this.jwtExpireTime :
+                                (type == TokenType.ACCESS ?
+                                        this.accessTokenExpireTime :
                                         this.refreshExpireTime)
                         ))
                 .withIssuer("CloudPi")
@@ -129,7 +129,7 @@ public class JWTServiceImp implements JWTService {
 
 
     private enum TokenType {
-        AUTH,
+        ACCESS,
         REFRESH
     }
 }

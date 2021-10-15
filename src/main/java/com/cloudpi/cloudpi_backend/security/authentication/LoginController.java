@@ -4,6 +4,7 @@ import com.cloudpi.cloudpi_backend.exepctions.authorization.NoRefreshTokenExcept
 import com.cloudpi.cloudpi_backend.user.services.CPUserDetailsService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping
 public class LoginController {
     private final JWTService jwtService;
     private final AuthenticationManager authManager;
@@ -30,8 +31,8 @@ public class LoginController {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping("login")
-    public String login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
+    @PostMapping(value = "login", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public void login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
         var userDetails = userDetailsService.loadUserByUsername(request.username());
         if (!(userDetails.isAccountNonLocked())) {
             Logger.getGlobal().log(new LogRecord(Level.WARNING, "Account is locked"));
@@ -44,14 +45,14 @@ public class LoginController {
                 jwtService.createRefreshToken(auth.getPrincipal().toString())
         ));
 
-        return jwtService.createJWTToken(auth.getPrincipal().toString());
+        httpResponse.addHeader("Authorization", jwtService.createAccessToken(auth.getPrincipal().toString()));
     }
 
     @PostMapping("refresh/auth")
-    public String refreshAuthToken(HttpServletRequest httpRequest) {
+    public void refreshAccessToken(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         var refreshToken = getRefreshToken(httpRequest.getCookies());
 
-        return this.jwtService.refreshJWTToken(refreshToken);
+        httpResponse.setHeader("Authorization", jwtService.refreshAccessToken(refreshToken));
     }
 
     @PostMapping("refresh/refresh")
@@ -83,7 +84,8 @@ public class LoginController {
                 "refresh-token",
                 refreshToken
         );
-        cookie.setSecure(true);
+        //TODO for development only!!
+        cookie.setSecure(false);
 
         return cookie;
     }
