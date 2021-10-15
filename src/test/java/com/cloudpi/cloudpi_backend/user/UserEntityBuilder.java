@@ -3,7 +3,7 @@ package com.cloudpi.cloudpi_backend.user;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
-import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
+import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 

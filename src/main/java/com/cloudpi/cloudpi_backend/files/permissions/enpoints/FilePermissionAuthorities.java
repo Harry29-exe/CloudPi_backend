@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.permissions.api;
+package com.cloudpi.cloudpi_backend.files.permissions.enpoints;
 
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;

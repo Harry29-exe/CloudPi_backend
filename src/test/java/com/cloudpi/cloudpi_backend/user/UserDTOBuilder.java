@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.user;
 
-import com.cloudpi.cloudpi_backend.user.controllers.AccountType;
+import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 
 import static com.cloudpi.cloudpi_backend.user.UserTestUtils.passwordEncoder;

@@ -1,10 +1,9 @@
-package com.cloudpi.cloudpi_backend.user.controllers;
+package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @ContainsPermissions
 @ContainsRoles

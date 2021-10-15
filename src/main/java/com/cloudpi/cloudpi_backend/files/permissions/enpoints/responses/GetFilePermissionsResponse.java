@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.permissions.api.responses;
+package com.cloudpi.cloudpi_backend.files.permissions.enpoints.responses;
 
 import com.cloudpi.cloudpi_backend.files.permissions.pojo.FilePermissionType;
 

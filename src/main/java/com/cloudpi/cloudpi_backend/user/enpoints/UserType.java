@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.user.controllers;
+package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
 

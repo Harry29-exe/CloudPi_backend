@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.user.controllers;
+package com.cloudpi.cloudpi_backend.user.enpoints;
 
 
 public class AccountType {

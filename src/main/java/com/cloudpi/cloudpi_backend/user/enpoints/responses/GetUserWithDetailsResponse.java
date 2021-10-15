@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.user.controllers.responses;
+package com.cloudpi.cloudpi_backend.user.enpoints.responses;
 
 import org.springframework.lang.Nullable;
 

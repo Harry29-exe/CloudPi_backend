@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.disk.responses;
+package com.cloudpi.cloudpi_backend.files.disk.enpoint.responses;
 
 public record DiscInfo(
         Long discId,

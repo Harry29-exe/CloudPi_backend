@@ -1,9 +1,9 @@
-package com.cloudpi.cloudpi_backend.user.controllers;
+package com.cloudpi.cloudpi_backend.user.enpoints;
 
-import com.cloudpi.cloudpi_backend.user.controllers.requests.PostUserRequest;
-import com.cloudpi.cloudpi_backend.user.controllers.requests.UpdateUserDetailsRequest;
-import com.cloudpi.cloudpi_backend.user.controllers.responses.GetUserResponse;
-import com.cloudpi.cloudpi_backend.user.controllers.responses.GetUserWithDetailsResponse;
+import com.cloudpi.cloudpi_backend.user.enpoints.requests.PostUserRequest;
+import com.cloudpi.cloudpi_backend.user.enpoints.requests.UpdateUserDetailsRequest;
+import com.cloudpi.cloudpi_backend.user.enpoints.responses.GetUserResponse;
+import com.cloudpi.cloudpi_backend.user.enpoints.responses.GetUserWithDetailsResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;

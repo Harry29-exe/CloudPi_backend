@@ -1,18 +1,17 @@
-package com.cloudpi.cloudpi_backend.user.controllers;
+package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.configuration.network.LocalNetworksInfo;
-import com.cloudpi.cloudpi_backend.user.controllers.responses.GetUserWithDetailsResponse;
+import com.cloudpi.cloudpi_backend.user.enpoints.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
-import com.cloudpi.cloudpi_backend.user.controllers.requests.PostUserRequest;
-import com.cloudpi.cloudpi_backend.user.controllers.requests.UpdateUserDetailsRequest;
-import com.cloudpi.cloudpi_backend.user.controllers.responses.GetUserResponse;
+import com.cloudpi.cloudpi_backend.user.enpoints.requests.PostUserRequest;
+import com.cloudpi.cloudpi_backend.user.enpoints.requests.UpdateUserDetailsRequest;
+import com.cloudpi.cloudpi_backend.user.enpoints.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.disk.controllers;
+package com.cloudpi.cloudpi_backend.files.disk.enpoint;
 
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
