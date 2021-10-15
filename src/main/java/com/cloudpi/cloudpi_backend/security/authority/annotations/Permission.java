@@ -9,10 +9,20 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Permission {
 
-    //strings with names of role and permission
+    /**
+     * if user has this permission or role witch aggregates this permission
+     * he can give it to other user
+     */
+    boolean authorityOwnersCanShareIt() default true;
+
+    /**
+     * strings with names of role and permission
+     */
     String[] mayBeGivenBy() default {};
 
-    //account types witch gets this role when user is created
+    /**
+     * account types witch gets this role when user is created
+     */
     String[] havingItByDefault() default {};
 
 }

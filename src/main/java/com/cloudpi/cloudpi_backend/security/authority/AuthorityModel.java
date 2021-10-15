@@ -7,6 +7,6 @@ public interface AuthorityModel {
 
     ImmutableCollection<GrantedAuthority> mayBeGivenBy();
 
-    String getName();
+    String getAuthorityName();
 
 }

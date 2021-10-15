@@ -9,13 +9,24 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Role {
 
-    //strings with names of permissions
+    /**
+     * if user has this role he can give it to other user
+     */
+    boolean authorityOwnersCanShareIt() default true;
+
+    /**
+     * strings with names of permissions
+     */
     String[] permissions() default {};
 
-    //strings with names of role and permission
+    /**
+     * strings with names of role and permission
+     */
     String[] mayBeGivenBy() default {};
 
-    //account types witch gets this role when user is created
+    /**
+     * account types witch gets this role when user is created
+     */
     String[] havingItByDefault() default {};
 
 }

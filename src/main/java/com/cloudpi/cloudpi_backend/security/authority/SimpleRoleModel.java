@@ -9,17 +9,10 @@ public class SimpleRoleModel implements RoleModel {
     private final ImmutableCollection<PermissionModel> rolePermissions;
     private final ImmutableCollection<String> mayBeGivenBy;
 
-    public SimpleRoleModel(String roleName, ImmutableSortedSet<PermissionModel> rolePermissions, ImmutableSortedSet<String> mayBeGivenBy) {
+    public SimpleRoleModel(String roleName, ImmutableCollection<PermissionModel> rolePermissions, ImmutableCollection<String> mayBeGivenBy) {
         this.roleName = roleName;
         this.rolePermissions = rolePermissions;
         this.mayBeGivenBy = mayBeGivenBy;
-    }
-
-    public SimpleRoleModel(String roleName, String[] rolePermissionsNames, String[] mayBeGivenBy) {
-        this.roleName = roleName;
-        this.rolePermissions = ImmutableSortedSet.copyOf(AuthorityModelsAggregator.getPermissionsByNames(rolePermissionsNames));
-
-        this.mayBeGivenBy = ImmutableSortedSet.copyOf(mayBeGivenBy);
     }
 
     @Override
@@ -43,7 +36,7 @@ public class SimpleRoleModel implements RoleModel {
     }
 
     @Override
-    public String getName() {
+    public String getAuthorityName() {
         return null;
     }
 

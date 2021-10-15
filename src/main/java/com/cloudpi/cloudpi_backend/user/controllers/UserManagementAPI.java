@@ -22,12 +22,12 @@ public interface UserManagementAPI {
     @GetMapping(value = "get-all", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     List<GetUserResponse> getAllUsers();
 
-    @Secured(UserAPIAuthorities.GET_USERS_DETAILS)
+    @Secured(UserAPIAuthorities.GET_DETAILS)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "get-all/with-details")
     List<GetUserWithDetailsResponse> getAllUsersWithDetails();
 
-    @Secured(UserAPIAuthorities.GET_USERS_DETAILS)
+    @Secured(UserAPIAuthorities.GET_DETAILS)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("user/{username}")
     GetUserResponse getUser(@PathVariable(name = "username") String username);
