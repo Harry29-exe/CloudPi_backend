@@ -7,6 +7,8 @@ public interface AuthorityModel {
 
     ImmutableCollection<GrantedAuthority> mayBeGivenBy();
 
+    ImmutableCollection<String> getAccountsThatHaveItByDefault();
+
     String getAuthorityName();
 
 }

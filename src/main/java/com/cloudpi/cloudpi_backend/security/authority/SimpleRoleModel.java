@@ -1,18 +1,25 @@
 package com.cloudpi.cloudpi_backend.security.authority;
 
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSortedSet;
 import org.springframework.security.core.GrantedAuthority;
 
+//TODO
 public class SimpleRoleModel implements RoleModel {
     private final String roleName;
     private final ImmutableCollection<PermissionModel> rolePermissions;
     private final ImmutableCollection<String> mayBeGivenBy;
+    private final ImmutableCollection<String> haveItByDefault;
 
-    public SimpleRoleModel(String roleName, ImmutableCollection<PermissionModel> rolePermissions, ImmutableCollection<String> mayBeGivenBy) {
+    public SimpleRoleModel(String roleName, ImmutableCollection<PermissionModel> rolePermissions, ImmutableCollection<String> mayBeGivenBy, ImmutableCollection<String> haveItByDefault) {
         this.roleName = roleName;
         this.rolePermissions = rolePermissions;
         this.mayBeGivenBy = mayBeGivenBy;
+        this.haveItByDefault = haveItByDefault;
+    }
+
+    @Override
+    public ImmutableCollection<String> getAccountsThatHaveItByDefault() {
+        return null;
     }
 
     @Override

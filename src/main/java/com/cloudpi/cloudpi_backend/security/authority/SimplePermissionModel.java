@@ -12,19 +12,14 @@ import java.util.Collection;
 public class SimplePermissionModel implements PermissionModel {
     private final String permissionName;
     private final ImmutableCollection<GrantedAuthority> mayBeGivenBy;
+    private final ImmutableCollection<String> haveItByDefault;
 
-    public SimplePermissionModel(String permissionName, ImmutableSortedSet<String> mayBeGivenBy) {
+    public SimplePermissionModel(String permissionName, ImmutableSortedSet<String> mayBeGivenBy, ImmutableCollection<String> haveItByDefault) {
         this.permissionName = permissionName;
         this.mayBeGivenBy = mayBeGivenBy.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(ImmutableSet.toImmutableSet());
-    }
-
-    public SimplePermissionModel(String permissionName, String... mayBeGivenBy) {
-        this.permissionName = permissionName;
-        this.mayBeGivenBy = Arrays.stream(mayBeGivenBy)
-                .map(SimpleGrantedAuthority::new)
-                .collect(ImmutableSet.toImmutableSet());
+        this.haveItByDefault = haveItByDefault;
     }
 
     @Override
@@ -34,6 +29,11 @@ public class SimplePermissionModel implements PermissionModel {
 
     @Override
     public ImmutableCollection<GrantedAuthority> mayBeGivenBy() {
+        return null;
+    }
+
+    @Override
+    public ImmutableCollection<String> getAccountsThatHaveItByDefault() {
         return null;
     }
 

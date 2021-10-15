@@ -4,6 +4,7 @@ import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermis
 import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
 import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
 import lombok.AllArgsConstructor;
@@ -48,7 +49,8 @@ public class AuthorityModelScanner {
                     ImmutableSortedSet.copyOf(roleProt.permissions.stream()
                             .map(prot -> permissionModels.get(prot.permissionName))
                             .collect(Collectors.toList())),
-                    ImmutableSortedSet.copyOf(roleProt.mayBeGivenByArray)
+                    ImmutableSortedSet.copyOf(roleProt.mayBeGivenByArray),
+                    ImmutableSortedSet.copyOf(roleProt.haveItByDefault)
             );
             roleModels.put(model.getAuthorityName(), model);
         }
@@ -82,6 +84,7 @@ public class AuthorityModelScanner {
                         roleName,
                         Arrays.stream(fieldAnnotation.permissions()).map(permissionPrototypes::get).toList(),
                         mayBeGivenBy,
+                        List.of(fieldAnnotation.havingItByDefault()),
                         fieldAnnotation.authorityOwnersCanShareIt()
                 ));
             }
@@ -111,7 +114,8 @@ public class AuthorityModelScanner {
         for(var prototype : permissionPrototypes.values()) {
             var model = new SimplePermissionModel(
                     prototype.permissionName,
-                    ImmutableSortedSet.copyOf(prototype.collectMayBeGivenBy()));
+                    ImmutableSortedSet.copyOf(prototype.collectMayBeGivenBy()),
+                    ImmutableSortedSet.copyOf(prototype.haveItByDefault));
         }
     }
 
@@ -141,6 +145,7 @@ public class AuthorityModelScanner {
                 permissionPrototypes.put(permissionName, new PermissionPrototype(
                         permissionName,
                         permissionAnnotation.mayBeGivenBy(),
+                        List.of(permissionAnnotation.havingItByDefault()),
                         permissionAnnotation.authorityOwnersCanShareIt()
                 ));
             }
@@ -177,6 +182,7 @@ public class AuthorityModelScanner {
         String roleName;
         List<PermissionPrototype> permissions;
         List<String> mayBeGivenByArray;
+        List<String> haveItByDefault;
         boolean authorityOwnersCanShareIt;
     }
 
@@ -184,6 +190,7 @@ public class AuthorityModelScanner {
     class PermissionPrototype {
         String permissionName;
         String[] mayBeGivenByArray;
+        List<String> haveItByDefault;
         boolean authorityOwnersCanShareIt;
 
         public List<String> collectMayBeGivenBy() {
