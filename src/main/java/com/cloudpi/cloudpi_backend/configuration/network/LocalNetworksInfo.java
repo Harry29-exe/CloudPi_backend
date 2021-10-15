@@ -11,6 +11,7 @@ public class LocalNetworksInfo {
     private List<IpAddressMatcher> networks;
 
     public LocalNetworksInfo(List<String> networks) {
+        networks.forEach(System.out::println);
         this.networks = networks.stream()
                 .map(IpAddressMatcher::new)
                 .toList();

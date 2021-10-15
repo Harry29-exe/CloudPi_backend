@@ -42,16 +42,21 @@ public class NetworkConfig {
         if (address.isSiteLocalAddress() ||
                 address.isLoopbackAddress()
         ) {
-            int mask = interfaceAddress.getNetworkPrefixLength();
-            byte[] rawAddress = interfaceAddress.getAddress().getAddress();
-
-            StringBuilder builder = new StringBuilder();
-            for(byte addressSection : rawAddress) {
-                builder.append(Byte.toUnsignedInt(addressSection));
-            }
-            builder.append('/');
-            builder.append(mask);
-            return builder.toString();
+            return address.toString().substring(1) + "/" + interfaceAddress.getNetworkPrefixLength();
+//            int mask = interfaceAddress.getNetworkPrefixLength();
+//            byte[] rawAddress = interfaceAddress.getAddress().getAddress();
+//            String addressSeparator = rawAddress.length > 4? "::" : ".";
+//
+//            StringBuilder builder = new StringBuilder();
+//            for(int i = 0; i < rawAddress.length - 1; i++) {
+//                builder.append(Byte.toUnsignedInt(rawAddress[i]));
+//                builder.append(addressSeparator);
+//            }
+//            builder.append(rawAddress[rawAddress.length-1]);
+//
+//            builder.append('/');
+//            builder.append(mask);
+//            return builder.toString();
         }
 
         return null;
