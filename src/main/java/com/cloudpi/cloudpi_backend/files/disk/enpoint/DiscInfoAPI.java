@@ -33,4 +33,15 @@ public interface DiscInfoAPI {
     @PostMapping("/{discId}")
     void createNewDrive(@RequestBody @Valid CreateNewDrive body);
 
+    @Secured(DiscApiAuthorities.MODIFY_DISCS)
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{discId}/unmount")
+    void unmountDrive(@RequestParam(name = "discId") Long discId);
+
+    @Secured(DiscApiAuthorities.MODIFY_DISCS)
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{discId}/mount")
+    void mountDrive(@RequestParam(name = "discId") Long discId);
+
+
 }
