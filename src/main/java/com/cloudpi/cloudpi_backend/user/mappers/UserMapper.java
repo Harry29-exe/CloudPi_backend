@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.user.mappers;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.enpoints.responses.GetUserResponse;
 import org.mapstruct.*;
@@ -14,7 +15,7 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserDTO userEntityToUserDTO(UserEntity userEntity);
+    UserWithDetailsDTO userEntityToUserDTO(UserEntity userEntity);
 
     GetUserResponse userDTOToResponse(UserDTO user);
 
@@ -22,11 +23,11 @@ public interface UserMapper {
             @Mapping(target = "filesInfo", ignore = true),
             @Mapping(target = "filesPermissions", ignore = true)
     })
-    UserEntity userDTOToUserEntity(UserDTO userDTO);
+    UserEntity userDTOToUserEntity(UserWithDetailsDTO userWithDetailsDTO);
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateUserEntity(UserDTO userDTO, @MappingTarget UserEntity userEntity);
+    void updateUserEntity(UserWithDetailsDTO userWithDetailsDTO, @MappingTarget UserEntity userEntity);
 
     default GrantedAuthority entityToGrantedAuthority(PermissionEntity entity) {
         return new SimpleGrantedAuthority(entity.getAuthority());

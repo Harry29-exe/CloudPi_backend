@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user;
 
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
-import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -9,8 +9,8 @@ public class UserTestUtils {
 
     public final static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public static UserDTO createDefaultUserDTO() {
-        return UserDTO.builder()
+    public static UserWithDetailsDTO createDefaultUserDTO() {
+        return UserWithDetailsDTO.builder()
                 .accountType(AccountType.USER)
                 .id(2L)
                 .email("email")
@@ -20,8 +20,8 @@ public class UserTestUtils {
                 .username("username").build();
     }
 
-    public static UserDTO createRootUserDTO() {
-        return UserDTO.builder()
+    public static UserWithDetailsDTO createRootUserDTO() {
+        return UserWithDetailsDTO.builder()
                 .accountType(AccountType.ROOT)
                 .id(1L)
                 .email("email")

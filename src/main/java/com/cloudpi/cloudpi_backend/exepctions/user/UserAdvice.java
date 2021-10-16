@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.exepctions.user;
 
+import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.UsernameIsTakenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,4 +18,10 @@ public class UserAdvice {
         return ex.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(InvalidUserData.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String userIsNotValid(InvalidUserData ex) {
+        return ex.getMessage();
+    }
 }

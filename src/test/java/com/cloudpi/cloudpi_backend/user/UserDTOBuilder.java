@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user;
 
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
-import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 
 import static com.cloudpi.cloudpi_backend.user.UserTestUtils.passwordEncoder;
 
@@ -72,15 +72,15 @@ public final class UserDTOBuilder {
     }
 
 
-    public UserDTO build() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(id);
-        userDTO.setUsername(username);
-        userDTO.setEmail(email);
-        userDTO.setNickname(nickname);
-        userDTO.setPassword(password);
-        userDTO.setLocked(locked);
-        userDTO.setAccountType(accountType);
-        return userDTO;
+    public UserWithDetailsDTO build() {
+        UserWithDetailsDTO userWithDetailsDTO = new UserWithDetailsDTO();
+        userWithDetailsDTO.setId(id);
+        userWithDetailsDTO.setUsername(username);
+        userWithDetailsDTO.setEmail(email);
+        userWithDetailsDTO.setNickname(nickname);
+        userWithDetailsDTO.setPassword(password);
+        userWithDetailsDTO.setLocked(locked);
+        userWithDetailsDTO.setAccountType(accountType);
+        return userWithDetailsDTO;
     }
 }

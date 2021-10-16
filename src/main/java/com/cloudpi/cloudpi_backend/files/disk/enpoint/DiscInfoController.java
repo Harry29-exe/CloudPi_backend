@@ -29,4 +29,14 @@ public class DiscInfoController implements DiscInfoAPI {
     public void createNewDrive(CreateNewDrive body) {
 
     }
+
+    @Override
+    public void unmountDrive(Long discId) {
+
+    }
+
+    @Override
+    public void mountDrive(Long discId) {
+
+    }
 }

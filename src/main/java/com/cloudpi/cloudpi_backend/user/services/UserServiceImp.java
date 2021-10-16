@@ -1,11 +1,10 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
-import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.google.common.collect.ImmutableList;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,37 +21,30 @@ public class UserServiceImp implements UserService {
 
 
     @Override
-    public ImmutableList<UserDTO> getAllUsers() {
+    public ImmutableList<UserWithDetailsDTO> getAllUsers() {
         return repository.findAll().stream()
                 .map(UserEntity::toUserDTO)
                 .collect(ImmutableList.toImmutableList());
     }
 
     @Override
-    public Optional<UserDTO> getUser(String username) {
+    public Optional<UserWithDetailsDTO> getUser(String username) {
         var entity = repository.findByUsername(username);
         return entity.map(UserEntity::toUserDTO);
     }
 
-    @PreAuthorize("hasAuthority('USER_MODIFY') or" +
-            "#userDTO.username == principal")
     @Override
-    public void updateUserDetails(UserDTO userDTO) {
+    public void updateUserDetails(UserWithDetailsDTO userWithDetailsDTO) {
         System.out.println("we2");
     }
 
     @Override
-    public void lockUser(UserDTO userDTO) {
+    public void lockUser(UserWithDetailsDTO userWithDetailsDTO) {
 
     }
 
     @Override
     public void lockUser(Long userId) {
-
-    }
-
-    @Override
-    public void removeUser(UserDTO user) {
 
     }
 

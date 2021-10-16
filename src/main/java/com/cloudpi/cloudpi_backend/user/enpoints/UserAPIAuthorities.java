@@ -12,8 +12,6 @@ public class UserAPIAuthorities {
     //TODO add git issue with empty CREATE string
     //TODO change this strings
 
-
-
     @Permission(havingItByDefault = AccountType.USER)
     public static final String GET_DETAILS = "GET_USER_DETAILS";
 

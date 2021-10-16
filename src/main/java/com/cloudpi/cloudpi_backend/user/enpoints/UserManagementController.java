@@ -2,7 +2,7 @@ package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.configuration.network.LocalNetworksInfo;
 import com.cloudpi.cloudpi_backend.user.enpoints.responses.GetUserWithDetailsResponse;
-import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.user.enpoints.requests.PostUserRequest;
@@ -72,6 +72,6 @@ public class UserManagementController implements UserManagementAPI {
     @Override
     public void deleteUser(String name) {
         System.out.println("we1");
-        userService.updateUserDetails(new UserDTO());
+        userService.updateUserDetails(new UserWithDetailsDTO());
     }
 }

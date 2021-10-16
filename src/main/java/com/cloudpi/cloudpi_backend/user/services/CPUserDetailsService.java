@@ -1,11 +1,11 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.security.authority.AuthorityModelsAggregator;
-import com.cloudpi.cloudpi_backend.user.dto.CPUserDetails;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,12 +22,13 @@ public class CPUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public CPUserDetails loadUserByUsername(String username) {
+    public User loadUserByUsername(String username) {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("No user with such username"));
         var userAuthorities = this.getUsersAuthorities(user);
 
-        return new CPUserDetails(user.getUsername(), user.getPassword(), user.getLocked(), ImmutableList.copyOf(userAuthorities));
+        return new User(user.getUsername(), user.getPassword(), true, true,
+                true, !user.getLocked(), userAuthorities);
     }
 
     public Set<GrantedAuthority> getUsersAuthorities(UserEntity userEntity) {

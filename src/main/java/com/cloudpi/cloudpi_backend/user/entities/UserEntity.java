@@ -2,10 +2,11 @@ package com.cloudpi.cloudpi_backend.user.entities;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
-import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
 
@@ -25,11 +26,21 @@ public class UserEntity {
     @Id
     @Column(name = "user_id")
     private Long id = 0L;
+    /**
+     * For logging
+     */
     @Column(nullable = false, unique = true)
     private String username;
+    /**
+     * Other option for logging
+     */
     @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
+    /**
+     * For sending to other users in order to give opportunity
+     * to share file with specific user
+     */
+    @Column(nullable = false, unique = true)
     private String nickname;
     @NotBlank
     @Column(nullable = false)
@@ -49,7 +60,14 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<FilePermissionEntity> filesPermissions;
 
-    public UserDTO toUserDTO() {
+    @PrePersist
+    public void validateUser() {
+        if(nickname.equals(username)) {
+            throw new InvalidUserData("Username and nickname must be different");
+        }
+    }
+
+    public UserWithDetailsDTO toUserDTO() {
         return UserMapper.INSTANCE.userEntityToUserDTO(this);
     }
 }

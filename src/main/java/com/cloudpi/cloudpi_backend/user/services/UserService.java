@@ -1,36 +1,39 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.user.dto.UserDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Optional;
 
+import static com.cloudpi.cloudpi_backend.user.enpoints.UserAPIAuthorities.*;
+
 public interface UserService {
 
+    @PreAuthorize("isAuthenticated()")
     ImmutableList<UserDTO> getAllUsers();
 
-    Optional<UserDTO> getUser(String username);
 
-    //    @PreAuthorize("""
-//            hasAuthority('USER_MODIFY') or
-//            #userDTO.username == principal
-//            """)
-    void updateUserDetails(UserDTO userDTO);
+    Optional<UserWithDetailsDTO> getUser(String username);
 
-    @Secured({"USER_LOCK"})
-    void lockUser(UserDTO userDTO);
+    @PreAuthorize(
+            "hasAuthority("+MODIFY+") or" +
+            "#userDTO.username == principal"
+    )
+    void updateUserDetails(UserWithDetailsDTO userWithDetailsDTO);
 
-    @Secured({"USER_LOCK"})
+    @Secured(LOCK)
+    void lockUser(UserWithDetailsDTO userWithDetailsDTO);
+
+    @Secured(LOCK)
     void lockUser(Long userId);
 
-    @PreAuthorize("""
-            hasAuthority('USER_MODIFY') or
-            hasRole('USER') and #user.username == principal
-            """)
-    void removeUser(UserDTO user);
-
+    @PreAuthorize(
+            "hasAuthority("+MODIFY+") or"+
+            "#user.username == principal"
+    )
     void removeUser(Long userId);
 
 }
