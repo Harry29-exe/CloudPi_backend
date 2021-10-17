@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.user.enpoints.requests;
+package com.cloudpi.cloudpi_backend.user.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

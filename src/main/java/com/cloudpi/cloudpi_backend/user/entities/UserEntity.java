@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
@@ -67,7 +68,11 @@ public class UserEntity {
         }
     }
 
-    public UserWithDetailsDTO toUserDTO() {
-        return UserMapper.INSTANCE.userEntityToUserDTO(this);
+    public UserWithDetailsDTO toUserWithDetailsDTO() {
+        return UserMapper.INSTANCE.userEntityToUserWithDetailsDTO(this);
+    }
+
+    public UserPublicIdDTO toUserPublicIdDTO() {
+        return UserMapper.INSTANCE.userEntityToUserPublicIdDTO(this);
     }
 }

@@ -25,10 +25,13 @@ public class UserAPIAuthorities {
     public static final String DELETE = "DELETE_USER";
 
     @Permission
+    public static final String SCHEDULE_DELETE = "SCHEDULE_USER_DELETE";
+
+    @Permission
     public static final String LOCK = "LOCK_USER";
 
     @Role(
-            permissions = {GET_DETAILS, MODIFY, CREATE, DELETE, LOCK},
+            permissions = {GET_DETAILS, MODIFY, CREATE, SCHEDULE_DELETE, LOCK},
             havingItByDefault = AccountType.ROOT
     )
     public static final String ADMIN = "USER_MANAGEMENT_ADMIN";

@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
+import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
@@ -21,21 +22,21 @@ public class UserServiceImp implements UserService {
 
 
     @Override
-    public ImmutableList<UserWithDetailsDTO> getAllUsers() {
+    public ImmutableList<UserPublicIdDTO> getAllUsers() {
         return repository.findAll().stream()
-                .map(UserEntity::toUserDTO)
+                .map(UserEntity::toUserPublicIdDTO)
                 .collect(ImmutableList.toImmutableList());
     }
 
     @Override
-    public Optional<UserWithDetailsDTO> getUser(String username) {
-        var entity = repository.findByUsername(username);
-        return entity.map(UserEntity::toUserDTO);
+    public Optional<UserWithDetailsDTO> getUserDetails(String nickname) {
+        return repository.findByNickname(nickname)
+                .map(UserEntity::toUserWithDetailsDTO);
     }
 
     @Override
     public void updateUserDetails(UserWithDetailsDTO userWithDetailsDTO) {
-        System.out.println("we2");
+
     }
 
     @Override
@@ -50,6 +51,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void removeUser(Long userId) {
+
+    }
+
+    @Override
+    public void schedule_remove_user(Long userId) {
 
     }
 }
