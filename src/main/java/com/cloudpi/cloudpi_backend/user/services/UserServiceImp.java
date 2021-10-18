@@ -1,5 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
+import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
+import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
@@ -35,8 +37,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void updateUserDetails(UserWithDetailsDTO userWithDetailsDTO) {
+    public void updateUserDetails(String nickname, UserDetailsDTO userDetails) {
+        var user = repository.findByNickname(nickname)
+                .orElseThrow(() -> new NoSuchUserException(NoSuchUserException.Types.WITH_NICKNAME));
+        UserMapper.INSTANCE.updateUserEntity(user.getUserDetails(), userDetails);
 
+        repository.save(user);
     }
 
     @Override

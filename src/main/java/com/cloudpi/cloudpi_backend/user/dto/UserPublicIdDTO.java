@@ -8,4 +8,5 @@ import lombok.Setter;
 public class UserPublicIdDTO {
     private String nickname;
     private String accountType;
+    private Boolean isLocked;
 }

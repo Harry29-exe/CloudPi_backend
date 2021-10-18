@@ -10,6 +10,7 @@ import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,24 +26,13 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @Column(name = "user_id")
-    private Long id = 0L;
+    @Column(name = "user_id", updatable = false)
+    private Long id;
     /**
      * For logging
      */
     @Column(nullable = false, unique = true)
     private String username;
-    /**
-     * Other option for logging
-     */
-    @Column(nullable = false)
-    private String email;
-    /**
-     * For sending to other users in order to give opportunity
-     * to share file with specific user
-     */
-    @Column(nullable = false, unique = true)
-    private String nickname;
     @NotBlank
     @Column(nullable = false)
     private String password;
@@ -50,6 +40,13 @@ public class UserEntity {
     private Boolean locked = false;
     @Column(nullable = false, updatable = false)
     private String accountType = AccountType.USER;
+
+    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "user",
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.EAGER)
+    private UserDetailsEntity userDetails;
+
 
     @ManyToMany(mappedBy = "roleHolder", cascade = CascadeType.MERGE)
     private Set<RoleEntity> roles;
@@ -63,7 +60,7 @@ public class UserEntity {
 
     @PrePersist
     public void validateUser() {
-        if(nickname.equals(username)) {
+        if(userDetails.getNickname().equals(username)) {
             throw new InvalidUserData("Username and nickname must be different");
         }
     }

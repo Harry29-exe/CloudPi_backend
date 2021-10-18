@@ -11,11 +11,10 @@ import lombok.*;
 public class UserWithDetailsDTO {
     private Long id;
     private String username;
-    private String nickname;
-    private String password;
-    private String email;
     private Boolean locked;
     private String accountType;
+
+    private UserDetailsDTO userDetails;
 
     public UserEntity toUserEntity() {
         return UserMapper.INSTANCE.userDTOToUserEntity(this);

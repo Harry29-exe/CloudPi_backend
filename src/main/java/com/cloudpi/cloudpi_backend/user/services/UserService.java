@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
+import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.google.common.collect.ImmutableList;
@@ -23,7 +24,7 @@ public interface UserService {
             "hasAuthority("+MODIFY+") or " +
             "#userDTO.username == principal"
     )
-    void updateUserDetails(UserWithDetailsDTO userWithDetailsDTO);
+    void updateUserDetails(String nickname, UserDetailsDTO userDetails);
 
     @Secured(LOCK)
     void lockUser(UserWithDetailsDTO userWithDetailsDTO);
