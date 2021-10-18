@@ -19,7 +19,7 @@ public interface UserMapper {
 
     UserWithDetailsDTO userEntityToUserWithDetailsDTO(UserEntity userEntity);
 
-    GetUserResponse userDTOToResponse(UserPublicIdDTO user);
+
 
     @Mappings({
             @Mapping(target = "filesInfo", ignore = true),

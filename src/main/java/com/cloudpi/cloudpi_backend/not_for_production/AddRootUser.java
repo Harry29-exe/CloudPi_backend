@@ -20,17 +20,13 @@ public class AddRootUser {
 
     @PostConstruct
     public void initRootUser() {
-        UserEntity userEntity = new UserEntity(1L,
+        UserEntity userEntity = new UserEntity(
                 "root",
                 passwordEncoder.encode("123"),
-                false,
-                AccountType.ROOT,
-                new UserDetailsEntity("mighty root", "root@root.root", ""),
-                null,
-                null,
-                null,
-                null
+                new UserDetailsEntity("mighty root", "root@cloud.pl", null)
         );
+        userEntity.getUserDetails().setUser(userEntity);
+
         userRepository.save(userEntity);
     }
 }

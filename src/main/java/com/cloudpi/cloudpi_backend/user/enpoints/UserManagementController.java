@@ -1,6 +1,8 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.configuration.network.LocalNetworksInfo;
+import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
+import com.cloudpi.cloudpi_backend.user.mappers.UserRequestMapper;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
@@ -19,39 +21,36 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user-management/")
 public class UserManagementController implements UserManagementAPI {
-    private final UserRepository userRepository;
     private final UserService userService;
-    private final LocalNetworksInfo networksInfo;
 
-    public UserManagementController(UserService userService,
-                                    LocalNetworksInfo networksInfo,
-                                    UserRepository userRepository) {
+    public UserManagementController(UserService userService) {
         this.userService = userService;
-        this.networksInfo = networksInfo;
-        this.userRepository = userRepository;
     }
 
 
     @Override
     public List<GetUserResponse> getAllUsers() {
         return userService.getAllUsers().stream()
-                .map(UserMapper.INSTANCE::userDTOToResponse)
+                .map(UserRequestMapper.INSTANCE::userDTOToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<GetUserWithDetailsResponse> getAllUsersWithDetails() {
-        return null;
+        return userService
+                .getAllUsersWithDetails()
+                .stream()
+                .map(UserRequestMapper.INSTANCE::userWithDetailsDTOToResponse)
+                .toList();
     }
 
     @Override
-    public GetUserResponse getUser(String username) {
-        return null;
-    }
+    public GetUserWithDetailsResponse getUserDetails(String nickname) {
+        var userWithDetails = userService.getUserDetails(nickname)
+                .orElseThrow(NoSuchUserException::notFoundByNickname);
 
-    @Override
-    public GetUserWithDetailsResponse getSelfDetails(Authentication authentication) {
-        return null;
+        return UserRequestMapper.INSTANCE
+                .userWithDetailsDTOToResponse(userWithDetails);
     }
 
     @Override

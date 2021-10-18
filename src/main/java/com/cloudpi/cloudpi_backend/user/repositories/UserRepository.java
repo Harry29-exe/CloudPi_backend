@@ -9,11 +9,13 @@ import java.util.Optional;
 
 @Repository
 public
-interface UserRepository extends JpaRepository<UserEntity, String> {
+interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByUsername(String username);
 
-    Optional<UserEntity> findByNickname(String nickname);
+    Optional<UserEntity> findByUserDetails_Nickname(String nickname);
+
+    void deleteByUserDetails_Nickname(String nickname);
 
 //    fun findByEmail(email: String): Optional<UserEntity>
 }

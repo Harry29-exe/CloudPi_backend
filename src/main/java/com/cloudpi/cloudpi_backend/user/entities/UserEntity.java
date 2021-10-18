@@ -11,6 +11,7 @@ import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
 import org.checkerframework.checker.nullness.qual.KeyFor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,32 +21,42 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class UserEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id", updatable = false)
     private Long id;
     /**
      * For logging
      */
     @Column(nullable = false, unique = true)
-    private String username;
-    @NotBlank
+    private @NonNull @NotBlank String username;
     @Column(nullable = false)
-    private String password;
+    private @NonNull @NotBlank String password;
     @Column(nullable = false)
-    private Boolean locked = false;
+    private @NonNull Boolean locked = false;
     @Column(nullable = false, updatable = false)
-    private String accountType = AccountType.USER;
+    private @NonNull @NotBlank String accountType = AccountType.USER;
 
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user",
-            cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+            cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
-    private UserDetailsEntity userDetails;
+    private @NonNull UserDetailsEntity userDetails;
+
+    @PrimaryKeyJoinColumn
+    @OneToOne(
+            mappedBy = "userToBeDeleted",
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private @Nullable UserDeleteEntity userDeleteSchedule;
 
 
     @ManyToMany(mappedBy = "roleHolder", cascade = CascadeType.MERGE)

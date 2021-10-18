@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.cloudpi.cloudpi_backend.user.enpoints.UserAPIAuthorities.*;
@@ -20,6 +21,12 @@ public interface UserService {
     @Secured(GET_DETAILS)
     Optional<UserWithDetailsDTO> getUserDetails(String nickname);
 
+    @Secured(GET_DETAILS)
+    List<UserWithDetailsDTO> getAllUsersWithDetails();
+
+    @Secured(CREATE)
+    void createUser(UserWithDetailsDTO user);
+
     @PreAuthorize(
             "hasAuthority("+MODIFY+") or " +
             "#userDTO.username == principal"
@@ -27,21 +34,21 @@ public interface UserService {
     void updateUserDetails(String nickname, UserDetailsDTO userDetails);
 
     @Secured(LOCK)
-    void lockUser(UserWithDetailsDTO userWithDetailsDTO);
+    void lockUser(UserPublicIdDTO user);
 
     @Secured(LOCK)
-    void lockUser(Long userId);
+    void lockUser(String nickname);
 
     @PreAuthorize(
             "hasAuthority("+DELETE+") or "+
             "#user.username == principal"
     )
-    void removeUser(Long userId);
+    void removeUser(String nickname);
 
     @PreAuthorize(
             "hasAuthority("+SCHEDULE_DELETE+") or "+
             "#user.username = principal"
     )
-    void schedule_remove_user(Long userId);
+    void schedule_remove_user(String nickname);
 
 }

@@ -27,13 +27,8 @@ public interface UserManagementAPI {
 
 //    @Secured(UserAPIAuthorities.GET_DETAILS)
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("user/{username}")
-    GetUserResponse getUser(@PathVariable(name = "username") String username);
-
-//    @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("user")
-    GetUserWithDetailsResponse getSelfDetails(Authentication authentication);
+    @GetMapping("user/{nickname}")
+    GetUserWithDetailsResponse getUserDetails(@PathVariable(name = "nickname") String nickname);
 
 //    @Secured(UserAPIAuthorities.CREATE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,10 +43,10 @@ public interface UserManagementAPI {
                            @RequestBody UpdateUserDetailsRequest request);
 
 //    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("user/schedule-delete/{id}")
-    void scheduleUserDelete(@PathVariable(name = "id") String name);
+    @DeleteMapping("user/schedule-delete/{nickname}")
+    void scheduleUserDelete(@PathVariable(name = "nickname") String nickname);
 
 //    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("user/{id}")
-    void deleteUser(@PathVariable(name = "id") String name);
+    @DeleteMapping("user/{nickname}")
+    void deleteUser(@PathVariable(name = "nickname") String nickname);
 }

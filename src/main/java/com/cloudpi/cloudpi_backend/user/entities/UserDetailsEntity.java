@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Setter
 @Table
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class UserDetailsEntity {
 
     public UserDetailsEntity(@NonNull String nickname, String email, String pathToProfilePicture) {
