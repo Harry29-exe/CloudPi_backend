@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
@@ -15,6 +16,8 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +49,9 @@ public class UserEntity {
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
+    )
     private @NonNull UserDetailsEntity userDetails;
 
     @PrimaryKeyJoinColumn
@@ -65,11 +70,12 @@ public class UserEntity {
     private Set<PermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<DriveObjectEntity> filesInfo;
+    private List<DriveObjectEntity> usersDrives;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<FilePermissionEntity> filesPermissions;
 
     @PrePersist
+    @PreUpdate
     public void validateUser() {
         if(userDetails.getNickname().equals(username)) {
             throw new InvalidUserData("Username and nickname must be different");

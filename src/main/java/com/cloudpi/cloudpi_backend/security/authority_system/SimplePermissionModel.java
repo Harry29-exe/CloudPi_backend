@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.authority;
+package com.cloudpi.cloudpi_backend.security.authority_system;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
@@ -6,11 +6,9 @@ import com.google.common.collect.ImmutableSortedSet;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 public class SimplePermissionModel implements PermissionModel {
     private final String permissionName;
+    private final GrantedAuthority grantedAuthority;
     private final ImmutableCollection<GrantedAuthority> mayBeGivenBy;
     private final ImmutableCollection<String> haveItByDefault;
 
@@ -20,25 +18,31 @@ public class SimplePermissionModel implements PermissionModel {
                 .map(SimpleGrantedAuthority::new)
                 .collect(ImmutableSet.toImmutableSet());
         this.haveItByDefault = haveItByDefault;
+        this.grantedAuthority = new SimpleGrantedAuthority(permissionName);
     }
 
     @Override
     public GrantedAuthority getAuthority() {
-        return null;
+        return this.grantedAuthority;
     }
 
     @Override
     public ImmutableCollection<GrantedAuthority> mayBeGivenBy() {
-        return null;
+        return mayBeGivenBy;
     }
 
     @Override
     public ImmutableCollection<String> getAccountsThatHaveItByDefault() {
-        return null;
+        return haveItByDefault;
     }
 
     @Override
     public String getAuthorityName() {
-        return null;
+        return permissionName;
+    }
+
+    @Override
+    public int compareTo(PermissionModel o) {
+        return this.permissionName.compareTo(o.getAuthorityName());
     }
 }

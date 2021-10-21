@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.authorities.endpoint;
 
-import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsPermissions;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Permission;
 
 @ContainsPermissions
 public class AuthoritiesAPIAuthorities {

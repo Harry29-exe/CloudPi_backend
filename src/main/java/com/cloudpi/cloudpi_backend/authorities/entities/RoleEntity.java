@@ -17,10 +17,16 @@ import java.util.List;
 public class RoleEntity {
 
     @Id
-    @Column(unique = true)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(unique = true, updatable = false, nullable = false)
     private String role;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_ownership")
     private List<UserEntity> roleHolder;
 
+    public RoleEntity(String role, List<UserEntity> roleHolder) {
+        this.role = role;
+        this.roleHolder = roleHolder;
+    }
 }

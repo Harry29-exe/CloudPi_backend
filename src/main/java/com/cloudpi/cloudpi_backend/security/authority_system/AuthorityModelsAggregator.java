@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.authority;
+package com.cloudpi.cloudpi_backend.security.authority_system;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
@@ -6,8 +6,6 @@ import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.Ordering;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -26,6 +24,14 @@ public class AuthorityModelsAggregator {
         permissionModelMap = scanner.getPermissionModels();
 
         checkIntegrityOfAuthorities();
+    }
+
+    public static ImmutableCollection<RoleModel> getAllRoles() {
+        return roleModelMap.values();
+    }
+
+    public static ImmutableCollection<PermissionModel> getAllPermissions() {
+        return permissionModelMap.values();
     }
 
     public static RoleModel getRoleModelByRoleName(String roleName) {
@@ -130,7 +136,7 @@ public class AuthorityModelsAggregator {
         for (var roleModel : roleModelMap.values()) {
             for (var canBeGivenBy : roleModel.mayBeGivenBy()) {
                 if (!permissionModelMap.containsKey(canBeGivenBy.getAuthority())
-                        || !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
+                        && !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
                     throw new IllegalStateException("Role: " + roleModel.getAuthorityName() +
                             " have property canBeGivenBy assigned to non existed authority:" +
                             canBeGivenBy.getAuthority());
@@ -141,7 +147,7 @@ public class AuthorityModelsAggregator {
         for (var permissionModel : permissionModelMap.values()) {
             for (var canBeGivenBy : permissionModel.mayBeGivenBy()) {
                 if (!permissionModelMap.containsKey(canBeGivenBy.getAuthority())
-                        || !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
+                        && !roleModelMap.containsKey(canBeGivenBy.getAuthority())) {
                     throw new IllegalStateException("Permission: " + permissionModel.getAuthorityName() +
                             " have property canBeGivenBy assigned to non existed authority:" +
                             canBeGivenBy.getAuthority());

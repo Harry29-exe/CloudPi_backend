@@ -1,9 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
-import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsPermissions;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsRoles;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Permission;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Role;
 
 @ContainsPermissions
 @ContainsRoles

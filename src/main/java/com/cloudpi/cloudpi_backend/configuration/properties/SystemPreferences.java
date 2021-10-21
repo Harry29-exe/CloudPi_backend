@@ -9,7 +9,6 @@ public class SystemPreferences {
 
     public SystemPreferences(@Value("${cloud.pi.config.modifications-only-from-local-network}") String fromLocalHostOnly) {
         userManagementLANOnly = fromLocalHostOnly.equals("true");
-        System.out.println("\n" + fromLocalHostOnly + "\n" + userManagementLANOnly + "\n");
     }
 
     public Boolean getUserManagementLANOnly() {

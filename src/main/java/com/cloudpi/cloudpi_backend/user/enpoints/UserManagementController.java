@@ -1,17 +1,12 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
-import com.cloudpi.cloudpi_backend.configuration.network.LocalNetworksInfo;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.user.mappers.UserRequestMapper;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
-import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
-import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
-import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,20 +50,24 @@ public class UserManagementController implements UserManagementAPI {
 
     @Override
     public void createNewUser(PostUserRequest user) {
-
+        userService.createUser(
+                UserRequestMapper.INSTANCE.userCreateRequestToUserWithDetailsDTO(user)
+        );
     }
 
     @Override
-    public void updateUserDetails(String username, UpdateUserDetailsRequest request) {
-
+    public void updateUserDetails(String nickname, UpdateUserDetailsRequest request) {
+        userService.updateUserDetails(nickname,
+                UserRequestMapper.INSTANCE.userDetailsRequestToDTO(request));
     }
 
     @Override
-    public void scheduleUserDelete(String name) {
-
+    public void scheduleUserDelete(String nickname) {
+        userService.scheduleUserDeleting(nickname);
     }
 
     @Override
-    public void deleteUser(String name) {
+    public void deleteUser(String nickname) {
+        userService.deleteUser(nickname);
     }
 }

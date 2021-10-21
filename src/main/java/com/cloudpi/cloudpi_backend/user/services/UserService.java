@@ -43,12 +43,12 @@ public interface UserService {
             "hasAuthority("+DELETE+") or "+
             "#user.username == principal"
     )
-    void removeUser(String nickname);
+    void deleteUser(String nickname);
 
     @PreAuthorize(
             "hasAuthority("+SCHEDULE_DELETE+") or "+
             "#user.username = principal"
     )
-    void schedule_remove_user(String nickname);
+    void scheduleUserDeleting(String nickname);
 
 }

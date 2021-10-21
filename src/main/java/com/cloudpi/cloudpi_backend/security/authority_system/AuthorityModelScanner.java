@@ -1,10 +1,9 @@
-package com.cloudpi.cloudpi_backend.security.authority;
+package com.cloudpi.cloudpi_backend.security.authority_system;
 
-import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsPermissions;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.ContainsRoles;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.Permission;
-import com.cloudpi.cloudpi_backend.security.authority.annotations.Role;
-import com.google.common.collect.ImmutableCollection;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsPermissions;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsRoles;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Permission;
+import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Role;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
 import lombok.AllArgsConstructor;
@@ -26,8 +25,9 @@ public class AuthorityModelScanner {
         try {
             createPermissionsPrototypes();
             createRolePrototypes();
-            mapRolePrototypesToModels();
             mapPermissionPrototypesToModels();
+            mapRolePrototypesToModels();
+
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("Something very bad happened");
         }
@@ -42,15 +42,15 @@ public class AuthorityModelScanner {
     }
 
     private void mapRolePrototypesToModels() {
-        for(var roleProt : rolePrototypes.values()) {
+        for(var rolePrototype : rolePrototypes.values()) {
 
             RoleModel model = new SimpleRoleModel(
-                    roleProt.roleName,
-                    ImmutableSortedSet.copyOf(roleProt.permissions.stream()
-                            .map(prot -> permissionModels.get(prot.permissionName))
+                    rolePrototype.roleName,
+                    ImmutableSortedSet.copyOf(rolePrototype.permissions.stream()
+                            .map(prototype -> permissionModels.get(prototype.permissionName))
                             .collect(Collectors.toList())),
-                    ImmutableSortedSet.copyOf(roleProt.mayBeGivenByArray),
-                    ImmutableSortedSet.copyOf(roleProt.haveItByDefault)
+                    ImmutableSortedSet.copyOf(rolePrototype.mayBeGivenByArray),
+                    ImmutableSortedSet.copyOf(rolePrototype.haveItByDefault)
             );
             roleModels.put(model.getAuthorityName(), model);
         }
@@ -100,7 +100,7 @@ public class AuthorityModelScanner {
         for (var field : roleClass.getFields()) {
             int fieldModifiers = field.getModifiers();
 
-            if (field.isAnnotationPresent(Role.class) && String.class.isAssignableFrom(field.getDeclaringClass())
+            if (field.isAnnotationPresent(Role.class) && String.class.isAssignableFrom(field.getType())
                     && Modifier.isStatic(fieldModifiers) && Modifier.isFinal(fieldModifiers)
             ) {
                 fields.addLast(field);
@@ -116,6 +116,7 @@ public class AuthorityModelScanner {
                     prototype.permissionName,
                     ImmutableSortedSet.copyOf(prototype.collectMayBeGivenBy()),
                     ImmutableSortedSet.copyOf(prototype.haveItByDefault));
+            permissionModels.put(model.getAuthorityName(), model);
         }
     }
 
@@ -158,7 +159,7 @@ public class AuthorityModelScanner {
         for (var field : permissionClass.getFields()) {
             int fieldModifiers = field.getModifiers();
 
-            if (field.isAnnotationPresent(Permission.class) && String.class.isAssignableFrom(field.getDeclaringClass())
+            if (field.isAnnotationPresent(Permission.class) && String.class.isAssignableFrom(field.getType())
                     && Modifier.isStatic(fieldModifiers) && Modifier.isFinal(fieldModifiers)
             ) {
                 fields.addLast(field);

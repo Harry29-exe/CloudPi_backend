@@ -38,8 +38,8 @@ public interface UserManagementAPI {
 //    @PreAuthorize("hasAuthority(USER_MODIFY) or" +
 //            "#username == principal")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("user/{id}")
-    void updateUserDetails(@RequestParam String username,
+    @PatchMapping("user/{nickname}")
+    void updateUserDetails(@RequestParam("nickname") String nickname,
                            @RequestBody UpdateUserDetailsRequest request);
 
 //    @ResponseStatus(HttpStatus.OK)

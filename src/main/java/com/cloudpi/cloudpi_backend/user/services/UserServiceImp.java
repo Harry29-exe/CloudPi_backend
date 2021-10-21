@@ -86,12 +86,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void removeUser(String nickname) {
+    public void deleteUser(String nickname) {
         repository.deleteByUserDetails_Nickname(nickname);
     }
 
     @Override
-    public void schedule_remove_user(String nickname) {
+    public void scheduleUserDeleting(String nickname) {
         var userToBeDeleted = repository
                 .findByUserDetails_Nickname(nickname)
                 .orElseThrow(NoSuchUserException::notFoundByNickname);
