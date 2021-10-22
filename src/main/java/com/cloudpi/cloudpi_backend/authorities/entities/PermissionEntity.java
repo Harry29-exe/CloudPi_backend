@@ -12,14 +12,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "permissions")
 public class PermissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(unique = true, nullable = false, updatable = false)
     private String authority;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_permission_ownership")
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     private Set<UserEntity> authorised;
 
     public PermissionEntity(String authority, Set<UserEntity> authorised) {

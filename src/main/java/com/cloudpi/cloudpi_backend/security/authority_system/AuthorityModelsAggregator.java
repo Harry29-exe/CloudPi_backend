@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.security.authority_system;
 
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
@@ -13,9 +14,10 @@ import java.util.stream.Stream;
 public class AuthorityModelsAggregator {
     private static final ImmutableSortedMap<String, RoleModel> roleModelMap;
     private static final ImmutableSortedMap<String, PermissionModel> permissionModelMap;
-    private static final ImmutableList<AuthorityModel> defaultAuthoritiesOf_USER;
-    private static final ImmutableList<AuthorityModel> defaultAuthoritiesOf_ROOT;
-    private static final ImmutableList<AuthorityModel> defaultAuthoritiesOf_SERVICE_WORKER;
+    private static final ImmutableList<AuthorityDTO> defaultAuthoritiesOf_USER;
+    private static final ImmutableList<AuthorityDTO> defaultAuthoritiesOf_ROOT;
+    private static final ImmutableList<AuthorityDTO> defaultAuthoritiesOf_SERVICE_WORKER;
+
 
 
     static {
@@ -38,7 +40,7 @@ public class AuthorityModelsAggregator {
         return roleModelMap.get(roleName);
     }
 
-    public static Collection<AuthorityModel> getDefaultAuthorities(String accountType) {
+    public static Collection<AuthorityDTO> getDefaultAuthorities(String accountType) {
         return switch (accountType) {
             case AccountType.USER -> defaultAuthoritiesOf_USER;
             case AccountType.ROOT -> defaultAuthoritiesOf_ROOT;
@@ -102,16 +104,16 @@ public class AuthorityModelsAggregator {
     }
 
     static {
-        List<AuthorityModel> USER = new ArrayList<>();
-        List<AuthorityModel> ROOT = new ArrayList<>();
-        List<AuthorityModel> SERVICE_WORKER = new ArrayList<>();
+        List<AuthorityDTO> authoritiesOfUSER = new ArrayList<>();
+        List<AuthorityDTO> authoritiesOfROOT = new ArrayList<>();
+        List<AuthorityDTO> authoritiesOfSERVICE_WORKER = new ArrayList<>();
 
         for(var role : roleModelMap.values()) {
             for(var accountType : role.getAccountsThatHaveItByDefault()) {
                 switch (accountType) {
-                    case "USER" -> USER.add(role);
-                    case "ROOT" -> ROOT.add(role);
-                    case "SERVICE_WORKER" -> SERVICE_WORKER.add(role);
+                    case "USER" -> authoritiesOfUSER.add(role.toAuthorityDTO());
+                    case "ROOT" -> authoritiesOfROOT.add(role.toAuthorityDTO());
+                    case "SERVICE_WORKER" -> authoritiesOfSERVICE_WORKER.add(role.toAuthorityDTO());
                     default -> throw new IllegalStateException("There should never be value other than the prior 3");
                 }
             }
@@ -119,17 +121,17 @@ public class AuthorityModelsAggregator {
         for(var permission : permissionModelMap.values()) {
             for(var accountType : permission.getAccountsThatHaveItByDefault()) {
                 switch (accountType) {
-                    case "USER" -> USER.add(permission);
-                    case "ROOT" -> ROOT.add(permission);
-                    case "SERVICE_WORKER" -> SERVICE_WORKER.add(permission);
+                    case "USER" -> authoritiesOfUSER.add(permission.toAuthorityDTO());
+                    case "ROOT" -> authoritiesOfROOT.add(permission.toAuthorityDTO());
+                    case "SERVICE_WORKER" -> authoritiesOfSERVICE_WORKER.add(permission.toAuthorityDTO());
                     default -> throw new IllegalStateException("There should never be value other than the prior 3");
                 }
             }
         }
 
-        defaultAuthoritiesOf_USER = ImmutableList.copyOf(USER);
-        defaultAuthoritiesOf_ROOT = ImmutableList.copyOf(ROOT);
-        defaultAuthoritiesOf_SERVICE_WORKER = ImmutableList.copyOf(SERVICE_WORKER);
+        defaultAuthoritiesOf_USER = ImmutableList.copyOf(authoritiesOfUSER);
+        defaultAuthoritiesOf_ROOT = ImmutableList.copyOf(authoritiesOfROOT);
+        defaultAuthoritiesOf_SERVICE_WORKER = ImmutableList.copyOf(authoritiesOfSERVICE_WORKER);
     }
 
     private static void checkIntegrityOfAuthorities() {

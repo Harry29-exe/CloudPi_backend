@@ -8,7 +8,7 @@ import java.util.Date;
 @Getter
 @Setter
 
-@Table
+@Table(name = "user_delete_schedule")
 @Entity
 public class UserDeleteEntity {
 

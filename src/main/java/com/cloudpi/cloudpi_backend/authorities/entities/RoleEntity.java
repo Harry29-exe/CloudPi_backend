@@ -9,11 +9,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "roles")
 public class RoleEntity {
 
     @Id
@@ -21,8 +22,7 @@ public class RoleEntity {
     private Integer id;
     @Column(unique = true, updatable = false, nullable = false)
     private String role;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role_ownership")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<UserEntity> roleHolder;
 
     public RoleEntity(String role, List<UserEntity> roleHolder) {

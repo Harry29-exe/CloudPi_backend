@@ -32,7 +32,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id", updatable = false)
+    @Column(name = "id", updatable = false)
     private Long id;
     /**
      * For logging
@@ -64,9 +64,17 @@ public class UserEntity {
     private @Nullable UserDeleteEntity userDeleteSchedule;
 
 
-    @ManyToMany(mappedBy = "roleHolder", cascade = CascadeType.MERGE)
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
-    @ManyToMany(mappedBy = "authorised", cascade = CascadeType.MERGE)
+    @ManyToMany
+    @JoinTable(
+            name = "users_permissions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<PermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)

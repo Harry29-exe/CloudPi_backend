@@ -1,9 +1,4 @@
-package com.cloudpi.cloudpi_backend.authorities.endpoint.responses;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+package com.cloudpi.cloudpi_backend.authorities.responses;
 
 import java.util.List;
 

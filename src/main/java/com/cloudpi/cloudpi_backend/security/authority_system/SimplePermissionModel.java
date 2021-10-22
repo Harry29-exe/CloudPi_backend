@@ -1,5 +1,7 @@
 package com.cloudpi.cloudpi_backend.security.authority_system;
 
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
@@ -11,9 +13,11 @@ public class SimplePermissionModel implements PermissionModel {
     private final GrantedAuthority grantedAuthority;
     private final ImmutableCollection<GrantedAuthority> mayBeGivenBy;
     private final ImmutableCollection<String> haveItByDefault;
+    private final AuthorityDTO authorityDTO;
 
     public SimplePermissionModel(String permissionName, ImmutableSortedSet<String> mayBeGivenBy, ImmutableCollection<String> haveItByDefault) {
         this.permissionName = permissionName;
+        this.authorityDTO = new AuthorityDTO(AuthorityType.PERMISSION, permissionName);
         this.mayBeGivenBy = mayBeGivenBy.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(ImmutableSet.toImmutableSet());
@@ -44,5 +48,10 @@ public class SimplePermissionModel implements PermissionModel {
     @Override
     public int compareTo(PermissionModel o) {
         return this.permissionName.compareTo(o.getAuthorityName());
+    }
+
+    @Override
+    public AuthorityDTO toAuthorityDTO() {
+        return authorityDTO;
     }
 }

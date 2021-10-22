@@ -49,10 +49,11 @@ public class UserManagementController implements UserManagementAPI {
     }
 
     @Override
+    //todo cos z tym zrobic bo brzydki jest ten ciag wywolan z brzydkimi dto
     public void createNewUser(PostUserRequest user) {
-        userService.createUser(
-                UserRequestMapper.INSTANCE.userCreateRequestToUserWithDetailsDTO(user)
-        );
+        var dto = user.toUserWithDetails();
+
+        userService.createUserWithDefaultAuthorities(user);
     }
 
     @Override

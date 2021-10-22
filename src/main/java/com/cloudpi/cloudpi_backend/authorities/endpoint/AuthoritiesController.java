@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.authorities.endpoint;
 
-import com.cloudpi.cloudpi_backend.authorities.endpoint.responses.GetAuthoritiesInfoResponse;
+import com.cloudpi.cloudpi_backend.authorities.responses.GetAuthoritiesInfoResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 

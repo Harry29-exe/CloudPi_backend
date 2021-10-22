@@ -1,12 +1,15 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
+import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +20,21 @@ public interface UserService {
     @PreAuthorize("isAuthenticated()")
     ImmutableList<UserPublicIdDTO> getAllUsers();
 
-
-    @Secured(GET_DETAILS)
+    @RolesAllowed(GET_DETAILS)
     Optional<UserWithDetailsDTO> getUserDetails(String nickname);
 
-    @Secured(GET_DETAILS)
+    @RolesAllowed(GET_DETAILS)
     List<UserWithDetailsDTO> getAllUsersWithDetails();
 
-    @Secured(CREATE)
-    void createUser(UserWithDetailsDTO user);
+    /**
+     *
+     * @param user the user to be created
+     * @return the authorities that could not be added to user
+     * because creator of the user doesn't have rights to give them
+     */
+//    @PreAuthorize("hasAuthority('"+CREATE+"')")
+    @RolesAllowed(CREATE)
+    List<AuthorityDTO> createUserWithDefaultAuthorities(PostUserRequest user);
 
     @PreAuthorize(
             "hasAuthority("+MODIFY+") or " +
@@ -33,10 +42,10 @@ public interface UserService {
     )
     void updateUserDetails(String nickname, UserDetailsDTO userDetails);
 
-    @Secured(LOCK)
+    @RolesAllowed(LOCK)
     void lockUser(UserPublicIdDTO user);
 
-    @Secured(LOCK)
+    @RolesAllowed(LOCK)
     void lockUser(String nickname);
 
     @PreAuthorize(

@@ -26,11 +26,13 @@ public interface UserRequestMapper {
     GetUserWithDetailsResponse userWithDetailsDTOToResponse(UserWithDetailsDTO userDTO);
 
 
+    //TODO mapping is incorrect (does not map data from request to UserDetails)
     /**
      * to DTOs
      */
     @Mappings( {
             @Mapping(target = "locked", constant = "false")
+
     })
     UserWithDetailsDTO userCreateRequestToUserWithDetailsDTO(PostUserRequest request);
 

@@ -1,5 +1,7 @@
 package com.cloudpi.cloudpi_backend.security.authority_system;
 
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 //TODO
 public class SimpleRoleModel implements RoleModel {
     private final String roleName;
+    private final AuthorityDTO authorityDTO;
     private final GrantedAuthority roleAuthority;
     private final ImmutableCollection<PermissionModel> rolesPermissions;
     private final ImmutableCollection<GrantedAuthority> permissionAuthorities;
@@ -23,6 +26,7 @@ public class SimpleRoleModel implements RoleModel {
                            ImmutableCollection<String> mayBeGivenBy,
                            ImmutableCollection<String> haveItByDefault) {
         this.roleName = roleName;
+        this.authorityDTO = new AuthorityDTO(AuthorityType.ROLE, roleName);
         this.roleAuthority = new SimpleGrantedAuthority(roleName);
         this.rolesPermissions = rolesPermissions;
         this.mayBeGivenBy = ImmutableList.copyOf(mayBeGivenBy.stream().map(SimpleGrantedAuthority::new).toList());
@@ -77,5 +81,10 @@ public class SimpleRoleModel implements RoleModel {
     @Override
     public int compareTo(RoleModel o) {
         return this.roleName.compareTo(o.getAuthorityName());
+    }
+
+    @Override
+    public AuthorityDTO toAuthorityDTO() {
+        return authorityDTO;
     }
 }
