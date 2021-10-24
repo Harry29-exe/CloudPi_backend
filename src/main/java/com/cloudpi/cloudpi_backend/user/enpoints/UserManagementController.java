@@ -53,7 +53,7 @@ public class UserManagementController implements UserManagementAPI {
     public void createNewUser(PostUserRequest user) {
         var dto = user.toUserWithDetails();
 
-        userService.createUserWithDefaultAuthorities(user);
+        userService.createUserWithDefaultAuthorities(UserRequestMapper.INSTANCE.userCreateRequestToUserWithDetailsDTO(user), user.getPassword());
     }
 
     @Override

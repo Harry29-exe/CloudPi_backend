@@ -65,12 +65,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<AuthorityDTO> createUserWithDefaultAuthorities(PostUserRequest user) {
-        var userEntity = new UserEntity(
-                null, user.getUsername(), passwordEncoder.encode(user.getPassword()),
-                false, user.getAccountType(), new UserDetailsEntity(user.getNickname(), user.getEmail(), null),
-                null, null, null, null, null
-        );
+    public List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword) {
+        var userEntity = user.toUserEntity();
+        userEntity.setPassword(passwordEncoder.encode(nonEncodedPassword));
         userEntity.getUserDetails().setUser(userEntity);
         repository.save(userEntity);
 
@@ -78,7 +75,7 @@ public class UserServiceImp implements UserService {
         List<AuthorityDTO> authoritiesThatCouldNotBeGiven = new ArrayList<>();
         for (var authority : defaultRoles) {
             try {
-                authorityService.giveUserAuthority(user.getNickname(), authority);
+                authorityService.giveUserAuthority(user.getUserDetails().getNickname(), authority);
             } catch (AccessDeniedException ex) {
                 authoritiesThatCouldNotBeGiven.add(authority);
             }

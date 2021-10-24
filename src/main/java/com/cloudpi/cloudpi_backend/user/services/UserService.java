@@ -34,7 +34,7 @@ public interface UserService {
      */
 //    @PreAuthorize("hasAuthority('"+CREATE+"')")
     @RolesAllowed(CREATE)
-    List<AuthorityDTO> createUserWithDefaultAuthorities(PostUserRequest user);
+    List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword);
 
     @PreAuthorize(
             "hasAuthority("+MODIFY+") or " +
