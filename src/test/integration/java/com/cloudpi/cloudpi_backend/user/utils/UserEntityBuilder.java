@@ -51,7 +51,7 @@ public final class UserEntityBuilder {
         return builder;
     }
 
-    public static UserEntityBuilder aAliceUser() {
+    public static UserEntityBuilder anAliceUser() {
         var builder = new UserEntityBuilder();
         builder.login = "super@lice";
         builder.username = "Alice";

@@ -7,5 +7,5 @@ import lombok.Data;
 public class GetUserResponse {
     private String username;
     private String pathToProfilePicture;
-    private AccountType userType;
+    private AccountType accountType;
 }

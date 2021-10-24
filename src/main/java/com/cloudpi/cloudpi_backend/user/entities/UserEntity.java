@@ -41,7 +41,7 @@ public class UserEntity {
      * to share file with specific user
      */
     @Column(nullable = false, unique = true)
-    private @NonNull String username;
+    private @NonNull @NotBlank String username;
     @Column(nullable = false)
     private @NonNull @NotBlank String password;
     @Column(nullable = false)
@@ -52,7 +52,7 @@ public class UserEntity {
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             orphanRemoval = true
     )
     private @NonNull UserDetailsEntity userDetails;
