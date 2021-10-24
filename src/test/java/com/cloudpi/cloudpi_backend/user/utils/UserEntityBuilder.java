@@ -4,7 +4,7 @@ import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
-import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
@@ -18,7 +18,7 @@ public final class UserEntityBuilder {
     private String username;
     private String password;
     private Boolean locked = false;
-    private String accountType = AccountType.user;
+    private AccountType accountType = AccountType.USER;
     private UserDetailsEntity userDetails;
     private UserDeleteEntity userDeleteSchedule;
     private Set<RoleEntity> roles;
@@ -31,11 +31,33 @@ public final class UserEntityBuilder {
 
     public static UserEntityBuilder aRootUser() {
         var builder = new UserEntityBuilder();
-        builder.login = "ROOT";
-        builder.username = "mighty root";
+        builder.login = "mightyRoot";
+        builder.username = "ROOT";
         builder.password = "123";
-        builder.accountType = AccountType.root;
+        builder.accountType = AccountType.ROOT;
         builder.userDetails = new UserDetailsEntity(null, null);
+
+        return builder;
+    }
+
+    public static UserEntityBuilder aBobUser() {
+        var builder = new UserEntityBuilder();
+        builder.login = "bobTheWise";
+        builder.username = "bob";
+        builder.password = "321";
+        builder.accountType = AccountType.USER;
+        builder.userDetails = new UserDetailsEntity();
+
+        return builder;
+    }
+
+    public static UserEntityBuilder aAliceUser() {
+        var builder = new UserEntityBuilder();
+        builder.login = "super@lice";
+        builder.username = "Alice";
+        builder.password = "alice";
+        builder.accountType = AccountType.USER;
+        builder.userDetails = new UserDetailsEntity();
 
         return builder;
     }
@@ -69,7 +91,7 @@ public final class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder withAccountType(String accountType) {
+    public UserEntityBuilder withAccountType(AccountType accountType) {
         this.accountType = accountType;
         return this;
     }
@@ -108,6 +130,7 @@ public final class UserEntityBuilder {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(id);
         userEntity.setLogin(login);
+        userEntity.setUsername(username);
         userEntity.setPassword(password);
         userEntity.setLocked(locked);
         userEntity.setAccountType(accountType);
@@ -117,6 +140,8 @@ public final class UserEntityBuilder {
         userEntity.setPermissions(permissions);
         userEntity.setUsersDrives(filesInfo);
         userEntity.setFilesPermissions(filesPermissions);
+
+        userEntity.getUserDetails().setUser(userEntity);
         return userEntity;
     }
 }

@@ -6,7 +6,7 @@ import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
-import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
@@ -15,6 +15,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -35,6 +36,10 @@ public class UserEntity {
      */
     @Column(nullable = false, unique = true)
     private @NonNull @NotBlank String login;
+    /**
+     * For sending to other users in order to give opportunity
+     * to share file with specific user
+     */
     @Column(nullable = false, unique = true)
     private @NonNull String username;
     @Column(nullable = false)
@@ -42,7 +47,7 @@ public class UserEntity {
     @Column(nullable = false)
     private @NonNull Boolean locked = false;
     @Column(nullable = false, updatable = false)
-    private @NonNull @NotBlank String accountType = AccountType.user;
+    private @NonNull AccountType accountType = AccountType.USER;
 
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user",
@@ -95,4 +100,13 @@ public class UserEntity {
     public UserPublicIdDTO toUserPublicIdDTO() {
         return UserMapper.INSTANCE.userEntityToUserPublicIdDTO(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return id.equals(that.id) && login.equals(that.login) && username.equals(that.username) && password.equals(that.password) && locked.equals(that.locked) && accountType == that.accountType && userDetails.equals(that.userDetails) && Objects.equals(userDeleteSchedule, that.userDeleteSchedule) && Objects.equals(roles, that.roles) && Objects.equals(permissions, that.permissions);
+    }
+
 }

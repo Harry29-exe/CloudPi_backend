@@ -4,6 +4,7 @@ import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Contain
 import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsRoles;
 import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Permission;
 import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Role;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 
 @ContainsPermissions
 @ContainsRoles

@@ -17,14 +17,10 @@ public class UserDetailsEntity {
     }
 
     /**
-     * For sending to other users in order to give opportunity
-     * to share file with specific user
+     * optional: useful for changing, getting info about
+     * account being set to be deleted
      */
-
-    /**
-     * Other option for logging
-     */
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @Column

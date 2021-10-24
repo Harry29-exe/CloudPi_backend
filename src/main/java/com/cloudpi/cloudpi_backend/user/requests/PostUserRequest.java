@@ -2,7 +2,7 @@ package com.cloudpi.cloudpi_backend.user.requests;
 
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
-import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;

@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.user.enpoints;
+package com.cloudpi.cloudpi_backend.user.dto;
 
 
 public enum AccountType {

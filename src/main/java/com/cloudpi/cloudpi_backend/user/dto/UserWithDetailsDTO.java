@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.user.dto;
 
-import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
