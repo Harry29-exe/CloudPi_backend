@@ -12,7 +12,7 @@ public class UserAPIAuthorities {
     //TODO add git issue with empty CREATE string
     //TODO change this strings
 
-    @Permission(havingItByDefault = AccountType.USER)
+    @Permission(havingItByDefault = AccountType.user)
     public static final String GET_DETAILS = "GET_USER_DETAILS";
 
     @Permission
@@ -32,7 +32,7 @@ public class UserAPIAuthorities {
 
     @Role(
             permissions = {GET_DETAILS, MODIFY, CREATE, SCHEDULE_DELETE, LOCK},
-            havingItByDefault = AccountType.ROOT
+            havingItByDefault = AccountType.root
     )
     public static final String ADMIN = "USER_MANAGEMENT_ADMIN";
 

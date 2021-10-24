@@ -1,12 +1,17 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 
-public class AccountType {
+public enum AccountType {
 
-    public static final String USER = "USER";
+    USER,
+    ROOT,
+    SERVICE_WORKER;
 
-    public static final String SERVICE_WORKER = "SERVICE_WORKER";
+    public static final String user = "USER";
 
-    public static final String ROOT = "ROOT";
+    public static final String serviceWorker = "SERVICE_WORKER";
+
+    public static final String root = "ROOT";
+
 
 }

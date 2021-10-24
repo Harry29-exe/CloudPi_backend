@@ -17,7 +17,7 @@ public final class UserEntityBuilder {
     private String username;
     private String password;
     private Boolean locked = false;
-    private String accountType = AccountType.USER;
+    private String accountType = AccountType.user;
     private UserDetailsEntity userDetails;
     private UserDeleteEntity userDeleteSchedule;
     private Set<RoleEntity> roles;
@@ -32,7 +32,7 @@ public final class UserEntityBuilder {
         var builder = new UserEntityBuilder();
         builder.username = "ROOT";
         builder.password = "123";
-        builder.accountType = AccountType.ROOT;
+        builder.accountType = AccountType.root;
         builder.userDetails = new UserDetailsEntity("mighty root", null, null);
 
         return builder;

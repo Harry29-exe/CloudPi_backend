@@ -22,7 +22,7 @@ public interface UserMapper {
 
 
     @Mappings({
-            @Mapping(target = "filesInfo", ignore = true),
+            @Mapping(target = "usersDrives", ignore = true),
             @Mapping(target = "filesPermissions", ignore = true)
     })
     UserEntity userDTOToUserEntity(UserWithDetailsDTO userWithDetailsDTO);

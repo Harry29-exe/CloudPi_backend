@@ -42,9 +42,9 @@ public class AuthorityModelsAggregator {
 
     public static Collection<AuthorityDTO> getDefaultAuthorities(String accountType) {
         return switch (accountType) {
-            case AccountType.USER -> defaultAuthoritiesOf_USER;
-            case AccountType.ROOT -> defaultAuthoritiesOf_ROOT;
-            case AccountType.SERVICE_WORKER ->  defaultAuthoritiesOf_SERVICE_WORKER;
+            case AccountType.user -> defaultAuthoritiesOf_USER;
+            case AccountType.root -> defaultAuthoritiesOf_ROOT;
+            case AccountType.serviceWorker ->  defaultAuthoritiesOf_SERVICE_WORKER;
             default -> throw new IllegalArgumentException("Method parameter \"accountType\" must represents one of AccountType values");
         };
     }

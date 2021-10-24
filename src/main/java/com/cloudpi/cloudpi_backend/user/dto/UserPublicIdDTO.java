@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.dto;
 
+import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class UserPublicIdDTO {
     private String nickname;
-    private String accountType;
+    private AccountType accountType;
     private Boolean isLocked;
     private String pathToProfilePicture;
 }

@@ -71,7 +71,7 @@ public class UserServiceImp implements UserService {
         userEntity.getUserDetails().setUser(userEntity);
         repository.save(userEntity);
 
-        var defaultRoles = AuthorityModelsAggregator.getDefaultAuthorities(user.getAccountType());
+        var defaultRoles = AuthorityModelsAggregator.getDefaultAuthorities(user.getAccountType().name());
         List<AuthorityDTO> authoritiesThatCouldNotBeGiven = new ArrayList<>();
         for (var authority : defaultRoles) {
             try {

@@ -5,19 +5,15 @@ import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
-import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.enpoints.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import lombok.*;
-import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +40,7 @@ public class UserEntity {
     @Column(nullable = false)
     private @NonNull Boolean locked = false;
     @Column(nullable = false, updatable = false)
-    private @NonNull @NotBlank String accountType = AccountType.USER;
+    private @NonNull @NotBlank String accountType = AccountType.user;
 
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user",
