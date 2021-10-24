@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.authentication;
+package com.cloudpi.cloudpi_backend.authentication;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 

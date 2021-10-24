@@ -36,7 +36,7 @@ public interface UserManagementAPI {
     void createNewUser(@RequestBody @Valid PostUserRequest user);
 
 //    @PreAuthorize("hasAuthority(USER_MODIFY) or" +
-//            "#username == principal")
+//            "#login == principal")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("user/{nickname}")
     void updateUserDetails(@RequestParam("nickname") String nickname,

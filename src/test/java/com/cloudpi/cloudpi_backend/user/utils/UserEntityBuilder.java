@@ -14,6 +14,7 @@ import java.util.Set;
 
 public final class UserEntityBuilder {
     private Long id;
+    private String login;
     private String username;
     private String password;
     private Boolean locked = false;
@@ -30,10 +31,11 @@ public final class UserEntityBuilder {
 
     public static UserEntityBuilder aRootUser() {
         var builder = new UserEntityBuilder();
-        builder.username = "ROOT";
+        builder.login = "ROOT";
+        builder.username = "mighty root";
         builder.password = "123";
         builder.accountType = AccountType.root;
-        builder.userDetails = new UserDetailsEntity("mighty root", null, null);
+        builder.userDetails = new UserDetailsEntity(null, null);
 
         return builder;
     }
@@ -49,6 +51,11 @@ public final class UserEntityBuilder {
 
     public UserEntityBuilder withUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public UserEntityBuilder withLogin(String login) {
+        this.login = login;
         return this;
     }
 
@@ -100,7 +107,7 @@ public final class UserEntityBuilder {
     public UserEntity build() {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(id);
-        userEntity.setUsername(username);
+        userEntity.setLogin(login);
         userEntity.setPassword(password);
         userEntity.setLocked(locked);
         userEntity.setAccountType(accountType);

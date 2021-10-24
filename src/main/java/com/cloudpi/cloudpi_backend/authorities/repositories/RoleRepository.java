@@ -17,9 +17,9 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
     @Query("""
             SELECT r from RoleEntity r
             JOIN UserEntity u
-            WHERE u.username = :username
+            WHERE u.login = :login
             """)
-    List<RoleEntity> findAllByRoleHolder(@Param("username") String roleHolderUsername);
+    List<RoleEntity> findAllByRoleHolder(@Param("login") String roleHolderUsername);
 
     @Query("""
             SELECT r from RoleEntity r
@@ -28,8 +28,8 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
             """)
     List<RoleEntity> findAllByRoleHolder(@Param("id") Long userId);
 
-    @Query("SELECT new java.lang.String(r.role) from RoleEntity r JOIN r.roleHolder u WHERE u.username = :username ")
-    List<String> getAllRolesByRoleHolder(@Param("username") String roleHolderUsername);
+    @Query("SELECT new java.lang.String(r.role) from RoleEntity r JOIN r.roleHolder u WHERE u.login = :login ")
+    List<String> getAllRolesByRoleHolder(@Param("login") String roleHolderUsername);
 
     @Query("SELECT new java.lang.String(r.role) from RoleEntity r JOIN r.roleHolder u WHERE u.id = :id")
     List<String> getAllRolesByRoleHolder(@Param("id") Long userId);
@@ -45,11 +45,10 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
             insert into users_roles
             select u.id, r.id
             from users u
-            join user_details ud on (u.id = ud.user_id)
             join roles r on (r.role = :roleName)
-            where ud.nickname = :nickname
+            where u.username = :username
             """, nativeQuery = true)
-    void giveUserRole(String nickname, String roleName);
+    void giveUserRole(String username, String roleName);
 
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
@@ -67,8 +66,7 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
             "and ur.user_id = " +
             "(select u.id  " +
             "from users u " +
-            "join user_details ud on u.id = ud.user_id " +
-            "where ud.nickname = :nickname " +
+            "where u.username = :username " +
             ");", nativeQuery = true)
-    void removeUsersPermission(String nickname, String roleName);
+    void removeUsersPermission(String username, String roleName);
 }

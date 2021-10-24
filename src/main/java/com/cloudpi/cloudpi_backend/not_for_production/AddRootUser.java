@@ -30,8 +30,9 @@ public class AddRootUser {
         var nickname = "mighty root";
         UserEntity userEntity = new UserEntity(
                 "root",
+                nickname,
                 passwordEncoder.encode("123"),
-                new UserDetailsEntity(nickname, "root@cloud.pl", null)
+                new UserDetailsEntity("root@cloud.pl", null)
         );
         userEntity.setAccountType(AccountType.root);
         userEntity.getUserDetails().setUser(userEntity);

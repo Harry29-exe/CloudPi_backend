@@ -16,9 +16,9 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
     @Query("""
             SELECT r from PermissionEntity r
             JOIN UserEntity u
-            WHERE u.username = :username
+            WHERE u.login = :login
             """)
-    List<PermissionEntity> findAllByAuthorised(@Param("username") String authorisedUsername);
+    List<PermissionEntity> findAllByAuthorised(@Param("login") String authorisedUsername);
 
     @Query("""
             SELECT r from PermissionEntity r
@@ -30,9 +30,9 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
     @Query("""
             SELECT r.authority from PermissionEntity r
             JOIN r.authorised u
-            WHERE u.username = :username
+            WHERE u.login = :login
             """)
-    List<String> getAuthoritiesByAuthorised(@Param("username") String authorisedUsername);
+    List<String> getAuthoritiesByAuthorised(@Param("login") String authorisedUsername);
 
 
     @Query("""
@@ -53,11 +53,10 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
             insert into users_permissions
             select u.id, p.id
             from users u
-            join user_details ud on (u.id = ud.user_id)
             join permissions p on (p.authority = :permissionName)
-            where ud.nickname = :nickname
+            where u.username = :username
             """, nativeQuery = true)
-    void giveUserPermission(String nickname, String permissionName);
+    void giveUserPermission(String username, String permissionName);
 
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
@@ -75,8 +74,7 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
             "and up.user_id = " +
             "(select u.id  " +
             "from users u " +
-            "join user_details ud on u.id = ud.user_id " +
-            "where ud.nickname = :nickname " +
+            "where u.username = :username " +
             ");", nativeQuery = true)
-    void removeUsersPermission(String nickname, String permissionName);
+    void removeUsersPermission(String username, String permissionName);
 }

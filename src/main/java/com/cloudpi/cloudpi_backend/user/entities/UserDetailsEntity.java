@@ -11,8 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class UserDetailsEntity {
 
-    public UserDetailsEntity(@NonNull String nickname, String email, String pathToProfilePicture) {
-        this.nickname = nickname;
+    public UserDetailsEntity(String email, String pathToProfilePicture) {
         this.email = email;
         this.pathToProfilePicture = pathToProfilePicture;
     }
@@ -21,8 +20,7 @@ public class UserDetailsEntity {
      * For sending to other users in order to give opportunity
      * to share file with specific user
      */
-    @Column(nullable = false, unique = true)
-    private @NonNull String nickname;
+
     /**
      * Other option for logging
      */

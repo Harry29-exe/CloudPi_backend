@@ -11,6 +11,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class UserWithDetailsDTO {
     private Long id;
+    private String login;
     private String username;
     private Boolean locked;
     private AccountType accountType;

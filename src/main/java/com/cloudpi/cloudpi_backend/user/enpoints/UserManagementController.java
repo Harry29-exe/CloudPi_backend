@@ -40,9 +40,9 @@ public class UserManagementController implements UserManagementAPI {
     }
 
     @Override
-    public GetUserWithDetailsResponse getUserDetails(String nickname) {
-        var userWithDetails = userService.getUserDetails(nickname)
-                .orElseThrow(NoSuchUserException::notFoundByNickname);
+    public GetUserWithDetailsResponse getUserDetails(String username) {
+        var userWithDetails = userService.getUserDetails(username)
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         return UserRequestMapper.INSTANCE
                 .userWithDetailsDTOToResponse(userWithDetails);
@@ -53,7 +53,7 @@ public class UserManagementController implements UserManagementAPI {
     public void createNewUser(PostUserRequest user) {
         var dto = user.toUserWithDetails();
 
-        userService.createUserWithDefaultAuthorities(UserRequestMapper.INSTANCE.userCreateRequestToUserWithDetailsDTO(user), user.getPassword());
+        userService.createUserWithDefaultAuthorities(user.toUserWithDetails(), user.getPassword());
     }
 
     @Override

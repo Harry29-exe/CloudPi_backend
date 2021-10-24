@@ -7,13 +7,13 @@ public class NoSuchUserException extends RuntimeException {
 
     }
 
-    public static NoSuchUserException notFoundByNickname() {
-        return new NoSuchUserException(Types.WITH_NICKNAME);
+    public static NoSuchUserException notFoundByUsername() {
+        return new NoSuchUserException(Types.WITH_USERNAME);
     }
 
 
-    public static NoSuchUserException notFoundByUsername() {
-        return new NoSuchUserException(Types.WITH_USERNAME);
+    public static NoSuchUserException notFoundByLogin() {
+        return new NoSuchUserException(Types.WITH_LOGIN);
     }
 
 
@@ -22,8 +22,8 @@ public class NoSuchUserException extends RuntimeException {
     }
 
     private enum Types {
+        WITH_LOGIN("login"),
         WITH_USERNAME("username"),
-        WITH_NICKNAME("nickname"),
         WITH_EMAIL("email");
 
         public final String name;

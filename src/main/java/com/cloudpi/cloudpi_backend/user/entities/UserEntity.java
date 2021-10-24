@@ -34,7 +34,9 @@ public class UserEntity {
      * For logging
      */
     @Column(nullable = false, unique = true)
-    private @NonNull @NotBlank String username;
+    private @NonNull @NotBlank String login;
+    @Column(nullable = false, unique = true)
+    private @NonNull String username;
     @Column(nullable = false)
     private @NonNull @NotBlank String password;
     @Column(nullable = false)
@@ -81,7 +83,7 @@ public class UserEntity {
     @PrePersist
     @PreUpdate
     public void validateUser() {
-        if(userDetails.getNickname().equals(username)) {
+        if(username.equals(login)) {
             throw new InvalidUserData("Username and nickname must be different");
         }
     }

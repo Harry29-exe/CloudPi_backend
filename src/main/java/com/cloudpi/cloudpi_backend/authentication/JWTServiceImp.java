@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.security.authentication;
+package com.cloudpi.cloudpi_backend.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -18,6 +18,9 @@ public class JWTServiceImp implements JWTService {
     private final Long accessTokenExpireTime;
     private final Long refreshExpireTime;
 
+    private static final String usernameClaim = "sub";
+    private static final String tokenTypeClaim = "token";
+
     public JWTServiceImp(
             @Value("${cloud.pi.auth.jwt-secret}") String secret,
             @Value("${cloud.pi.auth.jwt-expire-time}") String accessTokenExpireTime,
@@ -28,16 +31,8 @@ public class JWTServiceImp implements JWTService {
     }
 
     @Override
-    public String createAccessToken(String userPrincipal) {
-        return this.createToken(userPrincipal, TokenType.ACCESS);
-    }
-
-    @Override
-    public String refreshAccessToken(String refreshToken) {
-        var decodedToken = JWT.decode(refreshToken);
-        this.validateRefreshToken(decodedToken);
-
-        return this.createToken(decodedToken.getClaim("user").asString(), TokenType.ACCESS);
+    public String createAccessToken(String nickname) {
+        return this.createToken(nickname, TokenType.ACCESS);
     }
 
     @Override
@@ -46,23 +41,18 @@ public class JWTServiceImp implements JWTService {
     }
 
     @Override
-    public String refreshRefreshToken(String refreshToken) {
+    public String refreshAccessToken(String refreshToken) {
         var decodedToken = JWT.decode(refreshToken);
         this.validateRefreshToken(decodedToken);
-        return createToken(decodedToken.getClaim("user").asString(), TokenType.REFRESH);
+
+        return this.createToken(decodedToken.getClaim(usernameClaim).asString(), TokenType.ACCESS);
     }
 
     @Override
-    public void validateRefreshToken(String refreshToken) {
-        try {
-            var jwt = JWT.decode(refreshToken);
-            var verifier = createVerifier(
-                    jwt.getClaim("user").asString(),
-                    jwt.getClaim("type").asString());
-            verifier.verify(jwt);
-        } catch (JWTVerificationException ex) {
-            throw new JWTTokenExpiredException();
-        }
+    public String refreshRefreshToken(String refreshToken) {
+        var decodedToken = JWT.decode(refreshToken);
+        this.validateRefreshToken(decodedToken);
+        return createToken(decodedToken.getClaim(usernameClaim).asString(), TokenType.REFRESH);
     }
 
     @Override
@@ -70,22 +60,10 @@ public class JWTServiceImp implements JWTService {
         try {
             var jwt = JWT.decode(jwtToken);
             var verifier = createVerifier(
-                    jwt.getClaim("user").asString(),
+                    jwt.getClaim(usernameClaim).asString(),
                     TokenType.ACCESS.name());
             verifier.verify(jwt);
 
-        } catch (JWTVerificationException ex) {
-            throw new JWTTokenExpiredException();
-        }
-    }
-
-    @Override
-    public void validateRefreshToken(DecodedJWT refreshToken) {
-        try {
-            var verifier = createVerifier(
-                    refreshToken.getClaim("user").asString(),
-                    refreshToken.getClaim("type").asString());
-            verifier.verify(refreshToken);
         } catch (JWTVerificationException ex) {
             throw new JWTTokenExpiredException();
         }
@@ -95,7 +73,7 @@ public class JWTServiceImp implements JWTService {
     public void validateAccessToken(DecodedJWT jwtToken) {
         try {
             var verifier = createVerifier(
-                    jwtToken.getClaim("user").asString(),
+                    jwtToken.getClaim(usernameClaim).asString(),
                     TokenType.ACCESS.name());
             verifier.verify(jwtToken);
 
@@ -104,17 +82,42 @@ public class JWTServiceImp implements JWTService {
         }
     }
 
-    private JWTVerifier createVerifier(String userPrincipal, String type) {
+    @Override
+    public void validateRefreshToken(String refreshToken) {
+        try {
+            var jwt = JWT.decode(refreshToken);
+            var verifier = createVerifier(
+                    jwt.getClaim(usernameClaim).asString(),
+                    jwt.getClaim(tokenTypeClaim).asString());
+            verifier.verify(jwt);
+        } catch (JWTVerificationException ex) {
+            throw new JWTTokenExpiredException();
+        }
+    }
+
+    @Override
+    public void validateRefreshToken(DecodedJWT refreshToken) {
+        try {
+            var verifier = createVerifier(
+                    refreshToken.getClaim(usernameClaim).asString(),
+                    refreshToken.getClaim(tokenTypeClaim).asString());
+            verifier.verify(refreshToken);
+        } catch (JWTVerificationException ex) {
+            throw new JWTTokenExpiredException();
+        }
+    }
+
+    private JWTVerifier createVerifier(String nickname, String type) {
         return JWT.require(this.jwtAlgorithm)
-                .withClaim("user", userPrincipal)
+                .withClaim(usernameClaim, nickname)
                 .withIssuer("CloudPi")
-                .withClaim("type", type)
+                .withClaim(tokenTypeClaim, type)
                 .build();
     }
 
-    private String createToken(String userPrincipal, TokenType type) {
+    private String createToken(String nickname, TokenType type) {
         return JWT.create()
-                .withClaim("user", userPrincipal)
+                .withClaim(usernameClaim, nickname)
                 .withIssuedAt(new Date())
                 .withExpiresAt(
                         new Date(System.currentTimeMillis() +
@@ -123,7 +126,7 @@ public class JWTServiceImp implements JWTService {
                                         this.refreshExpireTime)
                         ))
                 .withIssuer("CloudPi")
-                .withClaim("type", type.name())
+                .withClaim(tokenTypeClaim, type.name())
                 .sign(jwtAlgorithm);
     }
 

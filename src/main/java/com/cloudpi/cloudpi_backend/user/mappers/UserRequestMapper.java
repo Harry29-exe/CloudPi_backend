@@ -30,10 +30,5 @@ public interface UserRequestMapper {
      * to DTOs
      */
 
-    default UserWithDetailsDTO userCreateRequestToUserWithDetailsDTO(PostUserRequest request) {
-        return new UserWithDetailsDTO(null, request.getUsername(), false, request.getAccountType(),
-                new UserDetailsDTO(request.getNickname(), request.getEmail(), null));
-    }
-
     UserDetailsDTO userDetailsRequestToDTO(UpdateUserDetailsRequest request);
 }

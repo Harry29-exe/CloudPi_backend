@@ -1,22 +1,17 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
 import com.cloudpi.cloudpi_backend.authorities.services.AuthorityManagementService;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
-import com.cloudpi.cloudpi_backend.security.authority_system.PermissionModel;
-import com.cloudpi.cloudpi_backend.security.authority_system.RoleModel;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserDetailsRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
-import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,8 +54,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Optional<UserWithDetailsDTO> getUserDetails(String nickname) {
-        return repository.findByUserDetails_Nickname(nickname)
+    public Optional<UserWithDetailsDTO> getUserDetails(String username) {
+        return repository.findByUsername(username)
                 .map(UserEntity::toUserWithDetailsDTO);
     }
 
@@ -75,7 +70,7 @@ public class UserServiceImp implements UserService {
         List<AuthorityDTO> authoritiesThatCouldNotBeGiven = new ArrayList<>();
         for (var authority : defaultRoles) {
             try {
-                authorityService.giveUserAuthority(user.getUserDetails().getNickname(), authority);
+                authorityService.giveUserAuthority(user.getUsername(), authority);
             } catch (AccessDeniedException ex) {
                 authoritiesThatCouldNotBeGiven.add(authority);
             }
@@ -85,9 +80,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void updateUserDetails(String nickname, UserDetailsDTO userDetails) {
-        var user = repository.findByUserDetails_Nickname(nickname)
-                .orElseThrow(NoSuchUserException::notFoundByNickname);
+    public void updateUserDetails(String username, UserDetailsDTO userDetails) {
+        var user = repository.findByUsername(username)
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
         UserMapper.INSTANCE.updateUserEntity(user.getUserDetails(), userDetails);
 
         repository.save(user);
@@ -96,33 +91,33 @@ public class UserServiceImp implements UserService {
     @Override
     public void lockUser(UserPublicIdDTO user) {
         var userEntity = repository
-                .findByUserDetails_Nickname(user.getNickname())
-                .orElseThrow(NoSuchUserException::notFoundByNickname);
+                .findByUsername(user.getUsername())
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         userEntity.setLocked(true);
         repository.save(userEntity);
     }
 
     @Override
-    public void lockUser(String nickname) {
+    public void lockUser(String username) {
         var userEntity = repository
-                .findByUserDetails_Nickname(nickname)
-                .orElseThrow(NoSuchUserException::notFoundByNickname);
+                .findByUsername(username)
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         userEntity.setLocked(true);
         repository.save(userEntity);
     }
 
     @Override
-    public void deleteUser(String nickname) {
-        repository.deleteByUserDetails_Nickname(nickname);
+    public void deleteUser(String username) {
+        repository.deleteByUsername(username);
     }
 
     @Override
-    public void scheduleUserDeleting(String nickname) {
+    public void scheduleUserDeleting(String username) {
         var userToBeDeleted = repository
-                .findByUserDetails_Nickname(nickname)
-                .orElseThrow(NoSuchUserException::notFoundByNickname);
+                .findByUsername(username)
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         userToBeDeleted.setUserDeleteSchedule(
                 new UserDeleteEntity()

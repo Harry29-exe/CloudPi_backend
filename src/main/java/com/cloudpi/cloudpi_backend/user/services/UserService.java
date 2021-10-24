@@ -38,7 +38,7 @@ public interface UserService {
 
     @PreAuthorize(
             "hasAuthority("+MODIFY+") or " +
-            "#userDTO.username == principal"
+            "#userDTO.login == principal"
     )
     void updateUserDetails(String nickname, UserDetailsDTO userDetails);
 
@@ -50,13 +50,13 @@ public interface UserService {
 
     @PreAuthorize(
             "hasAuthority("+DELETE+") or "+
-            "#user.username == principal"
+            "#user.login == principal"
     )
     void deleteUser(String nickname);
 
     @PreAuthorize(
             "hasAuthority("+SCHEDULE_DELETE+") or "+
-            "#user.username = principal"
+            "#user.login = principal"
     )
     void scheduleUserDeleting(String nickname);
 

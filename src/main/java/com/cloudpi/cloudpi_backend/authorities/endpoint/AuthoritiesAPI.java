@@ -15,12 +15,12 @@ import java.util.List;
 public interface AuthoritiesAPI {
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{username}/canBeGiven")
+    @GetMapping("/{login}/canBeGiven")
     GetAuthoritiesInfoResponse getAvailableAuthorities(Authentication auth);
 
     @Secured(AuthoritiesAPIAuthorities.READ)
-    @GetMapping("/{username}")
-    List<String> getAuthorities(@Param("username") String username);
+    @GetMapping("/{login}")
+    List<String> getAuthorities(@Param("login") String username);
 
     @Secured((AuthoritiesAPIAuthorities.GIVE))
     @PostMapping("/{userId}")
