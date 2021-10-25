@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +19,11 @@ public interface UserService {
     @PreAuthorize("isAuthenticated()")
     ImmutableList<UserPublicIdDTO> getAllUsers();
 
-    @RolesAllowed(GET_DETAILS)
-    Optional<UserWithDetailsDTO> getUserDetails(String nickname);
+    @Secured(GET_DETAILS)
+    Optional<UserWithDetailsDTO> getUserDetails(String username);
 
-    @RolesAllowed(GET_DETAILS)
+//    @PreAuthorize("hasAuthority('"+GET_DETAILS+"')")
+    @Secured(GET_DETAILS)
     List<UserWithDetailsDTO> getAllUsersWithDetails();
 
     /**
@@ -33,7 +33,7 @@ public interface UserService {
      * because creator of the user doesn't have rights to give them
      */
 //    @PreAuthorize("hasAuthority('"+CREATE+"')")
-    @RolesAllowed(CREATE)
+    @Secured(CREATE)
     List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword);
 
     @PreAuthorize(
@@ -42,10 +42,10 @@ public interface UserService {
     )
     void updateUserDetails(String nickname, UserDetailsDTO userDetails);
 
-    @RolesAllowed(LOCK)
+    @Secured(LOCK)
     void lockUser(UserPublicIdDTO user);
 
-    @RolesAllowed(LOCK)
+    @Secured(LOCK)
     void lockUser(String nickname);
 
     @PreAuthorize(

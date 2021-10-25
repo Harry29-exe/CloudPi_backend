@@ -7,7 +7,6 @@ import java.util.List;
 
 public record GetUserWithDetailsResponse(
         String username,
-        String nickname,
         @Nullable String email,
         Boolean isLocked,
         AccountType accountType,

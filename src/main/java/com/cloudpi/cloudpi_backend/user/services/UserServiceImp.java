@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.cloudpi.cloudpi_backend.user.enpoints.UserAPIAuthorities.GET_DETAILS;
+
 @Service
 public class UserServiceImp implements UserService {
     private final UserRepository repository;

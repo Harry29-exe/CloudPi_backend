@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user-management/")
 public class UserManagementController implements UserManagementAPI {
     private final UserService userService;
 
