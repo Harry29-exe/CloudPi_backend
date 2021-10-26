@@ -30,26 +30,26 @@ public interface UserManagementAPI {
 
 //    @Secured(UserAPIAuthorities.GET_DETAILS)
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("user/{username}")
+    @GetMapping("{username}")
     GetUserWithDetailsResponse getUserDetails(@PathVariable(name = "username") String username);
 
 //    @Secured(UserAPIAuthorities.CREATE)
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("user")
+    @PostMapping("")
     void createNewUser(@RequestBody @Valid PostUserRequest user);
 
 //    @PreAuthorize("hasAuthority(USER_MODIFY) or" +
 //            "#login == principal")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("user/{username}")
+    @PatchMapping("{username}")
     void updateUserDetails(@RequestParam("username") String username,
                            @RequestBody UpdateUserDetailsRequest request);
 
 //    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("user/schedule-delete/{username}")
+    @DeleteMapping("{username}")
     void scheduleUserDelete(@PathVariable(name = "username") String username);
 
 //    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("user/{username}")
+    @DeleteMapping("{username}/delete-now")
     void deleteUser(@PathVariable(name = "username") String username);
 }

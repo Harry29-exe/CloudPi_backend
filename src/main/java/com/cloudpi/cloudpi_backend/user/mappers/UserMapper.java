@@ -1,6 +1,8 @@
 package com.cloudpi.cloudpi_backend.user.mappers;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
+import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
@@ -12,6 +14,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -19,14 +23,9 @@ public interface UserMapper {
 
     UserWithDetailsDTO userEntityToUserWithDetailsDTO(UserEntity userEntity);
 
+    UserDetailsEntity userDetailsDTOToEntity(UserEntity entity);
 
-
-    @Mappings({
-            @Mapping(target = "usersDrives", ignore = true),
-            @Mapping(target = "filesPermissions", ignore = true)
-    })
-    UserEntity userDTOToUserEntity(UserWithDetailsDTO userWithDetailsDTO);
-
+    @Mapping(target = "pathToProfilePicture", expression = "java(userEntity.getUserDetails().getPathToProfilePicture())")
     UserPublicIdDTO userEntityToUserPublicIdDTO(UserEntity userEntity);
 
     UserDetailsDTO userDetailsEntityToDTO(UserDetailsEntity entity);
@@ -38,5 +37,14 @@ public interface UserMapper {
 
     default GrantedAuthority entityToGrantedAuthority(PermissionEntity entity) {
         return new SimpleGrantedAuthority(entity.getAuthority());
+    }
+
+
+    default Collection<String> permissionToString(Collection<PermissionEntity> entity) {
+        return entity.stream().map(PermissionEntity::getAuthority).toList();
+    }
+
+    default Collection<String> roleToString(Collection<RoleEntity> entity) {
+        return entity.stream().map(RoleEntity::getRole).toList();
     }
 }

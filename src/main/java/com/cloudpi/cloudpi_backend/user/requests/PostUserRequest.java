@@ -29,7 +29,9 @@ public class PostUserRequest {
                 username,
                 false,
                 accountType,
+                null,
+                null,
                 new UserDetailsDTO(email, null)
-        );
+                );
     }
 }

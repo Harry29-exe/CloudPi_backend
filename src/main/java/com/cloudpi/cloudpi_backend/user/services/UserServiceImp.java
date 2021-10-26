@@ -8,6 +8,7 @@ import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
+import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserDetailsRepository;
@@ -63,8 +64,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword) {
-        var userEntity = user.toUserEntity();
-        userEntity.setPassword(passwordEncoder.encode(nonEncodedPassword));
+        var userEntity = new UserEntity(null, user.getLogin(), user.getUsername(),
+                passwordEncoder.encode(nonEncodedPassword), false,
+                user.getAccountType(), user.getUserDetails().toEntity(),
+                null, null, null, null, null);
+
         userEntity.getUserDetails().setUser(userEntity);
         repository.save(userEntity);
 

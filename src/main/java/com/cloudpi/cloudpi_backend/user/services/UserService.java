@@ -19,10 +19,10 @@ public interface UserService {
     @PreAuthorize("isAuthenticated()")
     ImmutableList<UserPublicIdDTO> getAllUsers();
 
-    @Secured(GET_DETAILS)
+    @PreAuthorize("#username == authentication.principal or " +
+            "hasAuthority('"+GET_DETAILS+"')")
     Optional<UserWithDetailsDTO> getUserDetails(String username);
 
-//    @PreAuthorize("hasAuthority('"+GET_DETAILS+"')")
     @Secured(GET_DETAILS)
     List<UserWithDetailsDTO> getAllUsersWithDetails();
 
@@ -32,32 +32,31 @@ public interface UserService {
      * @return the authorities that could not be added to user
      * because creator of the user doesn't have rights to give them
      */
-//    @PreAuthorize("hasAuthority('"+CREATE+"')")
     @Secured(CREATE)
     List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword);
 
     @PreAuthorize(
-            "hasAuthority("+MODIFY+") or " +
-            "#userDTO.login == principal"
+            "hasAuthority('"+MODIFY+"') or " +
+            "#username == principal"
     )
-    void updateUserDetails(String nickname, UserDetailsDTO userDetails);
+    void updateUserDetails(String username, UserDetailsDTO userDetails);
 
     @Secured(LOCK)
     void lockUser(UserPublicIdDTO user);
 
     @Secured(LOCK)
-    void lockUser(String nickname);
+    void lockUser(String username);
 
     @PreAuthorize(
-            "hasAuthority("+DELETE+") or "+
-            "#user.login == principal"
+            "hasAuthority('"+DELETE+"') or "+
+            "#username == principal"
     )
-    void deleteUser(String nickname);
+    void deleteUser(String username);
 
     @PreAuthorize(
-            "hasAuthority("+SCHEDULE_DELETE+") or "+
-            "#user.login = principal"
+            "hasAuthority('"+SCHEDULE_DELETE+"') or "+
+            "#username == principal"
     )
-    void scheduleUserDeleting(String nickname);
+    void scheduleUserDeleting(String username);
 
 }
