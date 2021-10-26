@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.test.utils;
+package com.cloudpi.cloudpi_backend.test.utils.assertions;
 
 public interface ModelComparator<T1, T2>  {
 
