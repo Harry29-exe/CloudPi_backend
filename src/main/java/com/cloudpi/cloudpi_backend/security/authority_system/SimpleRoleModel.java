@@ -1,10 +1,9 @@
 package com.cloudpi.cloudpi_backend.security.authority_system;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityType;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSortedSet;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

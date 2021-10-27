@@ -1,11 +1,10 @@
 package com.cloudpi.cloudpi_backend.authorities.services;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityType;
 import com.cloudpi.cloudpi_backend.authorities.repositories.PermissionRepository;
 import com.cloudpi.cloudpi_backend.authorities.repositories.RoleRepository;
 import org.apache.commons.lang3.NotImplementedException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

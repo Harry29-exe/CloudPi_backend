@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.security.authority_system;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.authorities.pojo.AuthorityType;
+import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityType;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;

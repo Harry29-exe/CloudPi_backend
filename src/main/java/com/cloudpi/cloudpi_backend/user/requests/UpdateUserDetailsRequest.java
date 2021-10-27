@@ -13,5 +13,7 @@ public class UpdateUserDetailsRequest {
     private String username;
     @Nullable
     private String email;
+    @Nullable
+    private String pathToProfilePicture;
 
 }

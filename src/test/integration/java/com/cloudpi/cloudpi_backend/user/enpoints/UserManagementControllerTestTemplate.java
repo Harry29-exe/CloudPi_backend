@@ -49,12 +49,21 @@ abstract class UserManagementControllerTestTemplate {
     
     protected ModelComparator<UserWithDetailsDTO, GetUserWithDetailsResponse> getGetUserWithDetailsComparator() {
         return (u, r) -> {
-            Assertions.assertThat(r.usersRoles()).hasSameElementsAs(u.getRoles().stream().map(AuthorityDTO::authority).toList());
-            Assertions.assertThat(r.usersPermissions()).hasSameElementsAs(u.getPermissions().stream().map(AuthorityDTO::authority).toList());
-
-            return r.isLocked().equals(u.getLocked()) &&
-                    r.username().equals(u.getUsername()) &&
-                    r.accountType().equals(u.getAccountType()) &&
+            if(u.getRoles() != null) {
+                if (r.usersRoles() != null && r.usersRoles().size() > 0) {
+                    throw new AssertionError("User DTO object has not any role while");
+                }
+                Assertions.assertThat(r.usersRoles()).hasSameElementsAs(u.getRoles().stream().map(AuthorityDTO::authority).toList());
+            }
+            if(u.getPermissions() != null) {
+                if (r.usersPermissions() != null && r.usersPermissions().size() > 0) {
+                    throw new AssertionError();
+                }
+                Assertions.assertThat(r.usersPermissions()).hasSameElementsAs(u.getPermissions().stream().map(AuthorityDTO::authority).toList());
+            }
+            return Objects.equals(r.isLocked(), u.getLocked()) &&
+                    Objects.equals(r.username(),u.getUsername()) &&
+                    Objects.equals(r.accountType(), u.getAccountType()) &&
                     Objects.equals(r.email(), u.getUserDetails().getEmail());
         };
     }
@@ -118,8 +127,7 @@ class GetALL extends UserManagementControllerTestTemplate {
         }
 
         @Test
-//        @WithMockUser(setupBefore = TestExecutionEvent.TEST_EXECUTION)
-        @WithUser(username = "we", authorities = UserAPIAuthorities.MODIFY)
+        @WithUser
         public void should_return_all_users() throws Exception {
             //given
 
@@ -158,7 +166,7 @@ class GetALL extends UserManagementControllerTestTemplate {
     }
 
     @Test
-    @WithMockUser(setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUser
     void should_return_empty_list() throws Exception {
         //when
         var result = mock.perform(
@@ -188,7 +196,7 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
         }
 
         @Test
-        @WithMockUser(authorities = {UserAPIAuthorities.GET_DETAILS})
+        @WithUser(authorities = {UserAPIAuthorities.GET_DETAILS})
         public void should_return_200_with_userWithDetails_list() throws Exception {
 
             //when
@@ -207,7 +215,7 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
         }
 
         @Test
-        @WithMockUser
+        @WithUser
         public void should_return_403_to_unauthorized_user() throws Exception {
 
             //when
@@ -233,7 +241,7 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
     }
 
     @Test
-    @WithMockUser
+    @WithUser(authorities = UserAPIAuthorities.GET_DETAILS)
     void should_return_empty_list() throws Exception {
         //when
         var result = mock.perform(
@@ -258,7 +266,7 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
     }
 
     @Test
-    @WithMockUser(authorities = UserAPIAuthorities.GET_DETAILS)
+    @WithUser(authorities = UserAPIAuthorities.GET_DETAILS)
     public void should_return_user_details() throws Exception {
         //given
         var searchedUser = usersInDB.get(0);
@@ -279,7 +287,7 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
     }
 
     @Test
-    @WithMockUser(username = "bob")
+    @WithUser(username = "bob")
     public void should_return_users_own_details() throws Exception {
         //given
         var searchedUser = usersInDB.stream()
@@ -329,18 +337,16 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
     }
 
     @Test
-    @WithMockUser(authorities = UserAPIAuthorities.GET_DETAILS)
+    @WithUser(authorities = UserAPIAuthorities.GET_DETAILS)
     public void should_return_404_when_sought_user_does_not_exist() throws Exception {
         //given
-        var searchedUsername = usersInDB.get(0).getUsername();
+        var searchedUsername = "steve";
 
         //when
         var result = mock.perform(
                 get(testingEndpoint + searchedUsername)
         ).andExpect(
                 status().is(404)
-        ).andExpect(
-                content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn();
     }
 }

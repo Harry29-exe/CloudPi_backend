@@ -23,6 +23,12 @@ public interface UserRequestMapper {
      */
     GetUserResponse userDTOToResponse(UserPublicIdDTO user);
 
+    @Mappings({
+            @Mapping(target = "usersRoles", expression = "java(userDTO.getRoles().stream().map(com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO::authority).toList())"),
+            @Mapping(target = "usersPermissions", expression = "java(userDTO.getPermissions().stream().map(com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO::authority).toList())"),
+            @Mapping(target = "email", expression = "java(userDTO.getUserDetails().getEmail())"),
+            @Mapping(target = "isLocked", source = "locked")
+    })
     GetUserWithDetailsResponse userWithDetailsDTOToResponse(UserWithDetailsDTO userDTO);
 
 
@@ -30,5 +36,6 @@ public interface UserRequestMapper {
      * to DTOs
      */
 
+    @Mapping(target = "pathToProfilePicture", expression = "java(request.getPathToProfilePicture())")
     UserDetailsDTO userDetailsRequestToDTO(UpdateUserDetailsRequest request);
 }
