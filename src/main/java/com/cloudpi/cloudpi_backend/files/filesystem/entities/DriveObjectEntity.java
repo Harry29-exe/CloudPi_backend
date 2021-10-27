@@ -17,15 +17,24 @@ import java.util.Date;
 
 @Entity
 @Table(name = "drive_objects")
-@DiscriminatorValue(value = "DRIVE_OBJECT")
-public class DriveObjectEntity extends DiscObjectIdEntity {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class DriveObjectEntity {
+
+    @Id
+    @Column(name = "id")
+    private Long id;
+    @MapKey
+    @JoinColumn
+    @OneToOne
+    private FilesystemIdEntity fsId;
+
     @Column(nullable = false)
     private String name;
     @Column(unique = true, nullable = false)
     private String relativePath;
     @ManyToOne
     @JoinColumn(name = "parent_id", nullable = false)
-    private DiscObjectIdEntity parent;
+    private FilesystemIdEntity parent;
     @ManyToOne
     @JoinColumn(name = "root_id", nullable = false)
     private RootDirectoryEntity root;

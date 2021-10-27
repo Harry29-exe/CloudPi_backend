@@ -18,8 +18,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "directories")
-@DiscriminatorValue("DIRECTORY")
+//@DiscriminatorValue("DIRECTORY")
 public class DirectoryEntity extends DriveObjectEntity {
+
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DriveObjectEntity> children;
     @Column(nullable = false)

@@ -18,9 +18,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "disc_object_id")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "disc_object_type", discriminatorType = DiscriminatorType.STRING)
-public class DiscObjectIdEntity {
+public class FilesystemIdEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "filesystem_id", nullable = false)
@@ -41,7 +39,7 @@ public class DiscObjectIdEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DiscObjectIdEntity that = (DiscObjectIdEntity) o;
+        FilesystemIdEntity that = (FilesystemIdEntity) o;
 
         return Objects.equals(id, that.id);
     }

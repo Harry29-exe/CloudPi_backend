@@ -3,6 +3,7 @@ package com.cloudpi.cloudpi_backend.user.utils;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.FilesystemIdEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
@@ -23,7 +24,7 @@ public final class UserEntityBuilder {
     private UserDeleteEntity userDeleteSchedule;
     private Set<RoleEntity> roles;
     private Set<PermissionEntity> permissions;
-    private List<DriveObjectEntity> filesInfo;
+    private List<FilesystemIdEntity> filesInfo;
     private List<FilePermissionEntity> filesPermissions;
 
     private UserEntityBuilder() {
@@ -116,7 +117,7 @@ public final class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder withFilesInfo(List<DriveObjectEntity> filesInfo) {
+    public UserEntityBuilder withFilesInfo(List<FilesystemIdEntity> filesInfo) {
         this.filesInfo = filesInfo;
         return this;
     }

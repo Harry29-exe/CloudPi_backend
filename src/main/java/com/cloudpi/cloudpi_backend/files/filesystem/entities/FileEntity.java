@@ -20,7 +20,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "files")
-@DiscriminatorValue("FILE")
+//@DiscriminatorValue("FILE")
 public class FileEntity extends DriveObjectEntity {
     @Column(nullable = false)
     Long size;

@@ -4,6 +4,7 @@ import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.FilesystemIdEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
@@ -81,7 +82,7 @@ public class UserEntity {
     private Set<PermissionEntity> permissions;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<DriveObjectEntity> usersDrives;
+    private List<FilesystemIdEntity> usersDrives;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<FilePermissionEntity> filesPermissions;
 

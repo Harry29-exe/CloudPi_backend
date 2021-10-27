@@ -17,8 +17,17 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "root_directories")
-@DiscriminatorValue("DIRECTORY")
-public class RootDirectoryEntity extends DiscObjectIdEntity {
+//@DiscriminatorValue("DIRECTORY")
+public class RootDirectoryEntity {
+
+    @Id
+    @Column(name = "id")
+    private Long id;
+    @MapKey
+    @JoinColumn
+    @OneToOne
+    private FilesystemIdEntity fsId;
+
     @Column(nullable = false)
     private String systemPath;
     @JoinColumn(nullable = false)

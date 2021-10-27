@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.permissions.entities;
 
 
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DiscObjectIdEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.FilesystemIdEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.pojo.FilePermissionType;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.AllArgsConstructor;
@@ -28,5 +28,5 @@ public class FilePermissionEntity {
     private UserEntity user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fs_id")
-    private DiscObjectIdEntity file;
+    private FilesystemIdEntity file;
 }
