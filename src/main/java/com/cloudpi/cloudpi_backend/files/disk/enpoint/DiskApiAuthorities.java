@@ -1,10 +1,10 @@
-package com.cloudpi.cloudpi_backend.files.disc.enpoint;
+package com.cloudpi.cloudpi_backend.files.disk.enpoint;
 
 import com.cloudpi.cloudpi_backend.security.authority_system.annotations.ContainsPermissions;
 import com.cloudpi.cloudpi_backend.security.authority_system.annotations.Permission;
 
 @ContainsPermissions
-public class DiscApiAuthorities {
+public class DiskApiAuthorities {
 
     @Permission
     public static final String GET_DISC_INFO = "GET_DISC_INFO";

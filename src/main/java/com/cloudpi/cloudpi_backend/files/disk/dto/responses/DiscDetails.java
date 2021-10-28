@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.files.disc.dto.responses;
+package com.cloudpi.cloudpi_backend.files.disk.dto.responses;
 
-import com.cloudpi.cloudpi_backend.files.disc.dto.UserDriveDTO;
+import com.cloudpi.cloudpi_backend.files.disk.dto.UserDriveDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.disc.dto;
+package com.cloudpi.cloudpi_backend.files.disk.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

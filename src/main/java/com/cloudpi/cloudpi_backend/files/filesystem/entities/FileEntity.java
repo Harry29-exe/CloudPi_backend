@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
@@ -20,10 +17,12 @@ import java.util.Date;
 
 @Entity
 @Table(name = "files")
-//@DiscriminatorValue("FILE")
 public class FileEntity extends DriveObjectEntity {
     @Column(nullable = false)
-    Long size;
+    private Long size;
     @Column(nullable = false)
-    Date modifiedAt;
+    private Date modifiedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drive_files")
+    private DirectoryEntity drive;
 }

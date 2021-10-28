@@ -1,11 +1,9 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
-import com.cloudpi.cloudpi_backend.files.disc.entities.DiscEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -26,11 +24,6 @@ public class RootDirectoryEntity {
     @OneToOne
     private FilesystemIdEntity fsId;
 
-    @Column(nullable = false)
-    private String systemPath;
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DiscEntity disc;
     @Column(nullable = false)
     private Long assignedCapacity;
     @Column(nullable = false)

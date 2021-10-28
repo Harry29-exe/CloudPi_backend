@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.disc.dto.requests;
+package com.cloudpi.cloudpi_backend.files.disk.dto.requests;
 
 public record CreateNewDrive(
         Long userId,
