@@ -1,8 +1,8 @@
-package com.cloudpi.cloudpi_backend.files.disk.enpoint;
+package com.cloudpi.cloudpi_backend.files.disc.enpoint;
 
-import com.cloudpi.cloudpi_backend.files.disk.enpoint.requests.CreateNewDrive;
-import com.cloudpi.cloudpi_backend.files.disk.enpoint.responses.DiscDetails;
-import com.cloudpi.cloudpi_backend.files.disk.enpoint.responses.DiscInfo;
+import com.cloudpi.cloudpi_backend.files.disc.dto.requests.CreateNewDrive;
+import com.cloudpi.cloudpi_backend.files.disc.dto.responses.DiscDetails;
+import com.cloudpi.cloudpi_backend.files.disc.dto.responses.DiscInfo;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,11 +23,6 @@ public class DiscInfoController implements DiscInfoAPI {
     @Override
     public List<DiscInfo> getDrivesDisc(String driveId) {
         return null;
-    }
-
-    @Override
-    public void createNewDrive(CreateNewDrive body) {
-
     }
 
     @Override

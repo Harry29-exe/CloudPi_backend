@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.files.disk.entities;
+package com.cloudpi.cloudpi_backend.files.disc.entities;
 
-import com.cloudpi.cloudpi_backend.files.disk.pojo.DiscType;
+import com.cloudpi.cloudpi_backend.files.disc.pojo.DiscType;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.RootDirectoryEntity;
 import lombok.*;
 

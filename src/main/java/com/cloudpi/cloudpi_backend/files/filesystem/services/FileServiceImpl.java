@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import org.hibernate.engine.jdbc.internal.BinaryStreamImpl;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,11 +13,26 @@ import java.net.URI;
 import java.nio.file.*;
 
 @Service
-public class FileServiceImpl {
+public class FileServiceImpl implements FileService {
     private final Path root = Paths.get("/home/kamil/spring-test/");
 
-    public void saveFile(String path, byte[] file) throws IOException {
-        var stream = new ByteArrayInputStream(file);
-        Files.copy(stream, root.resolve(path));
+    @Override
+    public void saveFile(String path, InputStream file) throws IOException {
+        Files.copy(file, root.resolve(path));
+    }
+
+    @Override
+    public void createDirectory(String path) {
+
+    }
+
+    @Override
+    public Resource readFile(String path) {
+        return null;
+    }
+
+    @Override
+    public void deleteFile(String path) {
+
     }
 }

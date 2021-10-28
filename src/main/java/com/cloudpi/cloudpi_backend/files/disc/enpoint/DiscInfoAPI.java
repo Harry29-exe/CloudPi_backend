@@ -1,16 +1,14 @@
-package com.cloudpi.cloudpi_backend.files.disk.enpoint;
+package com.cloudpi.cloudpi_backend.files.disc.enpoint;
 
-import com.cloudpi.cloudpi_backend.files.disk.enpoint.requests.CreateNewDrive;
-import com.cloudpi.cloudpi_backend.files.disk.enpoint.responses.DiscDetails;
-import com.cloudpi.cloudpi_backend.files.disk.enpoint.responses.DiscInfo;
+import com.cloudpi.cloudpi_backend.files.disc.dto.responses.DiscDetails;
+import com.cloudpi.cloudpi_backend.files.disc.dto.responses.DiscInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/disc")
+@RequestMapping("/discs")
 public interface DiscInfoAPI {
 
     @Secured(DiscApiAuthorities.GET_DISC_INFO)
@@ -27,11 +25,6 @@ public interface DiscInfoAPI {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/drive/{driveId}")
     List<DiscInfo> getDrivesDisc(@RequestParam("driveId") String driveId);
-
-    @Secured(DiscApiAuthorities.MODIFY_DISCS)
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{discId}")
-    void createNewDrive(@RequestBody @Valid CreateNewDrive body);
 
     @Secured(DiscApiAuthorities.MODIFY_DISCS)
     @ResponseStatus(HttpStatus.OK)

@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileServiceImpl;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,27 +16,39 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/files/")
 public class FileAPIController implements FileAPI {
-    private FileServiceImpl fileService;
+    private FileService fileService;
 
-    public FileAPIController(FileServiceImpl fileService) {
+    public FileAPIController(FileService fileService) {
         this.fileService = fileService;
     }
 
     @Override
-    public DirectoryDto getUsersFileStructure(String username) {
-        return null;
+    public byte[] downloadFile(String fileId) {
+        return new byte[0];
     }
 
     @Override
-    public FileDto getFileInfo(String filePath) {
-        return null;
+    public void uploadNewFile(String filepath, byte[] file) throws IOException {
+        fileService.saveFile(filepath, new ByteArrayInputStream(file));
     }
 
-    @PostMapping(
-            path = "upload-file/{filepath}",
-            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
-    public void uploadNewFile(@PathVariable String filepath, @RequestBody byte[] file) throws IOException {
-        fileService.saveFile(filepath, file);
+    @Override
+    public void forceUploadNewFile(String filePath, byte[] file) throws IOException {
+
+    }
+
+    @Override
+    public void uploadNewImage(String imageName, byte[] image, Authentication auth) {
+
+    }
+
+    @Override
+    public void createDirectory(String directoryPath) {
+
+    }
+
+    @Override
+    public byte[] compressAndDownloadDirectory(String directoryId) {
+        return new byte[0];
     }
 }

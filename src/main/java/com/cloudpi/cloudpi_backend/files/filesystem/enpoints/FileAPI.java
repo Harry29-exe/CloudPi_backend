@@ -16,23 +16,35 @@ import java.io.InputStream;
 @RequestMapping("/files/")
 public interface FileAPI {
 
-    @GetMapping("user/{username}")
-    DirectoryDto getUsersFileStructure(@PathVariable("username") String username);
-
-//    @GetMapping("user/{username}/s")
-
-    @GetMapping("info/{filename}")
-    FileDto getFileInfo(@PathVariable("filename") String filePath);
-
-//    @PostMapping(
-//            name = "upload-file/{filepath}",
-//            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
-//    )
-//    void uploadNewFile(@PathVariable String filepath, @RequestParam("file") MultipartFile file) throws IOException;
-
     @PostMapping(
-            name = "upload-file/{filepath}",
+            path = "image/{imageName}",
             consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    void uploadNewFile(@PathVariable String filepath, @RequestBody byte[] file) throws IOException;
+    void uploadNewImage(@PathVariable String imageName, @RequestBody byte[] image, Authentication auth);
+
+    /**
+      * @param filePath path to file e.g. bob:/someDirectory/someFile.fileExtension
+     * @param file uploaded file
+     */
+    @PostMapping(
+            path = "file/{filePath}",
+            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    void uploadNewFile(@PathVariable String filePath, @RequestBody byte[] file) throws IOException;
+
+    @PutMapping(
+            path = "file/{filePath}",
+            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    void forceUploadNewFile(@PathVariable String filePath, @RequestBody byte[] file) throws IOException;
+
+    @GetMapping("file/{fileId}")
+    byte[] downloadFile(@PathVariable String fileId);
+
+    @PostMapping("directory/{directoryPath}")
+    void createDirectory(@PathVariable String directoryPath);
+
+    @GetMapping("directory/{directoryId}")
+    byte[] compressAndDownloadDirectory(@PathVariable String directoryId);
+
 }

@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component;
 public class FileAuthorityVerifier {
 
     //TODO
-    public boolean isOwner(String username, Long discObjectId) {
+    public boolean isOwner(String username, String path) {
         throw new NotImplementedException();
     }
 
     //TODO
-    public boolean canRead(String username, Long discObjectId) {
+    public boolean canRead(String username, String path) {
         throw new NotImplementedException();
     }
 
     //TODO
-    public boolean canWrite(String username, Long discObjectId) {
+    public boolean canWrite(String username, String path) {
         throw new NotImplementedException();
     }
 
     //TODO
-    public boolean canShare(String username, Long discObjectId) {
+    public boolean canShare(String username, String path) {
         throw new NotImplementedException();
     }
 }

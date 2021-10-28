@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
-import com.cloudpi.cloudpi_backend.files.disk.entities.DiscEntity;
+import com.cloudpi.cloudpi_backend.files.disc.entities.DiscEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +11,11 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
 @Table(name = "root_directories")
-//@DiscriminatorValue("DIRECTORY")
 public class RootDirectoryEntity {
 
     @Id
