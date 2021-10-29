@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,13 @@ public interface FileAPI {
       * @param filePath path to file e.g. bob:/someDirectory/someFile.fileExtension
      * @param file uploaded file
      */
+    @Operation(
+            summary = "File upload endpoint",
+            description = """
+                    Allows to upload file to server. Based on filePath server check current user permissions
+                    and if user has rights to save file then request body is saved to disc.  
+                    """
+    )
     @PostMapping(
             path = "file/{filePath}",
             consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE

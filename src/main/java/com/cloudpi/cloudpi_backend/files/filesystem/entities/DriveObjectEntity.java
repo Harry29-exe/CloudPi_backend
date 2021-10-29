@@ -25,7 +25,7 @@ public abstract class DriveObjectEntity {
     private Long id;
     @MapKey
     @JoinColumn
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private FilesystemIdEntity fsId;
 
     @Column(nullable = false)

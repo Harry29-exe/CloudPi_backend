@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -14,9 +13,7 @@ import java.util.List;
 @Builder
 public class DiscDTO {
     private String discName;
-    @Nullable
-    private String pathToDrives;
     private Long totalCapacity;
     private Long freeSpace;
-    private List<UserDriveDTO> userDiscRoots;
+    private List<DriveDTO> discDrives;
 }

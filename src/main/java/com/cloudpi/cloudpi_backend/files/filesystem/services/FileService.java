@@ -15,8 +15,10 @@ public interface FileService {
     @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
     void createDirectory(String path);
 
+    @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
     Resource readFile(String path);
 
+    @PreAuthorize("fileAuthorityVerifier.canWrite(Principal, #path)")
     void deleteFile(String path);
 
 }

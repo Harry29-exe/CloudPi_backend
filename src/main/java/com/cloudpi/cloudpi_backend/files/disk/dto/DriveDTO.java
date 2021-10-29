@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDriveDTO {
+public class DriveDTO {
     private Long id;
-    private String ownerUsername;
     private Long assignedCapacity;
     private Long usedCapacity;
+    private Long discId;
 }
