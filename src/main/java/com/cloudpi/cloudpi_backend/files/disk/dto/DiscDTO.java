@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.files.disk.dto;
 
-import com.cloudpi.cloudpi_backend.files.disk.pojo.DriveType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,6 @@ import java.util.List;
 @Builder
 public class DiscDTO {
     private String discName;
-    private DriveType type;
     @Nullable
     private String pathToDrives;
     private Long totalCapacity;

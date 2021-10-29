@@ -37,7 +37,7 @@ public abstract class DriveObjectEntity {
     private FilesystemIdEntity parent;
     @ManyToOne
     @JoinColumn(name = "root_id", nullable = false)
-    private RootDirectoryEntity root;
+    private VirtualDriveEntity root;
     @Column(nullable = false, updatable = false)
     private Date createdAt;
 }

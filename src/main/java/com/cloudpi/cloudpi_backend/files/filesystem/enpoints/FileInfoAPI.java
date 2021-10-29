@@ -2,12 +2,11 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
+import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RequestMapping("/file-info/")
 public interface FileInfoAPI {
@@ -26,5 +25,11 @@ public interface FileInfoAPI {
             @PathVariable("fileId") Long fileId,
             @PathVariable(name = "with-permissions", required = false)
                     Boolean withPermissions);
+
+    @GetMapping("users-drives")
+    List<GetUserDriveInfo> getUsersDrivesInfo();
+
+    @PostMapping("users-drives/{username}")
+    void changeDriveMaxSize(@RequestParam Long newAssignedSpace);
 
 }

@@ -13,8 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "root_directories")
-public class RootDirectoryEntity {
+@Table(name = "virtual_drives")
+public class VirtualDriveEntity {
 
     @Id
     @Column(name = "id")
