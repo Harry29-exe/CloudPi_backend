@@ -20,7 +20,7 @@ public class VirtualDriveEntity {
     @Column(name = "id")
     private Long id;
     @MapKey
-    @JoinColumn
+    @JoinColumn(nullable = false)
     @OneToOne
     private FilesystemIdEntity fsId;
 

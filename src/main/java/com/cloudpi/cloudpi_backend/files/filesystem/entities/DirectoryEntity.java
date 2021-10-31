@@ -14,18 +14,17 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 
 @Entity
 @Table(name = "directories")
-//@DiscriminatorValue("DIRECTORY")
 public class DirectoryEntity extends DriveObjectEntity {
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<DriveObjectEntity> children;
+    private List<DirectoryEntity> childrenDirectories;
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<FileEntity> childrenFiles;
     @Column(nullable = false)
     private Date lastChildrenModification;
     @Column(nullable = false)
     private Long childrenSize;
-
 }

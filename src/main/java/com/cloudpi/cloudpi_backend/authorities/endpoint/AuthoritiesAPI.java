@@ -15,7 +15,7 @@ import java.util.List;
 public interface AuthoritiesAPI {
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{login}/canBeGiven")
+    @GetMapping("/{username}/canBeGiven")
     GetAuthoritiesInfoResponse getAvailableAuthorities(Authentication auth);
 
     @Secured(AuthoritiesAPIAuthorities.READ)

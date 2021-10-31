@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequestMapping("/drives")
-public interface DriveInfoAPI {
+public interface DiscStorageInfoAPI {
 
     @PostMapping
     void createNew(@RequestParam String pathToDrive, @RequestParam Long diskId);

@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.repositories;
 
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

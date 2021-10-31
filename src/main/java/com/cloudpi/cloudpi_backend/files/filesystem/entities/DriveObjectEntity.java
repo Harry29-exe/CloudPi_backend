@@ -13,18 +13,18 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 
-@Entity
-@Table(name = "drive_objects")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
+//@Entity
+//@Table(name = "drive_object")
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class DriveObjectEntity {
 
     @Id
     @Column(name = "id")
     private Long id;
     @MapKey
-    @JoinColumn
+    @JoinColumn(nullable = false)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private FilesystemIdEntity fsId;
 
@@ -32,9 +32,12 @@ public abstract class DriveObjectEntity {
     private String name;
     @Column(unique = true, nullable = false)
     private String relativePath;
+    /**
+     * if it's null it means that the parents is root
+     */
     @ManyToOne
-    @JoinColumn(name = "parent_id", nullable = false)
-    private FilesystemIdEntity parent;
+    @JoinColumn(name = "parent_id", nullable = true)
+    private DirectoryEntity parent;
     @ManyToOne
     @JoinColumn(name = "root_id", nullable = false)
     private VirtualDriveEntity root;

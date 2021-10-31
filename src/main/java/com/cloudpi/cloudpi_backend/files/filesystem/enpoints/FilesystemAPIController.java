@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class FileInfoAPIController implements FileInfoAPI {
+public class FilesystemAPIController implements FilesystemAPI {
 
     @Override
     public DirectoryDto getUsersFileStructure(String username) {
         return null;
+    }
+
+    @Override
+    public void createDirectory(String directoryPath) {
+
     }
 
     @Override

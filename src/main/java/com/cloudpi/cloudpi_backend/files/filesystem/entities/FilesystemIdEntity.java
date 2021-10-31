@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,13 +21,19 @@ import java.util.Objects;
 @Table(name = "disc_object_id")
 public class FilesystemIdEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "random-id")
+    @GenericGenerator(
+            name = "random-id",
+            strategy = "com.cloudpi.cloudpi_backend.configuration.RandomLongIdGenerator"
+    )
     @Column(name = "filesystem_id", nullable = false)
     public Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     @ToString.Exclude
     public UserEntity owner;
+
     @OneToMany(
             mappedBy = "file",
             cascade = {CascadeType.ALL},
