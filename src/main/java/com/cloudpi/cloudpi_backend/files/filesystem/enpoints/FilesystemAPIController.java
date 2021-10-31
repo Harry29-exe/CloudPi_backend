@@ -16,11 +16,6 @@ public class FilesystemAPIController implements FilesystemAPI {
     }
 
     @Override
-    public void createDirectory(String directoryPath) {
-
-    }
-
-    @Override
     public DirectoryDto getPartOfUsersFileStructure(String username, Integer structureLevels, String fileStructureRoot) {
         return null;
     }

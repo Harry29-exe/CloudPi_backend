@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -23,22 +25,7 @@ import java.util.List;
 @RequestMapping("/files/")
 public interface FileAPI {
 
-    @Operation(
-            summary = "Image uploads",
-            description = """
-                    <h1>Not implemented</h1>
-                    Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
-                    but this method use user .images folder instead of precisely defined path.
-                    """,
-            parameters = @Parameter(name = "imageName", description = "Name with extension of image to upload", example = "funny-cat.jpg"),
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "success"),
-                    @ApiResponse(responseCode = "400", description = "when request does not have body or image name does not contain file extension"),
-                    @ApiResponse(responseCode = "401", description = "when user is not logged"),
-                    @ApiResponse(responseCode = "403", description = "when user does not have permission to save image e.g. not enough space"),
-                    @ApiResponse(responseCode = "409", description = "when image with that name already exist")
-            }
-    )
+
     @PostMapping(
             path = "image/{imageName}",
             consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -55,13 +42,7 @@ public interface FileAPI {
             @RequestParam(defaultValue = ".jpg") String imageFormat,
             @RequestBody List<String> imageNames);
 
-    @Operation(
-            summary = "Uploads file",
-            description = """
-                    Allows to upload file to server. Based on filePath server check current user permissions
-                    and if user has rights to save file then request body is saved to disc.
-                    """
-    )
+
     @PostMapping(
             path = "file/{filePath}",
             consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
@@ -72,37 +53,33 @@ public interface FileAPI {
             @RequestBody byte[] file);
 
 
-
-    @Operation(
-            summary = "Forces file upload",
-            description = """
-                    Allows to upload file to server. Based on filePath server check current user permissions
-                    and if user has rights to save file then request body is saved to disc. Unlike Post method
-                    PUT overrides existing files.
-                    """)
     @PutMapping(
             path = "file/{filePath}",
             consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     void forceUploadNewFile(@PathVariable String filePath, @RequestBody byte[] file);
 
 
+    @PostMapping("directory/{directoryPath}")
+    void createDirectory(@PathVariable String directoryPath);
 
-    @Operation(
-            summary = "Downloads file",
-            description = """
-                    Downloads file with given id.
-                    """)
+
     @GetMapping("file/{fileId}")
     byte[] downloadFile(@PathVariable Long fileId);
 
 
-
-    @Operation(
-            summary = "Compresses directory and downloads it",
-            description = """
-                    Compress directory to .7z and sends it in response body.
-                    """)
     @GetMapping("directory/{directoryId}")
     byte[] compressAndDownloadDirectory(@PathVariable Long directoryId);
 
+
+
+    @DeleteMapping("file/{fileId}")
+    void deleteFile(@PathVariable Long fileId);
+
+
+    @DeleteMapping("directory/{directoryId}")
+    void deleteDirectory(@PathVariable Long directoryId);
+
+
+    @DeleteMapping("directory/{directoryId}/force")
+    void forceDeleteDirectory(@PathVariable Long directoryId);
 }
