@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 
@@ -24,7 +25,6 @@ public interface FileApiDocs extends FileAPI {
             responses = {
                     @ApiResponse(responseCode = "201", description = "success"),
                     @ApiResponse(responseCode = "400", description = "when request does not have body or image name does not contain file extension"),
-                    @ApiResponse(responseCode = "401", description = "when user is not logged"),
                     @ApiResponse(responseCode = "403", description = "when user does not have permission to save image e.g. not enough space"),
                     @ApiResponse(responseCode = "409", description = "when image with that name already exist")
             }
@@ -32,6 +32,14 @@ public interface FileApiDocs extends FileAPI {
     @Override
     void uploadNewImage(String imageName, byte[] image, Authentication auth);
 
+    @Operation(
+            summary = "returns requested images in reduced resolution",
+            description = "",
+            responses = {
+                    @ApiResponse(responseCode = "200"),
+                    @ApiResponse(responseCode = "403")
+            }
+    )
     @Override
     default List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames) {
         return null;
@@ -42,7 +50,12 @@ public interface FileApiDocs extends FileAPI {
             description = """
                     Allows to upload file to server. Based on filePath server check current user permissions
                     and if user has rights to save file then request body is saved to disc.
-                    """
+                    """,
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "success"),
+                    @ApiResponse(responseCode = "400", description = "when file path is invalid"),
+                    @ApiResponse(responseCode = "409", description = "when file with given filepath already exist")
+            }
     )
     @Override
     default void uploadNewFile(String filePath, byte[] file) {
@@ -56,12 +69,22 @@ public interface FileApiDocs extends FileAPI {
                     Allows to upload file to server. Based on filePath server check current user permissions
                     and if user has rights to save file then request body is saved to disc. Unlike Post method
                     PUT overrides existing files.
-                    """)
+                    """,
+            responses = {
+                    @ApiResponse(responseCode = "201"),
+                    @ApiResponse(responseCode = "400", description = "bad path")
+            })
     @Override
     default void forceUploadNewFile(String filePath, byte[] file) {
 
     }
 
+    @Operation(
+            summary = "Creates empty directory",
+            description = """
+                    
+                    """
+    )
     @Override
     default void createDirectory(String directoryPath) {
 
