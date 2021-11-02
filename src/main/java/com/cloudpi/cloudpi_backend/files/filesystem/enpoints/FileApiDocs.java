@@ -29,7 +29,6 @@ public interface FileApiDocs extends FileAPI {
                     @ApiResponse(responseCode = "409", description = "when image with that name already exist")
             }
     )
-    @Override
     void uploadNewImage(String imageName, byte[] image, Authentication auth);
 
     @Operation(
@@ -41,9 +40,7 @@ public interface FileApiDocs extends FileAPI {
             }
     )
     @Override
-    default List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames) {
-        return null;
-    }
+    List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames);
 
     @Operation(
             summary = "Uploads file",
@@ -58,9 +55,7 @@ public interface FileApiDocs extends FileAPI {
             }
     )
     @Override
-    default void uploadNewFile(String filePath, byte[] file) {
-
-    }
+    void uploadNewFile(String filePath, byte[] file);
 
 
     @Operation(
@@ -75,9 +70,7 @@ public interface FileApiDocs extends FileAPI {
                     @ApiResponse(responseCode = "400", description = "bad path")
             })
     @Override
-    default void forceUploadNewFile(String filePath, byte[] file) {
-
-    }
+    void forceUploadNewFile(String filePath, byte[] file);
 
     @Operation(
             summary = "Creates empty directory",
@@ -86,9 +79,7 @@ public interface FileApiDocs extends FileAPI {
                     """
     )
     @Override
-    default void createDirectory(String directoryPath) {
-
-    }
+    void createDirectory(String directoryPath);
 
 
     @Operation(
@@ -97,9 +88,7 @@ public interface FileApiDocs extends FileAPI {
                     Downloads file with given id.
                     """)
     @Override
-    default byte[] downloadFile(Long fileId) {
-        return new byte[0];
-    }
+    byte[] downloadFile(Long fileId);
 
 
     @Operation(
@@ -108,9 +97,7 @@ public interface FileApiDocs extends FileAPI {
                     Compress directory to .7z and sends it in response body.
                     """)
     @Override
-    default byte[] compressAndDownloadDirectory(Long directoryId) {
-        return new byte[0];
-    }
+    byte[] compressAndDownloadDirectory(Long directoryId);
 
     @Operation(
             summary = "override standard description"
@@ -123,9 +110,7 @@ public interface FileApiDocs extends FileAPI {
             summary = "deletes empty directory"
     )
     @Override
-    default void deleteDirectory(Long directoryId) {
-
-    }
+    void deleteDirectory(Long directoryId);
 
 
     @Operation(
@@ -133,7 +118,5 @@ public interface FileApiDocs extends FileAPI {
             description = "Deletes directory whether there are files in it or not"
     )
     @Override
-    default void forceDeleteDirectory(Long directoryId) {
-
-    }
+    void forceDeleteDirectory(Long directoryId);
 }

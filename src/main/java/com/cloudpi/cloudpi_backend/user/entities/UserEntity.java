@@ -3,9 +3,8 @@ package com.cloudpi.cloudpi_backend.user.entities;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.FilesystemIdEntity;
-import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
@@ -81,10 +80,11 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<PermissionEntity> permissions;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<FilesystemIdEntity> usersDrives;
+    @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private VirtualDriveEntity userDrive;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<FilePermissionEntity> filesPermissions;
+    private List<DriveObjectPermissionEntity> filesPermissions;
 
     @PrePersist
     @PreUpdate

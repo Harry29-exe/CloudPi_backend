@@ -14,5 +14,6 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Entity
 @Table(name = "file_permissions")
-public class FilePermissionEntity extends DriveObjectPermissionEntity {
+public class DirectoryPermissionEntity extends DriveObjectPermissionEntity {
 }
+

@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.VirtualPathDTO;
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ public class FileAPIController implements FileApiDocs {
     @Override
     public void uploadNewFile(String filepath, byte[] file) {
         try {
-            fileService.saveFile(new VirtualPathDTO(filepath), new ByteArrayInputStream(file));
+            fileService.saveFile(new VirtualPath(filepath), new ByteArrayInputStream(file));
         } catch (IOException e) {
             e.printStackTrace();
         }

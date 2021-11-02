@@ -1,9 +1,8 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.VirtualPathDTO;
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +10,15 @@ import java.io.InputStream;
 public interface FileService {
 
     @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
-    void saveFile(VirtualPathDTO path, InputStream file) throws IOException;
+    void saveFile(VirtualPath path, InputStream file) throws IOException;
 
     @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
-    void createDirectory(VirtualPathDTO path);
+    void createDirectory(VirtualPath path);
 
     @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
-    Resource readFile(VirtualPathDTO path);
+    Resource readFile(VirtualPath path);
 
     @PreAuthorize("fileAuthorityVerifier.canWrite(Principal, #path)")
-    void deleteFile(VirtualPathDTO path);
+    void deleteFile(VirtualPath path);
 
 }

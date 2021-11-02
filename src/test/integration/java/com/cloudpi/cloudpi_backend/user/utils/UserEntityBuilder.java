@@ -2,9 +2,8 @@ package com.cloudpi.cloudpi_backend.user.utils;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DriveObjectEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.FilesystemIdEntity;
-import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
@@ -24,8 +23,8 @@ public final class UserEntityBuilder {
     private UserDeleteEntity userDeleteSchedule;
     private Set<RoleEntity> roles;
     private Set<PermissionEntity> permissions;
-    private List<FilesystemIdEntity> filesInfo;
-    private List<FilePermissionEntity> filesPermissions;
+    private VirtualDriveEntity userDrive;
+    private List<DriveObjectPermissionEntity> filesPermissions;
 
     private UserEntityBuilder() {
     }
@@ -117,12 +116,12 @@ public final class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder withFilesInfo(List<FilesystemIdEntity> filesInfo) {
-        this.filesInfo = filesInfo;
+    public UserEntityBuilder withFilesInfo(VirtualDriveEntity userDrive) {
+        this.userDrive = userDrive;
         return this;
     }
 
-    public UserEntityBuilder withFilesPermissions(List<FilePermissionEntity> filesPermissions) {
+    public UserEntityBuilder withFilesPermissions(List<DriveObjectPermissionEntity> filesPermissions) {
         this.filesPermissions = filesPermissions;
         return this;
     }
@@ -139,7 +138,7 @@ public final class UserEntityBuilder {
         userEntity.setUserDeleteSchedule(userDeleteSchedule);
         userEntity.setRoles(roles);
         userEntity.setPermissions(permissions);
-        userEntity.setUsersDrives(filesInfo);
+        userEntity.setUserDrive(userDrive);
         userEntity.setFilesPermissions(filesPermissions);
 
         userEntity.getUserDetails().setUser(userEntity);

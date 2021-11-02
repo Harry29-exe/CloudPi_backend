@@ -1,10 +1,8 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.DirectoryPermissionEntity;
+import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,4 +25,13 @@ public class DirectoryEntity extends DriveObjectEntity {
     private Date lastChildrenModification;
     @Column(nullable = false)
     private Long childrenSize;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "permissions")
+    @ToString.Exclude
+    List<DirectoryPermissionEntity> permissions;
+
 }
