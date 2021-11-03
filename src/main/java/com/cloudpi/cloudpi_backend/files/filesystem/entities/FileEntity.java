@@ -1,8 +1,10 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
+import com.cloudpi.cloudpi_backend.files.disk.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
+import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,26 +13,42 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
 @Table(name = "files")
 public class FileEntity extends DriveObjectEntity {
 
-    @Column(nullable = false)
-    private Long size;
+    public FileEntity(@NonNull UserEntity owner,
+                      @NonNull DirectoryEntity parent,
+                      @NonNull VirtualDriveEntity root,
+                      @NonNull DriveEntity drive,
+                      @NonNull String name,
+                      @NonNull FileType fileType,
+                      @NonNull Long size,
+                      @NonNull Date createdAt,
+                      @NonNull Date modifiedAt
+    ) {
+        super(owner, name, parent, root, createdAt);
+        this.size = size;
+        this.modifiedAt = modifiedAt;
+        this.drive = drive;
+        this.fileType = fileType;
+    }
 
     @Column(nullable = false)
-    private Date modifiedAt;
+    private @NonNull Long size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drive_files")
-    private DirectoryEntity drive;
+    @Column(nullable = false)
+    private @NonNull Date modifiedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "drive_files", nullable = false)
+    private @NonNull DriveEntity drive;
 
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
-    private FileType fileType = FileType.UNDEFINED;
+    private @NonNull FileType fileType = FileType.UNDEFINED;
 
     @OneToMany(
             cascade = {CascadeType.ALL},

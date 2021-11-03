@@ -17,14 +17,17 @@ import java.util.List;
 @Table(name = "directories")
 public class DirectoryEntity extends DriveObjectEntity {
 
+    @Column(unique = true, nullable = false)
+    private @NonNull String path;
+    @Column(nullable = false)
+    private @NonNull Date lastChildrenModification;
+    @Column(nullable = false)
+    private @NonNull Long childrenSize;
+
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DirectoryEntity> childrenDirectories;
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<FileEntity> childrenFiles;
-    @Column(nullable = false)
-    private Date lastChildrenModification;
-    @Column(nullable = false)
-    private Long childrenSize;
 
     @OneToMany(
             cascade = {CascadeType.ALL},

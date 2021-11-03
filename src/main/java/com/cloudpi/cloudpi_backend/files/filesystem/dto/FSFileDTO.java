@@ -1,15 +1,16 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.dto;
 
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public abstract class DriveObjectBasicInfoDTO {
+public class FSFileDTO {
 
-    private Long id;
+    private Integer id;
+    private String name;
     private Long lastModified;
+    private FileType fileType;
 
 }

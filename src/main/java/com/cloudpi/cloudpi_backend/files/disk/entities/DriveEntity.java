@@ -12,6 +12,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+/**
+ * Represents folder on physical disc where
+ * files from cloud are saved
+ */
 @Getter
 @Setter
 @NoArgsConstructor

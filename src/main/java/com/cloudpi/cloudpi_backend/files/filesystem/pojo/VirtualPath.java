@@ -6,10 +6,14 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+
 public class VirtualPath {
+    @Getter
     private final String username;
-    private final ImmutableList<String> directories;
+    private ImmutableList<String> directories = null;
+    @Getter
+    private final String parentDirectoryPath;
+    @Getter
     private final String fileName;
 
     public VirtualPath(String path) {
@@ -18,8 +22,20 @@ public class VirtualPath {
             throw InvalidPathException.invalidPathFormat();
         }
         username = path.substring(0, index);
-        var pathParts = List.of(path.substring(index+1).split("/"));
+        parentDirectoryPath = path.substring(index+1);
+        var fileNameIndex = parentDirectoryPath.lastIndexOf('/') + 1;
+        fileName = parentDirectoryPath.substring(fileNameIndex);
+    }
+
+    public ImmutableList<String> getDirectoriesInPath() {
+        return directories == null?
+                this.pathToDirectories() :
+                directories;
+    }
+
+    private ImmutableList<String> pathToDirectories() {
+        var pathParts = List.of(parentDirectoryPath.split("/"));
         directories = (ImmutableList<String>) pathParts.subList(0, pathParts.size() - 1);
-        fileName = pathParts.get(pathParts.size() - 1);
+        return directories;
     }
 }

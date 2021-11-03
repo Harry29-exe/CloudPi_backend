@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 
 @MappedSuperclass
@@ -26,30 +26,27 @@ public abstract class DriveObjectEntity {
     public Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     @ToString.Exclude
-    public UserEntity owner;
+    public @NonNull UserEntity owner;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(unique = true, nullable = false)
-    private String relativePath;
+    private @NonNull String name;
 
     /**
      * if it's null it means that the parents is root
      */
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "parent_id", nullable = true)
-    private DirectoryEntity parent;
+    private @NonNull DirectoryEntity parent;
 
     @ManyToOne
     @JoinColumn(name = "root_id", nullable = false)
-    private VirtualDriveEntity root;
+    private @NonNull VirtualDriveEntity root;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
-    private Date createdAt;
+    private @NonNull Date createdAt;
 
     @Override
     public boolean equals(Object o) {

@@ -11,10 +11,11 @@ public class DirectoryDto {
     private Long parentId;
     private String fileName;
     private String path;
+    private Long childrenSize;
+
     private Date createdAt;
     private Date lastModified;
-    private Date lastRead;
-    private Long childrenSize;
+
     private List<FileDto> childrenFiles;
     private List<DirectoryDto> childrenDirectories;
 }

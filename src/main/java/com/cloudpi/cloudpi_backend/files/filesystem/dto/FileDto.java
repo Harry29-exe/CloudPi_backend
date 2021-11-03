@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.dto;
 
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import lombok.Data;
 
 import java.util.Date;
@@ -9,9 +10,11 @@ public class FileDto {
     private Long id;
     private Long parentId;
     private String fileName;
+    private FileType type;
     private String path;
+    private Long size;
+
     private Date createdAt;
     private Date lastModified;
-    private Date lastRead;
-    private Long size;
+
 }
