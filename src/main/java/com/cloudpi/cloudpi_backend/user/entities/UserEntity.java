@@ -83,9 +83,6 @@ public class UserEntity {
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private VirtualDriveEntity userDrive;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<DriveObjectPermissionEntity> filesPermissions;
-
     @PrePersist
     @PreUpdate
     public void validateUser() {

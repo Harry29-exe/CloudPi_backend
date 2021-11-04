@@ -12,9 +12,6 @@ public interface FileService {
     @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
     void saveFile(VirtualPath path, InputStream file) throws IOException;
 
-    @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
-    void createDirectory(VirtualPath path);
-
     @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
     Resource readFile(VirtualPath path);
 

@@ -10,11 +10,22 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 
 @MappedSuperclass
 public abstract class DriveObjectEntity {
+
+    public DriveObjectEntity(@NonNull UserEntity owner,
+                             @NonNull String name,
+                             DirectoryEntity parent,
+                             @NonNull VirtualDriveEntity root,
+                             @NonNull Date createdAt) {
+        this.owner = owner;
+        this.name = name;
+        this.parent = parent;
+        this.root = root;
+        this.createdAt = createdAt;
+    }
 
     @Id
     @GeneratedValue(generator = "random-id")
@@ -38,7 +49,7 @@ public abstract class DriveObjectEntity {
      */
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "parent_id", nullable = true)
-    private @NonNull DirectoryEntity parent;
+    private DirectoryEntity parent;
 
     @ManyToOne
     @JoinColumn(name = "root_id", nullable = false)

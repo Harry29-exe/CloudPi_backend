@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface FilesystemRepositoryService {
 
-    void createFile(CreateFileDTO fileInfo, String username);
+    void createFile(CreateFileDTO fileInfo);
 
     FileDto getFile(Long fileId);
 

@@ -9,24 +9,31 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "discs")
 public class DiscEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @NotBlank
-    @Column(nullable = false, unique = true)
-    private String discName;
-    @NotNull
+    private Long id;
+
+    @Column(nullable = false, updatable = false)
+    private @NotBlank String pathToDisc;
+
+
     @Column(nullable = false)
-    private Long totalCapacity;
-    @NotNull
+    private @NotNull Long totalCapacity;
+
+
     @Column(nullable = false)
-    private Long freeSpace;
+    private @NotNull Long freeSpace;
 
     @OneToMany(mappedBy = "disc")
     private List<DriveEntity> drive;
+
+    public DiscEntity(String pathToDisc, Long totalCapacity, Long freeSpace) {
+        this.pathToDisc = pathToDisc;
+        this.totalCapacity = totalCapacity;
+        this.freeSpace = freeSpace;
+    }
 }

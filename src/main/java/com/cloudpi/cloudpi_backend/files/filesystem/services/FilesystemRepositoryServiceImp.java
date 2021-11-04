@@ -1,40 +1,47 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
-import com.cloudpi.cloudpi_backend.files.disk.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.disk.repositories.DriveRepository;
-import com.cloudpi.cloudpi_backend.files.disk.services.DrivesService;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.FileEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class FilesystemRepositoryServiceImp implements FilesystemRepositoryService {
-    private FileRepository fileRepository;
-    private DirectoryRepository directoryRepository;
-    private UserRepository userRepository;
-    private DriveRepository driveRepository;
-    private VirtualDriveRepository virtualDriveRepository;
+    private final FileRepository fileRepository;
+    private final DirectoryRepository directoryRepository;
+    private final UserRepository userRepository;
+    private final DriveRepository driveRepository;
+    private final VirtualDriveRepository virtualDriveRepository;
+
+    public FilesystemRepositoryServiceImp(FileRepository fileRepository,
+                                          DirectoryRepository directoryRepository,
+                                          UserRepository userRepository,
+                                          DriveRepository driveRepository,
+                                          VirtualDriveRepository virtualDriveRepository) {
+        this.fileRepository = fileRepository;
+        this.directoryRepository = directoryRepository;
+        this.userRepository = userRepository;
+        this.driveRepository = driveRepository;
+        this.virtualDriveRepository = virtualDriveRepository;
+    }
 
     @Override
-    public void createFile(CreateFileDTO fileInfo, String username) {
-        var dirPath = fileInfo.path().getParentDirectoryPath();
+    public void createFile(CreateFileDTO fileInfo) {
 
         var owner = userRepository
-                .findByUsername(username)
+                .findByUsername(fileInfo.path().getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         var fileEntity = new FileEntity(
@@ -45,13 +52,11 @@ public class FilesystemRepositoryServiceImp implements FilesystemRepositoryServi
                 virtualDriveRepository.findByOwner_Id(owner.getId())
                         .orElseThrow(IllegalStateException::new),
                 driveRepository.getById(fileInfo.driveId()),
-                fileInfo.path().getFileName(),
+                fileInfo.path().getEntityName(),
                 fileInfo.fileType() == null?
                         FileType.UNDEFINED:
                         fileInfo.fileType(),
-                fileInfo.size(),
-                new Date(),
-                new Date()
+                fileInfo.size()
                 );
         fileRepository.save(fileEntity);
     }
@@ -98,7 +103,22 @@ public class FilesystemRepositoryServiceImp implements FilesystemRepositoryServi
 
     @Override
     public void createDirectory(VirtualPath path) {
+        var user = userRepository.findByUsername(path.getUsername())
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
 
+        var dir = new DirectoryEntity(
+                user,
+                directoryRepository.findByPath(path.getParentDirectoryPath())
+                        //TODO change exception
+                        .orElseThrow(IllegalArgumentException::new),
+                virtualDriveRepository.findByOwner_Id(user.getId())
+                        //TODO change exception
+                        .orElseThrow(IllegalArgumentException::new),
+                path.getEntityName(),
+                path.getParentDirectoryPath() + path.getEntityName()
+        );
+
+        directoryRepository.save(dir);
     }
 
     @Override

@@ -20,12 +20,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public void saveFile(VirtualPath path, InputStream file) throws IOException {
         var physicalPath = drivesService.getDriveIdAndPathToSaveFile((long) file.available(), 0L);
-        Files.copy(file, physicalPath);
-    }
-
-    @Override
-    public void createDirectory(VirtualPath path) {
-
+        Files.copy(file, physicalPath.getSecond());
     }
 
     @Override

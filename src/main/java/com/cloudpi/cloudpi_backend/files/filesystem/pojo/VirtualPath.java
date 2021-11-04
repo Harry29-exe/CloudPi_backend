@@ -14,7 +14,7 @@ public class VirtualPath {
     @Getter
     private final String parentDirectoryPath;
     @Getter
-    private final String fileName;
+    private final String entityName;
 
     public VirtualPath(String path) {
         int index = path.indexOf(":");
@@ -24,7 +24,7 @@ public class VirtualPath {
         username = path.substring(0, index);
         parentDirectoryPath = path.substring(index+1);
         var fileNameIndex = parentDirectoryPath.lastIndexOf('/') + 1;
-        fileName = parentDirectoryPath.substring(fileNameIndex);
+        entityName = parentDirectoryPath.substring(fileNameIndex);
     }
 
     public ImmutableList<String> getDirectoriesInPath() {

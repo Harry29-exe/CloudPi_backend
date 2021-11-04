@@ -19,7 +19,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "drives")
 public class DriveEntity {
@@ -28,16 +27,21 @@ public class DriveEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    public DriveEntity(String pathToDrive, Long assignedSpace, DiscEntity disc) {
+        this.pathToDrive = pathToDrive;
+        this.assignedSpace = assignedSpace;
+        this.disc = disc;
+    }
+
     @Column(unique = true)
     @NotBlank
     private String pathToDrive;
 
     @Column
-    @Nullable
     private Long assignedSpace;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "disc_drive_relation")
+    @JoinColumn(name = "disc", nullable = false)
     private DiscEntity disc;
 
     @OneToMany(cascade = CascadeType.REMOVE,

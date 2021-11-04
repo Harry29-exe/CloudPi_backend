@@ -27,7 +27,7 @@ public class AddAllAuthoritiesToDB {
                 .stream()
                 .map(role -> new RoleEntity(role.getAuthorityName(), null))
                 .toList();
-        System.out.println("\n\n" + allRoles.size() + "\n\n");
+
         roleRepository.saveAll(allRoles);
         var allPermission = AuthorityModelsAggregator.getAllPermissions()
                 .stream()

@@ -14,24 +14,21 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
 @Entity
 @Table(name = "files")
 public class FileEntity extends DriveObjectEntity {
 
     public FileEntity(@NonNull UserEntity owner,
-                      @NonNull DirectoryEntity parent,
+                      DirectoryEntity parent,
                       @NonNull VirtualDriveEntity root,
                       @NonNull DriveEntity drive,
                       @NonNull String name,
                       @NonNull FileType fileType,
-                      @NonNull Long size,
-                      @NonNull Date createdAt,
-                      @NonNull Date modifiedAt
+                      @NonNull Long size
     ) {
-        super(owner, name, parent, root, createdAt);
+        super(owner, name, parent, root, new Date());
         this.size = size;
-        this.modifiedAt = modifiedAt;
+        this.modifiedAt = new Date();
         this.drive = drive;
         this.fileType = fileType;
     }

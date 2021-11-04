@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "file_permissions")
 public class FilePermissionEntity extends DriveObjectPermissionEntity {

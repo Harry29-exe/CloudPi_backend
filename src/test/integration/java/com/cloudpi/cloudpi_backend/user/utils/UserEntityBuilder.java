@@ -139,7 +139,6 @@ public final class UserEntityBuilder {
         userEntity.setRoles(roles);
         userEntity.setPermissions(permissions);
         userEntity.setUserDrive(userDrive);
-        userEntity.setFilesPermissions(filesPermissions);
 
         userEntity.getUserDetails().setUser(userEntity);
         return userEntity;

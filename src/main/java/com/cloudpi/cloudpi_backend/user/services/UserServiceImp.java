@@ -67,7 +67,7 @@ public class UserServiceImp implements UserService {
         var userEntity = new UserEntity(null, user.getLogin(), user.getUsername(),
                 passwordEncoder.encode(nonEncodedPassword), false,
                 user.getAccountType(), user.getUserDetails().toEntity(),
-                null, null, null, null, null);
+                null, null, null, null);
 
         userEntity.getUserDetails().setUser(userEntity);
         repository.save(userEntity);
