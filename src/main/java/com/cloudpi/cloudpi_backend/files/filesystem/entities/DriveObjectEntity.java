@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ public abstract class DriveObjectEntity {
 
     public DriveObjectEntity(@NonNull UserEntity owner,
                              @NonNull String name,
+                             @NotBlank String path,
                              DirectoryEntity parent,
                              @NonNull VirtualDriveEntity root,
                              @NonNull Date createdAt) {
@@ -25,6 +27,7 @@ public abstract class DriveObjectEntity {
         this.parent = parent;
         this.root = root;
         this.createdAt = createdAt;
+        this.path = path;
     }
 
     @Id
@@ -43,6 +46,9 @@ public abstract class DriveObjectEntity {
 
     @Column(nullable = false)
     private @NonNull String name;
+
+    @Column(unique = true, nullable = false)
+    private @NonNull String path;
 
     /**
      * if it's null it means that the parents is root

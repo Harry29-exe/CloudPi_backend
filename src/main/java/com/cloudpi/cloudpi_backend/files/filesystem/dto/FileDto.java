@@ -10,11 +10,11 @@ public class FileDto {
     private Long id;
     private Long parentId;
     private String fileName;
-    private FileType type;
+    private FileType fileType;
     private String path;
     private Long size;
 
     private Date createdAt;
-    private Date lastModified;
+    private Date modifiedAt;
 
 }

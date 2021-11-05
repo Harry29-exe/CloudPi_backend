@@ -6,8 +6,8 @@ import java.nio.file.Path;
 
 public interface DrivesService {
 
-    Pair<Long, Path> getDriveIdAndPathToSaveFile(Long fileSize, Long fileId);
+    Long getDriveIdAndReserveSpaceOnIt(Long fileSize);
 
-    Path fileIdToPath(Long fileId);
+    Path fileIdToPath(Long fileId, Long driveId);
 
 }

@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.websocket.server.PathParam;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,18 +47,21 @@ public interface FileAPI {
 
     @PostMapping(
             path = "file/{filePath}",
-            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     void uploadNewFile(
-            @Parameter(example = "steve:/dir1/dir2/my-awesome-file.awesome")
             @PathVariable String filePath,
-            @RequestBody byte[] file);
+            @RequestParam(required = false) FileType fileType,
+            @RequestBody MultipartFile file);
 
 
     @PutMapping(
             path = "file/{filePath}",
-            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    void forceUploadNewFile(@PathVariable String filePath, @RequestBody byte[] file);
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    void forceUploadNewFile(
+            @PathVariable String filePath,
+            @RequestParam(required = false) FileType fileType,
+            @RequestBody MultipartFile file);
 
 
     @PostMapping("directory/{directoryPath}")
@@ -64,11 +69,11 @@ public interface FileAPI {
 
 
     @GetMapping("file/{fileId}")
-    byte[] downloadFile(@PathVariable Long fileId);
+    Resource downloadFile(@PathVariable Long fileId);
 
 
     @GetMapping("directory/{directoryId}")
-    byte[] compressAndDownloadDirectory(@PathVariable Long directoryId);
+    Resource compressAndDownloadDirectory(@PathVariable Long directoryId);
 
 
 

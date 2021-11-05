@@ -24,13 +24,10 @@ public class DirectoryEntity extends DriveObjectEntity {
                            @NonNull String name,
                            @NonNull String path
     ) {
-        super(owner, name, parent, root, new Date());
-        this.path = path;
+        super(owner, name, path, parent, root, new Date());
         this.lastChildrenModification = new Date();
     }
 
-    @Column(unique = true, nullable = false)
-    private @NonNull String path;
     @Column(nullable = false)
     private @NonNull Date lastChildrenModification;
     @Column(nullable = false)

@@ -8,6 +8,7 @@ import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,11 @@ public class FileEntity extends DriveObjectEntity {
                       @NonNull VirtualDriveEntity root,
                       @NonNull DriveEntity drive,
                       @NonNull String name,
+                      @NotBlank String path,
                       @NonNull FileType fileType,
                       @NonNull Long size
     ) {
-        super(owner, name, parent, root, new Date());
+        super(owner, name, path, parent, root, new Date());
         this.size = size;
         this.modifiedAt = new Date();
         this.drive = drive;

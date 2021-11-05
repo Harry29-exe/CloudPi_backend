@@ -38,7 +38,7 @@ public class FilesystemRepositoryServiceImp implements FilesystemRepositoryServi
     }
 
     @Override
-    public void createFile(CreateFileDTO fileInfo) {
+    public Long createFile(CreateFileDTO fileInfo) {
 
         var owner = userRepository
                 .findByUsername(fileInfo.path().getUsername())
@@ -53,12 +53,18 @@ public class FilesystemRepositoryServiceImp implements FilesystemRepositoryServi
                         .orElseThrow(IllegalStateException::new),
                 driveRepository.getById(fileInfo.driveId()),
                 fileInfo.path().getEntityName(),
+                fileInfo.path().getParentDirectoryPath(),
                 fileInfo.fileType() == null?
                         FileType.UNDEFINED:
                         fileInfo.fileType(),
                 fileInfo.size()
                 );
-        fileRepository.save(fileEntity);
+        return fileRepository.save(fileEntity).getId();
+    }
+
+    @Override
+    public FileDto createFileAndReturn(CreateFileDTO fileInfo) {
+        return null;
     }
 
     @Override

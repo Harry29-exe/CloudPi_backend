@@ -19,13 +19,12 @@ public class MockDriveService implements DrivesService{
     private final Base64.Decoder decoder = Base64.getDecoder();
 
     @Override
-    public Pair<Long, Path> getDriveIdAndPathToSaveFile(Long fileSize, Long fileId) {
-        return Pair.of(1L, root.resolve(fileId.toString()));
+    public Long getDriveIdAndReserveSpaceOnIt(Long fileSize) {
+        return 1L;
     }
 
     @Override
-    public Path fileIdToPath(Long fileId) {
+    public Path fileIdToPath(Long fileId, Long driveId) {
         return root.resolve(fileId.toString());
     }
-
 }
