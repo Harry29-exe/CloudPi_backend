@@ -7,9 +7,7 @@ public interface DirectoryRepoService {
 
     void createDirectory(VirtualPath path);
 
-    DirectoryDto getDirectory(VirtualPath path, Integer fileStructureDepth);
-
-    DirectoryDto getDirectory(VirtualPath path);
+    DirectoryDto getDirectoryDto(VirtualPath path);
 
     void renameDirectory(VirtualPath path, String newName);
 

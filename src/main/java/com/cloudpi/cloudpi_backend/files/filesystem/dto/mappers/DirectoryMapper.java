@@ -17,9 +17,9 @@ public interface DirectoryMapper {
                 entity.getParent().getId(),
                 entity.getName(),
                 entity.getPath(),
-                entity.getChildrenSize(),
+                entity.getSize(),
                 entity.getCreatedAt(),
-                entity.getLastChildrenModification()
+                entity.getModifiedAt()
         );
     };
 
