@@ -15,11 +15,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "files")
-public class FileEntity extends DriveObjectEntity {
+@DiscriminatorValue("FILE")
+public class FileEntity extends PathEntity {
 
     public FileEntity(@NonNull UserEntity owner,
-                      DirectoryEntity parent,
+                      @NonNull DirectoryEntity parent,
                       @NonNull VirtualDriveEntity root,
                       @NonNull DriveEntity drive,
                       @NonNull String name,
@@ -27,33 +27,19 @@ public class FileEntity extends DriveObjectEntity {
                       @NonNull FileType fileType,
                       @NonNull Long size
     ) {
-        super(owner, name, path, parent, root, new Date());
-        this.size = size;
-        this.modifiedAt = new Date();
+        super(owner, name, path, parent, root, size, new Date(), new Date());
         this.drive = drive;
         this.fileType = fileType;
     }
 
-    @Column(nullable = false)
-    private @NonNull Long size;
 
-    @Column(nullable = false)
-    private @NonNull Date modifiedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "drive_files", nullable = false)
+    @JoinColumn(name = "drive_files")
     private @NonNull DriveEntity drive;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.ORDINAL)
     private @NonNull FileType fileType = FileType.UNDEFINED;
-
-    @OneToMany(
-            cascade = {CascadeType.ALL},
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "permissions")
-    @ToString.Exclude
-    List<FilePermissionEntity> permissions;
 
 }

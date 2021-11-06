@@ -1,26 +1,35 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
+import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
+import com.cloudpi.cloudpi_backend.exepctions.files.UserVirtualDriveNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.mappers.DirectoryMapper;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DirectoryRepoServiceImp implements DirectoryRepoService{
     private final UserRepository userRepository;
     private final VirtualDriveRepository virtualDriveRepository;
-    private final DirectoryRepository directoryRepository;
+    private final DirectoryRepository dirRepository;
+    private final PathRepository pathRepository;
 
     public DirectoryRepoServiceImp(UserRepository userRepository,
                                    VirtualDriveRepository virtualDriveRepository,
-                                   DirectoryRepository directoryRepository) {
+                                   DirectoryRepository dirRepository,
+                                   PathRepository pathRepository) {
         this.userRepository = userRepository;
         this.virtualDriveRepository = virtualDriveRepository;
-        this.directoryRepository = directoryRepository;
+        this.dirRepository = dirRepository;
+        this.pathRepository = pathRepository;
     }
 
     @Override
@@ -30,32 +39,28 @@ public class DirectoryRepoServiceImp implements DirectoryRepoService{
 
         var dir = new DirectoryEntity(
                 user,
-                directoryRepository.findByPath(path.getParentDirectoryPath())
-                        //TODO change exception
-                        .orElseThrow(IllegalArgumentException::new),
+                dirRepository.findByPath(path.getParentDirectoryPath())
+                        .orElseThrow(() -> PathNotFoundException.noSuchDirectory(path.getPath())),
                 virtualDriveRepository.findByOwner_Id(user.getId())
-                        //TODO change exception
-                        .orElseThrow(IllegalArgumentException::new),
+                        .orElseThrow(() -> new UserVirtualDriveNotFoundException(path.getUsername())),
                 path.getEntityName(),
                 path.getParentDirectoryPath() + path.getEntityName()
         );
 
-        directoryRepository.save(dir);
+        dirRepository.save(dir);
     }
 
     @Override
-    public DirectoryDto getDirectory(VirtualPath path, Integer fileStructureDepth) {
-        return null;
+    public DirectoryDto getDirectoryDto(VirtualPath path) {
+        var dirEntity = dirRepository.findByPath(path.getPath())
+                .orElseThrow(() -> PathNotFoundException.noSuchDirectory(path.getPath()));
+        return DirectoryMapper.INSTANCE.directoryEntityToDto(dirEntity);
     }
 
     @Override
-    public DirectoryDto getDirectory(VirtualPath path) {
-        return null;
-    }
-
-    @Override
-    public void renameDirectory(VirtualPath path, String newName) {
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void renameDirectory(VirtualPath path, String newDirName) {
+        pathRepository.renameDirectory(path.getPath(), path.getParentDirectoryPath() + "/" + newDirName);
     }
 
     @Override

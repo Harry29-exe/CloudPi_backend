@@ -1,12 +1,14 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
+import com.cloudpi.cloudpi_backend.files.permissions.entities.DirectoryPermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,21 +16,29 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 
-@MappedSuperclass
-public abstract class DriveObjectEntity {
+@Entity
+@Table(name = "paths")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "object_type")
+public abstract class PathEntity {
 
-    public DriveObjectEntity(@NonNull UserEntity owner,
-                             @NonNull String name,
-                             @NotBlank String path,
-                             DirectoryEntity parent,
-                             @NonNull VirtualDriveEntity root,
-                             @NonNull Date createdAt) {
+    public PathEntity(@NonNull UserEntity owner,
+                      @NonNull String name,
+                      @NotBlank String path,
+                      DirectoryEntity parent,
+                      @NonNull VirtualDriveEntity root,
+                      @NonNull Long size,
+                      @NonNull Date createdAt,
+                      @NonNull Date modifiedAt
+    ) {
         this.owner = owner;
         this.name = name;
         this.parent = parent;
         this.root = root;
         this.createdAt = createdAt;
         this.path = path;
+        this.size = size;
+        this.modifiedAt = modifiedAt;
     }
 
     @Id
@@ -58,15 +68,29 @@ public abstract class DriveObjectEntity {
     @JoinColumn(name = "root_id", nullable = false)
     private @NonNull VirtualDriveEntity root;
 
+    @Column(nullable = false)
+    private @NonNull Long size;
+
+    @Column(nullable = false)
+    private @NonNull Date modifiedAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
     private @NonNull Date createdAt;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "permissions")
+    @ToString.Exclude
+    List<DirectoryPermissionEntity> permissions;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DriveObjectEntity that = (DriveObjectEntity) o;
+        PathEntity that = (PathEntity) o;
         return id.equals(that.id);
     }
 
