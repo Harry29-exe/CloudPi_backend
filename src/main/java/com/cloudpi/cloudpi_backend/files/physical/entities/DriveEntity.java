@@ -1,15 +1,12 @@
-package com.cloudpi.cloudpi_backend.files.disk.entities;
+package com.cloudpi.cloudpi_backend.files.physical.entities;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.FileEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -31,6 +28,10 @@ public class DriveEntity {
         this.pathToDrive = pathToDrive;
         this.assignedSpace = assignedSpace;
         this.disc = disc;
+    }
+
+    public DriveEntity(Long id) {
+        this.id = id;
     }
 
     @Column(unique = true)

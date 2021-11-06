@@ -1,7 +1,7 @@
-package com.cloudpi.cloudpi_backend.files.disk.enpoint;
+package com.cloudpi.cloudpi_backend.files.physical.enpoint;
 
-import com.cloudpi.cloudpi_backend.files.disk.dto.responses.DiscDetails;
-import com.cloudpi.cloudpi_backend.files.disk.dto.responses.DiscInfo;
+import com.cloudpi.cloudpi_backend.files.physical.dto.responses.DiscDetails;
+import com.cloudpi.cloudpi_backend.files.physical.dto.responses.DiscInfo;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

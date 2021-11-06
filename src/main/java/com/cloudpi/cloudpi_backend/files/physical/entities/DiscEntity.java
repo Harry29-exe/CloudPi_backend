@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.disk.entities;
+package com.cloudpi.cloudpi_backend.files.physical.entities;
 
 import lombok.*;
 

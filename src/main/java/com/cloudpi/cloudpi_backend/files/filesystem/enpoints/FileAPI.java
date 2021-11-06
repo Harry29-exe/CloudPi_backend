@@ -46,21 +46,21 @@ public interface FileAPI {
 
 
     @PostMapping(
-            path = "file/{filePath}",
+            path = "file",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     void uploadNewFile(
-            @PathVariable String filePath,
             @RequestParam(required = false) FileType fileType,
-            @RequestBody MultipartFile file);
+            @RequestParam String filepath,
+            @RequestParam MultipartFile file);
 
 
     @PutMapping(
-            path = "file/{filePath}",
+            path = "file",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     void forceUploadNewFile(
-            @PathVariable String filePath,
             @RequestParam(required = false) FileType fileType,
+            @RequestParam String filepath,
             @RequestBody MultipartFile file);
 
 
@@ -69,22 +69,22 @@ public interface FileAPI {
 
 
     @GetMapping("file/{fileId}")
-    Resource downloadFile(@PathVariable Long fileId);
+    Resource downloadFile(@PathVariable String fileId);
 
 
     @GetMapping("directory/{directoryId}")
-    Resource compressAndDownloadDirectory(@PathVariable Long directoryId);
+    Resource compressAndDownloadDirectory(@PathVariable String directoryId);
 
 
 
     @DeleteMapping("file/{fileId}")
-    void deleteFile(@PathVariable Long fileId);
+    void deleteFile(@PathVariable String fileId);
 
 
     @DeleteMapping("directory/{directoryId}")
-    void deleteDirectory(@PathVariable Long directoryId);
+    void deleteDirectory(@PathVariable String directoryId);
 
 
     @DeleteMapping("directory/{directoryId}/force")
-    void forceDeleteDirectory(@PathVariable Long directoryId);
+    void forceDeleteDirectory(@PathVariable String directoryId);
 }

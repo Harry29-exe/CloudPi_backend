@@ -11,7 +11,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
@@ -19,10 +18,7 @@ import javax.persistence.*;
 public class VirtualDriveEntity {
 
     @Id
-    @GenericGenerator(
-            name = "random-id",
-            strategy = "com.cloudpi.cloudpi_backend.configuration.RandomLongIdGenerator"
-    )
+    @GeneratedValue
     @Column(name = "id")
     private Long id;
 
@@ -30,14 +26,19 @@ public class VirtualDriveEntity {
     private Long assignedCapacity;
 
     @Column(nullable = false)
-    private Long childrenSize;
+    private Long childrenSize = 0L;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true, updatable = false)
     private UserEntity owner;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "root_directory")
     private DirectoryEntity rootDirectory;
 
+    public VirtualDriveEntity(Long assignedCapacity, UserEntity owner, DirectoryEntity rootDirectory) {
+        this.assignedCapacity = assignedCapacity;
+        this.owner = owner;
+        this.rootDirectory = rootDirectory;
+    }
 }

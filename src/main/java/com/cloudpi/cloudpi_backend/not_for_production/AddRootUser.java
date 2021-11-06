@@ -2,10 +2,13 @@ package com.cloudpi.cloudpi_backend.not_for_production;
 
 import com.cloudpi.cloudpi_backend.authorities.repositories.PermissionRepository;
 import com.cloudpi.cloudpi_backend.authorities.repositories.RoleRepository;
-import com.cloudpi.cloudpi_backend.files.disk.entities.DiscEntity;
-import com.cloudpi.cloudpi_backend.files.disk.entities.DriveEntity;
-import com.cloudpi.cloudpi_backend.files.disk.repositories.DiscRepository;
-import com.cloudpi.cloudpi_backend.files.disk.repositories.DriveRepository;
+import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
+import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
+import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;
+import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
@@ -34,8 +37,15 @@ public class AddRootUser {
     private DriveRepository driveRepository;
     @Autowired
     private DiscRepository discRepository;
+    @Autowired
+    private VirtualDriveRepository virtualDriveRepository;
 
     @PostConstruct
+    public void init() {
+        initRootUser();
+        addDrive();
+    }
+
     public void initRootUser() {
         var nickname = "mighty root";
         UserEntity userEntity = new UserEntity(
@@ -51,7 +61,7 @@ public class AddRootUser {
         addAllAuthorities(nickname);
     }
 
-    @PostConstruct
+
     public void addDrive() {
         Long space = (long) Math.pow(10, 3);
         var pathToDisc = "/run/media/kamil/Nowy";
@@ -62,6 +72,22 @@ public class AddRootUser {
         driveRepository.save(
                 new DriveEntity(pathToDisc + "cloud_test", space, disc)
         );
+
+        var root = userRepository.findByUsername("mighty root").orElseThrow();
+        var virtualDrive = new VirtualDriveEntity();
+        virtualDrive.setAssignedCapacity(10_000_000L);
+        virtualDrive.setOwner(root);
+
+        var dir = new DirectoryEntity(
+                root,
+                null,
+                virtualDrive,
+                "mighty root",
+                "mighty root"
+        );
+        virtualDrive.setRootDirectory(dir);
+
+        virtualDriveRepository.save(virtualDrive);
     }
 
     private void addAllAuthorities(String nickname) {

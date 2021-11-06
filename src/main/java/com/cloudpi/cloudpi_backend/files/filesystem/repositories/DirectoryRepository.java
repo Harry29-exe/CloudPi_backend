@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface DirectoryRepository extends JpaRepository<DirectoryEntity, Long> {
+public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID> {
 
     @Query(value = "SELECT d.id FROM DirectoryEntity d WHERE d.relativePath = :path", nativeQuery = true)
     Long getIdOfPath(String path);

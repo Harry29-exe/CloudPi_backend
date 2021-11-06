@@ -8,7 +8,6 @@ import lombok.Value;
 import javax.annotation.Nullable;
 
 public record CreateFileDTO(
-        @NonNull Long driveId,
         @NonNull VirtualPath path,
         @NonNull Long size,
         @Nullable FileType fileType

@@ -1,11 +1,11 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
-import com.cloudpi.cloudpi_backend.files.disk.services.DrivesService;
+import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileOnDiscService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FilesystemRepositoryService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.FileRepoService;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Isolation;
@@ -13,20 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.UUID;
 
 @RestController
-public class FileAPIController implements FileAPI {
+public class FileAPIController implements FileApiDocs {
     private final FileOnDiscService fileOnDiscService;
-    private final FilesystemRepositoryService filesystemService;
+    private final FileRepoService filesystemService;
     private final DrivesService drivesService;
 
     public FileAPIController(FileOnDiscService fileOnDiscService,
-                             FilesystemRepositoryService filesystemService,
+                             FileRepoService filesystemService,
                              DrivesService drivesService) {
         this.fileOnDiscService = fileOnDiscService;
         this.filesystemService = filesystemService;
@@ -45,31 +42,29 @@ public class FileAPIController implements FileAPI {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void uploadNewFile(String filepath, FileType fileType, MultipartFile file) {
-        var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(file.getSize());
+    public void uploadNewFile(FileType fileType, String filepath, MultipartFile file) {
         var createFile = new CreateFileDTO(
-                fileDriveId,
                 new VirtualPath(filepath),
                 file.getSize(),
                 fileType
         );
 
-        var fileId = filesystemService.createFile(createFile);
-        fileOnDiscService.saveFile(fileId, fileDriveId, file);
+        var createdFile = filesystemService.createAndReturnFile(createFile);
+        fileOnDiscService.saveFile(createdFile.getId(), createdFile.getDriveId(), file);
     }
 
     @Override
-    public void forceUploadNewFile(String filePath, FileType fileType, MultipartFile file) {
+    public void forceUploadNewFile(FileType fileType, String filepath, MultipartFile file) {
 
     }
 
     @Override
-    public Resource downloadFile(Long fileId) {
-        return null;
+    public Resource downloadFile(String fileId) {
+        return fileOnDiscService.readFile(UUID.fromString(fileId));
     }
 
     @Override
-    public void deleteFile(Long fileId) {
+    public void deleteFile(String fileId) {
 
     }
 
@@ -79,17 +74,17 @@ public class FileAPIController implements FileAPI {
     }
 
     @Override
-    public Resource compressAndDownloadDirectory(Long directoryId) {
+    public Resource compressAndDownloadDirectory(String directoryId) {
         return null;
     }
 
     @Override
-    public void deleteDirectory(Long directoryId) {
+    public void deleteDirectory(String directoryId) {
 
     }
 
     @Override
-    public void forceDeleteDirectory(Long directoryId) {
+    public void forceDeleteDirectory(String directoryId) {
 
     }
 }

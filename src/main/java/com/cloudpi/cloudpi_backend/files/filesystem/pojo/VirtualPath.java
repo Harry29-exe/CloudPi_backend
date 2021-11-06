@@ -17,14 +17,16 @@ public class VirtualPath {
     private final String entityName;
 
     public VirtualPath(String path) {
-        int index = path.indexOf(":");
-        if(index < 0) {
-            throw InvalidPathException.invalidPathFormat();
+        int incorrectIndex = path.indexOf("//");
+        if(incorrectIndex >= 0) {
+            //TODO change exception
+            throw new IllegalArgumentException("Incorrect path");
         }
-        username = path.substring(0, index);
-        parentDirectoryPath = path.substring(index+1);
-        var fileNameIndex = parentDirectoryPath.lastIndexOf('/') + 1;
-        entityName = parentDirectoryPath.substring(fileNameIndex);
+        int fileNameIndex = path.lastIndexOf('/');
+        username = path.substring(0, fileNameIndex);
+        var lastSlashIndex = path.lastIndexOf('/');
+        parentDirectoryPath = path.substring(0, lastSlashIndex);
+        entityName = path.substring(lastSlashIndex+1);
     }
 
     public ImmutableList<String> getDirectoriesInPath() {

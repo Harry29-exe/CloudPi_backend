@@ -1,8 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
-import com.cloudpi.cloudpi_backend.files.disk.entities.DriveEntity;
+import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
-import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;

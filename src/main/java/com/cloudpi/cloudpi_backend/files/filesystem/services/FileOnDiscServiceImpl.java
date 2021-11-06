@@ -1,25 +1,29 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
-import com.cloudpi.cloudpi_backend.files.disk.services.DrivesService;
+import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.*;
+import java.util.UUID;
 
 @Service
 public class FileOnDiscServiceImpl implements FileOnDiscService {
     private final DrivesService drivesService;
+    private final FileRepository fileRepository;
 
-    public FileOnDiscServiceImpl(DrivesService drivesService) {
+    public FileOnDiscServiceImpl(DrivesService drivesService,
+                                 FileRepository fileRepository) {
         this.drivesService = drivesService;
+        this.fileRepository = fileRepository;
     }
 
     @Override
-    public void saveFile(Long fileId, Long driveId, MultipartFile file) {
+    public void saveFile(UUID fileId, Long driveId, MultipartFile file) {
         var physicalPath = drivesService.fileIdToPath(fileId, driveId);
 
         //TODO to potrzebuje testu (teoretycznie powinno działać:
@@ -35,6 +39,15 @@ public class FileOnDiscServiceImpl implements FileOnDiscService {
                 throw new IllegalStateException();
             }
         }
+    }
+
+    @Override
+    public Resource readFile(UUID fileId) {
+        var fileEntity = fileRepository.findById(fileId)
+                //TODO
+                .orElseThrow(IllegalStateException::new);
+        var drivePhysicalPath = fileEntity.getDrive().getPathToDrive();
+        return new FileSystemResource(drivePhysicalPath + "/" + fileEntity.getId());
     }
 
     @Override

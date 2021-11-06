@@ -1,6 +1,6 @@
-package com.cloudpi.cloudpi_backend.files.disk.services;
+package com.cloudpi.cloudpi_backend.files.physical.services;
 
-import com.cloudpi.cloudpi_backend.files.disk.dto.DiscDTO;
+import com.cloudpi.cloudpi_backend.files.physical.dto.DiscDTO;
 
 import java.util.List;
 

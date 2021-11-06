@@ -1,10 +1,9 @@
-package com.cloudpi.cloudpi_backend.files.disk.enpoint;
+package com.cloudpi.cloudpi_backend.files.physical.enpoint;
 
-import com.cloudpi.cloudpi_backend.files.disk.dto.responses.GetDriveResponse;
+import com.cloudpi.cloudpi_backend.files.physical.dto.responses.GetDriveResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequestMapping("/drives")
 public interface DiscStorageInfoAPI {

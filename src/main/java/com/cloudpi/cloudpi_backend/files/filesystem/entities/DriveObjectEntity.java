@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -31,13 +32,9 @@ public abstract class DriveObjectEntity {
     }
 
     @Id
-    @GeneratedValue(generator = "random-id")
-    @GenericGenerator(
-            name = "random-id",
-            strategy = "com.cloudpi.cloudpi_backend.configuration.RandomLongIdGenerator"
-    )
-    @Column(name = "filesystem_id")
-    public Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    public UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
@@ -48,7 +45,7 @@ public abstract class DriveObjectEntity {
     private @NonNull String name;
 
     @Column(unique = true, nullable = false)
-    private @NonNull String path;
+    private @NotBlank String path;
 
     /**
      * if it's null it means that the parents is root

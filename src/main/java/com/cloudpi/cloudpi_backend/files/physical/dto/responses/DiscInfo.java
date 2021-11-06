@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.disk.dto.responses;
+package com.cloudpi.cloudpi_backend.files.physical.dto.responses;
 
 public record DiscInfo(
         Long discId,

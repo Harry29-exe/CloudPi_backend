@@ -8,21 +8,21 @@ public class FileAuthorityVerifier {
 
     //TODO
     public boolean isOwner(String username, String path) {
-        throw new NotImplementedException();
+        return true;
     }
 
     //TODO
     public boolean canRead(String username, String path) {
-        throw new NotImplementedException();
+        return true;
     }
 
     //TODO
     public boolean canWrite(String username, String path) {
-        throw new NotImplementedException();
+        return true;
     }
 
     //TODO
     public boolean canShare(String username, String path) {
-        throw new NotImplementedException();
+        return true;
     }
 }
