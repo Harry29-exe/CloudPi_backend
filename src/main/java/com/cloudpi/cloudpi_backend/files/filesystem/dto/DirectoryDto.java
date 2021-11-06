@@ -1,21 +1,21 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
+@AllArgsConstructor
 public class DirectoryDto {
-    private Long id;
-    private Long parentId;
-    private String fileName;
+    private UUID id;
+    private UUID parentId;
+    private String dirName;
     private String path;
     private Long childrenSize;
 
     private Date createdAt;
     private Date lastModified;
-
-    private List<FileDto> childrenFiles;
-    private List<DirectoryDto> childrenDirectories;
 }

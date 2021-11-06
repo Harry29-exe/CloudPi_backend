@@ -14,6 +14,8 @@ public class VirtualPath {
     @Getter
     private final String parentDirectoryPath;
     @Getter
+    private final String path;
+    @Getter
     private final String entityName;
 
     public VirtualPath(String path) {
@@ -22,6 +24,7 @@ public class VirtualPath {
             //TODO change exception
             throw new IllegalArgumentException("Incorrect path");
         }
+        this.path = path;
         int fileNameIndex = path.lastIndexOf('/');
         username = path.substring(0, fileNameIndex);
         var lastSlashIndex = path.lastIndexOf('/');
