@@ -54,18 +54,14 @@ public class FileRepoServiceImp implements FileRepoService {
 
         var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
         var fileEntity = new FileEntity(
-                owner,
                 directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
                         //TODO change exception
                         .orElseThrow(IllegalStateException::new),
                 virtualDriveRepository.findByOwner_Id(owner.getId())
                         .orElseThrow(IllegalStateException::new),
                 new DriveEntity(fileDriveId),
-                fileInfo.path().getEntityName(),
                 fileInfo.path().getParentDirectoryPath(),
-                fileInfo.fileType() == null?
-                        FileType.UNDEFINED:
-                        fileInfo.fileType(),
+                fileInfo.fileType(),
                 fileInfo.size()
                 );
 
@@ -74,20 +70,15 @@ public class FileRepoServiceImp implements FileRepoService {
 
     @Override
     public FileDto createAndReturnFile(CreateFileDTO fileInfo) {
-        var owner = userRepository
-                .findByUsername(fileInfo.path().getUsername())
-                .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
         var fileEntity = new FileEntity(
-                owner,
                 directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
                         //TODO change exception
                         .orElseThrow(IllegalStateException::new),
-                virtualDriveRepository.findByOwner_Id(owner.getId())
+                virtualDriveRepository.findByOwner_Username(fileInfo.path().getUsername())
                         .orElseThrow(IllegalStateException::new),
                 driveRepository.getById(fileDriveId),
-                fileInfo.path().getEntityName(),
                 fileInfo.path().getParentDirectoryPath() + fileInfo.path().getEntityName(),
                 fileInfo.fileType() == null?
                         FileType.UNDEFINED:

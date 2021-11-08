@@ -16,13 +16,12 @@ import java.util.List;
 @DiscriminatorValue("DIR")
 public class DirectoryEntity extends PathEntity {
 
-    public DirectoryEntity(@NonNull UserEntity owner,
+    public DirectoryEntity(
                            DirectoryEntity parent,
                            @NonNull VirtualDriveEntity root,
-                           @NonNull String name,
                            @NonNull String path
     ) {
-        super(owner, name, path, parent, root, 0L, new Date(), new Date());
+        super(path, parent, root, 0L, new Date(), new Date());
     }
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)

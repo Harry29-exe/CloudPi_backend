@@ -5,6 +5,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,18 +19,16 @@ import java.util.List;
 @DiscriminatorValue("FILE")
 public class FileEntity extends PathEntity {
 
-    public FileEntity(@NonNull UserEntity owner,
-                      @NonNull DirectoryEntity parent,
+    public FileEntity(@NonNull DirectoryEntity parent,
                       @NonNull VirtualDriveEntity root,
                       @NonNull DriveEntity drive,
-                      @NonNull String name,
                       @NotBlank String path,
-                      @NonNull FileType fileType,
+                      @Nullable FileType fileType,
                       @NonNull Long size
     ) {
-        super(owner, name, path, parent, root, size, new Date(), new Date());
+        super(path, parent, root, size, new Date(), new Date());
         this.drive = drive;
-        this.fileType = fileType;
+        this.fileType = fileType == null? FileType.UNDEFINED: fileType;
     }
 
 
