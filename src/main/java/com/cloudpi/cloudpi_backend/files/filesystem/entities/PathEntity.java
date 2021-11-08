@@ -20,10 +20,9 @@ import java.util.UUID;
 @Table(name = "paths")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "object_type")
-public abstract class PathEntity {
+public class PathEntity {
 
-    public PathEntity(@NonNull UserEntity owner,
-                      @NonNull String name,
+    PathEntity(
                       @NotBlank String path,
                       DirectoryEntity parent,
                       @NonNull VirtualDriveEntity root,
@@ -31,12 +30,14 @@ public abstract class PathEntity {
                       @NonNull Date createdAt,
                       @NonNull Date modifiedAt
     ) {
-        this.owner = owner;
-        this.name = name;
+        this.path = path;
+        int lastSlash = path.lastIndexOf('/');
+        this.name = lastSlash < 0?
+                path:
+                path.substring(lastSlash + 1);
         this.parent = parent;
         this.root = root;
         this.createdAt = createdAt;
-        this.path = path;
         this.size = size;
         this.modifiedAt = modifiedAt;
     }
@@ -45,11 +46,6 @@ public abstract class PathEntity {
     @GeneratedValue
     @Column(name = "id")
     public UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    @ToString.Exclude
-    public @NonNull UserEntity owner;
 
     @Column(nullable = false)
     private @NonNull String name;

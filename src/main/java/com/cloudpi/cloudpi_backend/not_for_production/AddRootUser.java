@@ -79,10 +79,8 @@ public class AddRootUser {
         virtualDrive.setOwner(root);
 
         var dir = new DirectoryEntity(
-                root,
                 null,
                 virtualDrive,
-                "mighty root",
                 "mighty root"
         );
         virtualDrive.setRootDirectory(dir);

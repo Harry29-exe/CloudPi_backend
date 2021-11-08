@@ -38,12 +38,10 @@ public class DirectoryRepoServiceImp implements DirectoryRepoService{
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         var dir = new DirectoryEntity(
-                user,
                 dirRepository.findByPath(path.getParentDirectoryPath())
                         .orElseThrow(() -> PathNotFoundException.noSuchDirectory(path.getPath())),
                 virtualDriveRepository.findByOwner_Id(user.getId())
                         .orElseThrow(() -> new UserVirtualDriveNotFoundException(path.getUsername())),
-                path.getEntityName(),
                 path.getParentDirectoryPath() + path.getEntityName()
         );
 

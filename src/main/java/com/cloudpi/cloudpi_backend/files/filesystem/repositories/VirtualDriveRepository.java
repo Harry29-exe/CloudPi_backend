@@ -11,4 +11,6 @@ public interface VirtualDriveRepository extends JpaRepository<VirtualDriveEntity
 
     Optional<VirtualDriveEntity> findByOwner_Id(Long id);
 
+    Optional<VirtualDriveEntity> findByOwner_Username(String username);
+
 }
