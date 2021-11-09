@@ -1,7 +1,9 @@
 package com.cloudpi.cloudpi_backend.files.physical.services;
 
+import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,13 @@ public class MockDriveService implements DrivesService{
     @Override
     public Long getDriveIdAndReserveSpaceOnIt(Long fileSize) {
         return driveRepository.findAll().get(0).getId();
+    }
+
+    @Override
+    @Transactional
+    public void freeDriveSpace(Long driveId, Long space) {
+        DriveEntity drive = driveRepository.findAll().get(0);
+        drive.setSpaceInUse(drive.getSpaceInUse() + space);
     }
 
     @Override

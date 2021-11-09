@@ -32,7 +32,7 @@ public class VirtualDriveEntity {
     @JoinColumn(name = "user_id", unique = true, updatable = false)
     private UserEntity owner;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "root_directory")
     private DirectoryEntity rootDirectory;
 

@@ -60,7 +60,7 @@ public class PathEntity {
     @JoinColumn(name = "parent_id", nullable = true)
     private DirectoryEntity parent;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "root_id", nullable = false)
     private @NonNull VirtualDriveEntity root;
 

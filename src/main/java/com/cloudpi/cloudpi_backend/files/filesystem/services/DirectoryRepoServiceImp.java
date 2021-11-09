@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 public class DirectoryRepoServiceImp implements DirectoryRepoService{
     private final UserRepository userRepository;
@@ -56,9 +58,17 @@ public class DirectoryRepoServiceImp implements DirectoryRepoService{
     }
 
     @Override
+    public void updateDirsAfterFileUpdate(VirtualPath modifiedFilePAth, Long fileSizeChange, Date fileModificationDate) {
+
+    }
+
+    @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void renameDirectory(VirtualPath path, String newDirName) {
-        pathRepository.renameDirectory(path.getPath(), path.getParentDirectoryPath() + "/" + newDirName);
+        var dir = dirRepository.findByPath(path.getPath())
+                .orElseThrow(PathNotFoundException::noSuchDirectory);
+        dir.setName(newDirName);
+        pathRepository.changeDirectoryPath(dir.getRoot().getId(), path.getPath(), path.getParentDirectoryPath() + "/" + newDirName);
     }
 
     @Override

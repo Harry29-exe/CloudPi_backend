@@ -28,18 +28,18 @@ public class DriveEntity {
         this.pathToDrive = pathToDrive;
         this.assignedSpace = assignedSpace;
         this.disc = disc;
-    }
-
-    public DriveEntity(Long id) {
-        this.id = id;
+        this.spaceInUse = 0L;
     }
 
     @Column(unique = true)
     @NotBlank
     private String pathToDrive;
 
-    @Column
+    @Column(nullable = false)
     private Long assignedSpace;
+
+    @Column(nullable = false)
+    private Long spaceInUse;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "disc", nullable = false)

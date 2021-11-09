@@ -66,7 +66,7 @@ public class AddRootUser {
         Long space = (long) Math.pow(10, 3);
         var pathToDisc = "/run/media/kamil/Nowy";
         var disc = discRepository.save(
-                new DiscEntity(pathToDisc, space, space)
+                new DiscEntity(pathToDisc)
         );
 
         driveRepository.save(

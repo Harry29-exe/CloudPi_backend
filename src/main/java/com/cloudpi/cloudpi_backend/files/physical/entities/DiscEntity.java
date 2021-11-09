@@ -21,19 +21,16 @@ public class DiscEntity {
     private @NotBlank String pathToDisc;
 
 
-    @Column(nullable = false)
-    private @NotNull Long totalCapacity;
+//    @Column(nullable = false)
+//    private @NotNull Long totalCapacity;
 
-
-    @Column(nullable = false)
-    private @NotNull Long freeSpace;
+//    @Column(nullable = false)
+//    private @NotNull Long freeSpace;
 
     @OneToMany(mappedBy = "disc")
     private List<DriveEntity> drive;
 
-    public DiscEntity(String pathToDisc, Long totalCapacity, Long freeSpace) {
+    public DiscEntity(String pathToDisc) {
         this.pathToDisc = pathToDisc;
-        this.totalCapacity = totalCapacity;
-        this.freeSpace = freeSpace;
     }
 }

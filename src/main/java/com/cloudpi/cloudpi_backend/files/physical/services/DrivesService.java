@@ -7,6 +7,10 @@ public interface DrivesService {
 
     Long getDriveIdAndReserveSpaceOnIt(Long fileSize);
 
+    void freeDriveSpace(Long driveId, Long space);
+
     Path fileIdToPath(UUID fileId, Long driveId);
+
+
 
 }

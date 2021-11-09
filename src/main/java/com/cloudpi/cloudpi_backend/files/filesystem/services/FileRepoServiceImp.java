@@ -1,5 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
+import com.cloudpi.cloudpi_backend.exepctions.files.FileNotFoundException;
+import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
@@ -25,20 +27,17 @@ import java.util.UUID;
 public class FileRepoServiceImp implements FileRepoService {
     private final FileRepository fileRepository;
     private final DirectoryRepository directoryRepository;
-    private final UserRepository userRepository;
     private final DrivesService drivesService;
     private final DriveRepository driveRepository;
     private final VirtualDriveRepository virtualDriveRepository;
 
     public FileRepoServiceImp(FileRepository fileRepository,
                               DirectoryRepository directoryRepository,
-                              UserRepository userRepository,
                               DrivesService drivesService,
                               DriveRepository driveRepository,
                               VirtualDriveRepository virtualDriveRepository) {
         this.fileRepository = fileRepository;
         this.directoryRepository = directoryRepository;
-        this.userRepository = userRepository;
         this.drivesService = drivesService;
         this.driveRepository = driveRepository;
         this.virtualDriveRepository = virtualDriveRepository;
@@ -47,47 +46,17 @@ public class FileRepoServiceImp implements FileRepoService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UUID createFile(CreateFileDTO fileInfo) {
+        var createdFile = this.createFileEntity(fileInfo);
 
-        var owner = userRepository
-                .findByUsername(fileInfo.path().getUsername())
-                .orElseThrow(NoSuchUserException::notFoundByUsername);
-
-        var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
-        var fileEntity = new FileEntity(
-                directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
-                        //TODO change exception
-                        .orElseThrow(IllegalStateException::new),
-                virtualDriveRepository.findByOwner_Id(owner.getId())
-                        .orElseThrow(IllegalStateException::new),
-                new DriveEntity(fileDriveId),
-                fileInfo.path().getParentDirectoryPath(),
-                fileInfo.fileType(),
-                fileInfo.size()
-                );
-
-        return fileRepository.save(fileEntity).getId();
+        return createdFile.getId();
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public FileDto createAndReturnFile(CreateFileDTO fileInfo) {
+        var createdFile = this.createFileEntity(fileInfo);
 
-        var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
-        var fileEntity = new FileEntity(
-                directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
-                        //TODO change exception
-                        .orElseThrow(IllegalStateException::new),
-                virtualDriveRepository.findByOwner_Username(fileInfo.path().getUsername())
-                        .orElseThrow(IllegalStateException::new),
-                driveRepository.getById(fileDriveId),
-                fileInfo.path().getParentDirectoryPath() + fileInfo.path().getEntityName(),
-                fileInfo.fileType() == null?
-                        FileType.UNDEFINED:
-                        fileInfo.fileType(),
-                fileInfo.size()
-        );
-
-        var entity = fileRepository.save(fileEntity);
-        return FileMapper.INSTANCE.fileEntityToDTO(entity);
+        return FileMapper.INSTANCE.fileEntityToDTO(createdFile);
     }
 
     @Override
@@ -121,13 +90,37 @@ public class FileRepoServiceImp implements FileRepoService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteFile(UUID fileId) {
+        var fileToDelete = fileRepository.findById(fileId)
+                        .orElseThrow(FileNotFoundException::new);
+
+        drivesService.freeDriveSpace(fileToDelete.getDrive().getId(), fileToDelete.getSize());
 
     }
 
     @Override
     public void deleteFiles(List<UUID> filesIds) {
 
+    }
+
+    private FileEntity createFileEntity(CreateFileDTO fileInfo) {
+        var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
+        var fileEntity = new FileEntity(
+                directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
+                        .orElseThrow(PathNotFoundException::noSuchDirectory),
+                virtualDriveRepository.findByOwner_Username(fileInfo.path().getUsername())
+                        .orElseThrow(IllegalStateException::new),
+                driveRepository.getById(fileDriveId),
+                fileInfo.path().getParentDirectoryPath() + fileInfo.path().getEntityName(),
+                fileInfo.fileType() == null?
+                        FileType.UNDEFINED:
+                        fileInfo.fileType(),
+                fileInfo.size()
+        );
+
+
+        return fileRepository.save(fileEntity);
     }
 
 

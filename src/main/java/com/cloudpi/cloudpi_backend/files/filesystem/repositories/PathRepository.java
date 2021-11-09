@@ -12,12 +12,14 @@ import java.util.UUID;
 @Repository
 public interface PathRepository extends JpaRepository<PathEntity, UUID> {
 
+    //TODO wytestować czy ostatnia linijka query zachowuje się tak jak powinna
     @Transactional
     @Modifying
     @Query("""
             UPDATE PathEntity p
             SET p.path = FUNCTION('regexp_replace', p.path, CONCAT('^', :oldPath), :newPath)
+            WHERE p.root = :virtualDriveId
             """)
-    void renameDirectory(String oldPath, String newPath);
+    void changeDirectoryPath(Long virtualDriveId, String oldPath, String newPath);
 
 }

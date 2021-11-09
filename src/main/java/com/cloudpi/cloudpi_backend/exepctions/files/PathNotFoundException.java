@@ -10,12 +10,20 @@ public class PathNotFoundException extends RuntimeException {
         return new PathNotFoundException("There is no directory: " + notExistingDirectory + " in: " + existingPartOfPath);
     }
 
+    public static PathNotFoundException noSuchDirectory() {
+        return new PathNotFoundException("No directory with given path");
+    }
+
     public static PathNotFoundException noSuchDirectory(String path) {
         return new PathNotFoundException("There is no directory with path: " + path);
     }
 
     public static PathNotFoundException noSuchFile(String pathToFile, String filename) {
         return new PathNotFoundException("There is no file with name: " + filename + " in directory: " + pathToFile);
+    }
+
+    public static PathNotFoundException noSuchFile() {
+        return new PathNotFoundException("There is no file with given path");
     }
 
 }
