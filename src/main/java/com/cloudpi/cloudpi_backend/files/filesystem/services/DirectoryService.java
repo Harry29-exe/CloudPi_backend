@@ -1,11 +1,14 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
+import com.cloudpi.cloudpi_backend.utils.RepoService;
 
 import java.util.Date;
+import java.util.UUID;
 
-public interface DirectoryRepoService {
+public interface DirectoryService extends RepoService<DirectoryEntity, UUID> {
 
     void createDirectory(VirtualPath path);
 
@@ -18,5 +21,7 @@ public interface DirectoryRepoService {
     void moveDirectory(VirtualPath path, VirtualPath newPath);
 
     void deleteDirectory(VirtualPath path);
+
+    void forceDeleteDirectory(VirtualPath path);
 
 }

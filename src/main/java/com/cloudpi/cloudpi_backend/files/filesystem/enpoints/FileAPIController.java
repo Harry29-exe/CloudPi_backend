@@ -5,7 +5,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileOnDiscService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FileRepoService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Isolation;
@@ -19,11 +19,11 @@ import java.util.UUID;
 @RestController
 public class FileAPIController implements FileApiDocs {
     private final FileOnDiscService fileOnDiscService;
-    private final FileRepoService filesystemService;
+    private final FileService filesystemService;
     private final DrivesService drivesService;
 
     public FileAPIController(FileOnDiscService fileOnDiscService,
-                             FileRepoService filesystemService,
+                             FileService filesystemService,
                              DrivesService drivesService) {
         this.fileOnDiscService = fileOnDiscService;
         this.filesystemService = filesystemService;

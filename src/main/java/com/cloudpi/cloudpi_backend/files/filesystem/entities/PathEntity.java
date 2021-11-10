@@ -45,7 +45,7 @@ public class PathEntity {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    public UUID id;
+    private UUID id;
 
     @Column(nullable = false)
     private @NonNull String name;

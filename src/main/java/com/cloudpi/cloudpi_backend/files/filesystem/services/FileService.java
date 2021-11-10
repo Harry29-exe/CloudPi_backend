@@ -8,7 +8,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import java.util.List;
 import java.util.UUID;
 
-public interface FileRepoService {
+public interface FileService {
 
     UUID createFile(CreateFileDTO fileInfo);
 

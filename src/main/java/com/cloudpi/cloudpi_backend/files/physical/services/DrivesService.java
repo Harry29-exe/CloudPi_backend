@@ -11,6 +11,4 @@ public interface DrivesService {
 
     Path fileIdToPath(UUID fileId, Long driveId);
 
-
-
 }

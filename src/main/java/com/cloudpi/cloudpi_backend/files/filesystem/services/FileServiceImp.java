@@ -2,8 +2,6 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.files.FileNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
-import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
-import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
@@ -15,7 +13,6 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
-import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +21,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class FileRepoServiceImp implements FileRepoService {
+public class FileServiceImp implements FileService {
     private final FileRepository fileRepository;
     private final DirectoryRepository directoryRepository;
     private final DrivesService drivesService;
     private final DriveRepository driveRepository;
     private final VirtualDriveRepository virtualDriveRepository;
 
-    public FileRepoServiceImp(FileRepository fileRepository,
-                              DirectoryRepository directoryRepository,
-                              DrivesService drivesService,
-                              DriveRepository driveRepository,
-                              VirtualDriveRepository virtualDriveRepository) {
+    public FileServiceImp(FileRepository fileRepository,
+                          DirectoryRepository directoryRepository,
+                          DrivesService drivesService,
+                          DriveRepository driveRepository,
+                          VirtualDriveRepository virtualDriveRepository) {
         this.fileRepository = fileRepository;
         this.directoryRepository = directoryRepository;
         this.drivesService = drivesService;
