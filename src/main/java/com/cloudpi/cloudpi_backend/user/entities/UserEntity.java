@@ -66,7 +66,6 @@ public class UserEntity {
     )
     private @Nullable UserDeleteEntity userDeleteSchedule;
 
-
     @ManyToMany
     @JoinTable(
             name = "users_roles",

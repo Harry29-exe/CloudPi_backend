@@ -1,0 +1,81 @@
+#spring.profiles.active=dev
+spring:
+  profiles:
+    active: dev
+
+  #spring data
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 123
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    #for docker-compose change localhost to postgres
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    generate-ddl: true
+    hibernate.ddl-auto: create-drop
+
+  #live reload enable(ctrl + F9)
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+  servlet:
+    contextPath: /api/
+
+server:
+  servlet:
+    contextPath: /api/
+
+cloud:
+  pi:
+    #jwt config
+    auth:
+      jwt-secret: W24Sfgw21A24A2AWf2Ga233r51gfvw2
+      jwt-expire-time: 3600
+      refresh-expire-time: 7200
+
+    #custom properties
+    storage:
+      root: C:\\Users\\Kamil\\cloudpi
+
+    config:
+      modifications-only-from-local-network: true
+    schedule-delete:
+      time-in-hours: 48
+
+#openapi-springdoc
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  override-with-generic-response: false
+  api-docs:
+    path: /api
+
+test:
+  value: some-value1
+
+#uncoment to create sql ddl
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.action=create
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target=create.sql
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.create-source=metadata
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+test:
+  value: some-value2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: tests
+
+cloud-pi:
+  test-storage-path: ~/cloud-pi-test-dir

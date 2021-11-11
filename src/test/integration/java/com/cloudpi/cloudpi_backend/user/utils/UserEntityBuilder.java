@@ -24,7 +24,6 @@ public final class UserEntityBuilder {
     private Set<RoleEntity> roles;
     private Set<PermissionEntity> permissions;
     private VirtualDriveEntity userDrive;
-    private List<DriveObjectPermissionEntity> filesPermissions;
 
     private UserEntityBuilder() {
     }
@@ -118,11 +117,6 @@ public final class UserEntityBuilder {
 
     public UserEntityBuilder withFilesInfo(VirtualDriveEntity userDrive) {
         this.userDrive = userDrive;
-        return this;
-    }
-
-    public UserEntityBuilder withFilesPermissions(List<DriveObjectPermissionEntity> filesPermissions) {
-        this.filesPermissions = filesPermissions;
         return this;
     }
 

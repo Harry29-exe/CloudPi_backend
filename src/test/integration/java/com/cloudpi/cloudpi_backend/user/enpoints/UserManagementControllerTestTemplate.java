@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.test.utils.WithUser;
+import com.cloudpi.cloudpi_backend.test.utils.mock_mvc_users.WithUser;
 import com.cloudpi.cloudpi_backend.test.utils.assertions.CustomAssertions;
 import com.cloudpi.cloudpi_backend.test.utils.assertions.ModelComparator;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
@@ -22,8 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;

@@ -1,8 +1,6 @@
-package com.cloudpi.cloudpi_backend.test.utils;
+package com.cloudpi.cloudpi_backend.test.utils.mock_mvc_users;
 
-import org.springframework.core.annotation.AliasFor;
 import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.*;

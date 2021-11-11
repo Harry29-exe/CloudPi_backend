@@ -36,9 +36,16 @@ public class VirtualDriveEntity {
     @JoinColumn(name = "root_directory")
     private DirectoryEntity rootDirectory;
 
-    public VirtualDriveEntity(Long assignedCapacity, UserEntity owner, DirectoryEntity rootDirectory) {
+    public VirtualDriveEntity(Long assignedCapacity, UserEntity owner) {
         this.assignedCapacity = assignedCapacity;
         this.owner = owner;
-        this.rootDirectory = rootDirectory;
     }
+
+    @PrePersist
+    void checkIdRootDirectoryNotNull() {
+        if(rootDirectory == null) {
+            throw new IllegalStateException("Virtual drive must have assigned root directory");
+        }
+    }
+
 }

@@ -15,6 +15,7 @@ import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -40,10 +41,14 @@ public class AddRootUser {
     @Autowired
     private VirtualDriveRepository virtualDriveRepository;
 
+    @Value("${test.value}")
+    private String value;
+
     @PostConstruct
     public void init() {
         initRootUser();
         addDrive();
+        System.out.println("\n\n" + value);
     }
 
     public void initRootUser() {
