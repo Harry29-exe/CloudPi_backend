@@ -1,12 +1,5 @@
 package com.cloudpi.cloudpi_backend.configuration.springdoc;
 
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.prepost.PreAuthorize;
-
-import java.util.Optional;
-
 //@Configuration
 public class SpringdocSecurityAuthentication {
 //    @Bean

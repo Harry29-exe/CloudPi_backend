@@ -8,7 +8,9 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class AuthorityModelsAggregator {
@@ -17,7 +19,6 @@ public class AuthorityModelsAggregator {
     private static final ImmutableList<AuthorityDTO> defaultAuthoritiesOf_USER;
     private static final ImmutableList<AuthorityDTO> defaultAuthoritiesOf_ROOT;
     private static final ImmutableList<AuthorityDTO> defaultAuthoritiesOf_SERVICE_WORKER;
-
 
 
     static {
@@ -44,7 +45,7 @@ public class AuthorityModelsAggregator {
         return switch (accountType) {
             case AccountType.user -> defaultAuthoritiesOf_USER;
             case AccountType.root -> defaultAuthoritiesOf_ROOT;
-            case AccountType.serviceWorker ->  defaultAuthoritiesOf_SERVICE_WORKER;
+            case AccountType.serviceWorker -> defaultAuthoritiesOf_SERVICE_WORKER;
             default -> throw new IllegalArgumentException("Method parameter \"accountType\" must represents one of AccountType values");
         };
     }
@@ -108,8 +109,8 @@ public class AuthorityModelsAggregator {
         List<AuthorityDTO> authoritiesOfROOT = new ArrayList<>();
         List<AuthorityDTO> authoritiesOfSERVICE_WORKER = new ArrayList<>();
 
-        for(var role : roleModelMap.values()) {
-            for(var accountType : role.getAccountsThatHaveItByDefault()) {
+        for (var role : roleModelMap.values()) {
+            for (var accountType : role.getAccountsThatHaveItByDefault()) {
                 switch (accountType) {
                     case "USER" -> authoritiesOfUSER.add(role.toAuthorityDTO());
                     case "ROOT" -> authoritiesOfROOT.add(role.toAuthorityDTO());
@@ -118,8 +119,8 @@ public class AuthorityModelsAggregator {
                 }
             }
         }
-        for(var permission : permissionModelMap.values()) {
-            for(var accountType : permission.getAccountsThatHaveItByDefault()) {
+        for (var permission : permissionModelMap.values()) {
+            for (var accountType : permission.getAccountsThatHaveItByDefault()) {
                 switch (accountType) {
                     case "USER" -> authoritiesOfUSER.add(permission.toAuthorityDTO());
                     case "ROOT" -> authoritiesOfROOT.add(permission.toAuthorityDTO());

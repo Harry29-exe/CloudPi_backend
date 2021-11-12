@@ -2,13 +2,13 @@ package com.cloudpi.cloudpi_backend.not_for_production;
 
 import com.cloudpi.cloudpi_backend.authorities.repositories.PermissionRepository;
 import com.cloudpi.cloudpi_backend.authorities.repositories.RoleRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
@@ -57,7 +57,10 @@ public class AddRootUser {
                 "root",
                 nickname,
                 passwordEncoder.encode("123"),
-                new UserDetailsEntity("root@cloud.pl", null)
+                AccountType.ROOT,
+                new UserDetailsEntity("root@cloud.pl", null),
+                null,
+                null
         );
         userEntity.setAccountType(AccountType.ROOT);
         userEntity.getUserDetails().setUser(userEntity);

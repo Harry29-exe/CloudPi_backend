@@ -3,8 +3,6 @@ package com.cloudpi.cloudpi_backend.configuration.network;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import static com.cloudpi.cloudpi_backend.configuration.network.Network.mergeAddressSections;
-
 @Data
 @AllArgsConstructor
 @Deprecated

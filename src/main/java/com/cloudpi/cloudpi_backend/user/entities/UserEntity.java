@@ -4,17 +4,18 @@ import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
-import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
-import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -79,7 +80,8 @@ public class UserEntity {
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private @Nullable UserDeleteEntity userDeleteSchedule;
+    private @Nullable
+    UserDeleteEntity userDeleteSchedule;
 
     @ManyToMany
     @JoinTable(
@@ -100,7 +102,7 @@ public class UserEntity {
     @PrePersist
     @PreUpdate
     public void validateUser() {
-        if(username.equals(login)) {
+        if (username.equals(login)) {
             throw new InvalidUserData("Username and nickname must be different");
         }
     }

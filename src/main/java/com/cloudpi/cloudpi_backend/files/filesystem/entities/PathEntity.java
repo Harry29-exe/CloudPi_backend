@@ -1,12 +1,10 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
 import com.cloudpi.cloudpi_backend.files.permissions.entities.DirectoryPermissionEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -23,17 +21,17 @@ import java.util.UUID;
 public class PathEntity {
 
     PathEntity(
-                      @NotBlank String path,
-                      DirectoryEntity parent,
-                      @NonNull VirtualDriveEntity root,
-                      @NonNull Long size,
-                      @NonNull Date createdAt,
-                      @NonNull Date modifiedAt
+            @NotBlank String path,
+            DirectoryEntity parent,
+            @NonNull VirtualDriveEntity root,
+            @NonNull Long size,
+            @NonNull Date createdAt,
+            @NonNull Date modifiedAt
     ) {
         this.path = path;
         int lastSlash = path.lastIndexOf('/');
-        this.name = lastSlash < 0?
-                path:
+        this.name = lastSlash < 0 ?
+                path :
                 path.substring(lastSlash + 1);
         this.parent = parent;
         this.root = root;

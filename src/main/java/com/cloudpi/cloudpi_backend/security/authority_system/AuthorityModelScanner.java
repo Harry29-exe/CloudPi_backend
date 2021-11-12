@@ -15,10 +15,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AuthorityModelScanner {
-    private Map<String, PermissionModel> permissionModels = new HashMap<>();
-    private Map<String, RoleModel> roleModels = new HashMap<>();
-    private Map<String, RolePrototype> rolePrototypes = new HashMap<>();
-    private Map<String, PermissionPrototype> permissionPrototypes = new HashMap<>();
+    private final Map<String, PermissionModel> permissionModels = new HashMap<>();
+    private final Map<String, RoleModel> roleModels = new HashMap<>();
+    private final Map<String, RolePrototype> rolePrototypes = new HashMap<>();
+    private final Map<String, PermissionPrototype> permissionPrototypes = new HashMap<>();
 
 
     public AuthorityModelScanner() {
@@ -42,7 +42,7 @@ public class AuthorityModelScanner {
     }
 
     private void mapRolePrototypesToModels() {
-        for(var rolePrototype : rolePrototypes.values()) {
+        for (var rolePrototype : rolePrototypes.values()) {
 
             RoleModel model = new SimpleRoleModel(
                     rolePrototype.roleName,
@@ -77,7 +77,7 @@ public class AuthorityModelScanner {
                 duplicationCheckMap.put(roleName, roleClass);
 
                 var mayBeGivenBy = new ArrayList<>(Arrays.asList(fieldAnnotation.mayBeGivenBy()));
-                if(!mayBeGivenBy.contains(roleName)) {
+                if (!mayBeGivenBy.contains(roleName)) {
                     mayBeGivenBy.add(roleName);
                 }
                 rolePrototypes.put(roleName, new RolePrototype(
@@ -90,8 +90,6 @@ public class AuthorityModelScanner {
             }
         }
     }
-
-
 
 
     private List<Field> getAllRoleFields(Class<?> roleClass) {
@@ -111,7 +109,7 @@ public class AuthorityModelScanner {
     }
 
     private void mapPermissionPrototypesToModels() {
-        for(var prototype : permissionPrototypes.values()) {
+        for (var prototype : permissionPrototypes.values()) {
             var model = new SimplePermissionModel(
                     prototype.permissionName,
                     ImmutableSortedSet.copyOf(prototype.collectMayBeGivenBy()),
@@ -195,7 +193,7 @@ public class AuthorityModelScanner {
         boolean authorityOwnersCanShareIt;
 
         public List<String> collectMayBeGivenBy() {
-            if(!authorityOwnersCanShareIt) {
+            if (!authorityOwnersCanShareIt) {
                 return Arrays.asList(mayBeGivenByArray);
             }
 

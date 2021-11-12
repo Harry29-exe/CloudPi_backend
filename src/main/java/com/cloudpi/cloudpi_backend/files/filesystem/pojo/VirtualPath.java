@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.pojo;
 
-import com.cloudpi.cloudpi_backend.exepctions.files.InvalidPathException;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 
@@ -20,7 +19,7 @@ public class VirtualPath {
 
     public VirtualPath(String path) {
         int incorrectIndex = path.indexOf("//");
-        if(incorrectIndex >= 0) {
+        if (incorrectIndex >= 0) {
             //TODO change exception
             throw new IllegalArgumentException("Incorrect path");
         }
@@ -29,11 +28,11 @@ public class VirtualPath {
         username = path.substring(0, fileNameIndex);
         var lastSlashIndex = path.lastIndexOf('/');
         parentDirectoryPath = path.substring(0, lastSlashIndex);
-        entityName = path.substring(lastSlashIndex+1);
+        entityName = path.substring(lastSlashIndex + 1);
     }
 
     public ImmutableList<String> getDirectoriesInPath() {
-        return directories == null?
+        return directories == null ?
                 this.pathToDirectories() :
                 directories;
     }

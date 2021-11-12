@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.files.permissions.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

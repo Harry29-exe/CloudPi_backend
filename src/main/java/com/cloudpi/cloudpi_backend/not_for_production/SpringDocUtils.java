@@ -7,10 +7,10 @@ public class SpringDocUtils {
 //            <h2 style="color:red;">Endpoint method not implemented</h2>
 //            """;
             """
-                <font color="#911" size=3>
-                  Endpoint method not implemented
-                </font>
-                <br/>
-                """;
+                    <font color="#911" size=3>
+                      Endpoint method not implemented
+                    </font>
+                    <br/>
+                    """;
 
 }

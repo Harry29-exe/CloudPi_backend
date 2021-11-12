@@ -1,11 +1,9 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -40,7 +38,7 @@ public class VirtualDriveEntity {
 
     @PrePersist
     void checkIdRootDirectoryNotNull() {
-        if(rootDirectory == null) {
+        if (rootDirectory == null) {
             throw new IllegalStateException("Virtual drive must have assigned root directory");
         }
     }

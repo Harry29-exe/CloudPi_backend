@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.files;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 
 @Component

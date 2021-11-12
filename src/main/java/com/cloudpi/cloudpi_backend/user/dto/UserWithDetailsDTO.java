@@ -1,9 +1,10 @@
 package com.cloudpi.cloudpi_backend.user.dto;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 

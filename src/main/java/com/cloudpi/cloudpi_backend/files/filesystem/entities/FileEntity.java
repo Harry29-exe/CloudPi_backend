@@ -1,16 +1,16 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.entities;
 
-import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
-import com.cloudpi.cloudpi_backend.files.permissions.entities.FilePermissionEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import lombok.*;
+import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -28,9 +28,8 @@ public class FileEntity extends PathEntity {
     ) {
         super(path, parent, root, size, new Date(), new Date());
         this.drive = drive;
-        this.fileType = fileType == null? FileType.UNDEFINED: fileType;
+        this.fileType = fileType == null ? FileType.UNDEFINED : fileType;
     }
-
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

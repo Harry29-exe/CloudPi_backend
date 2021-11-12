@@ -12,5 +12,5 @@ public record GetUserWithDetailsResponse(
         AccountType accountType,
         List<String> usersPermissions,
         List<String> usersRoles
-        ) {
+) {
 }

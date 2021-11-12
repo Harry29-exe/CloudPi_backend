@@ -69,7 +69,7 @@ public class DirectoryServiceImp implements DirectoryService {
     public void updateDirsAfterFileUpdate(VirtualPath modifiedFilePAth, Long fileSizeChange, Date fileModificationDate) {
         List<String> paths = new ArrayList<>();
         String lastPath = "";
-        for(var dir : modifiedFilePAth.getDirectoriesInPath()) {
+        for (var dir : modifiedFilePAth.getDirectoriesInPath()) {
             lastPath = lastPath + "/" + dir;
             paths.add(lastPath);
         }
@@ -103,7 +103,7 @@ public class DirectoryServiceImp implements DirectoryService {
     public void deleteDirectory(VirtualPath path) {
         var dir = dirRepository.findByPath(path.getPath())
                 .orElseThrow(PathNotFoundException::noSuchDirectory);
-        if( dirRepository.countChildren(dir.getId()) > 0) {
+        if (dirRepository.countChildren(dir.getId()) > 0) {
             throw new DirectoryNotEmptyException();
         }
 

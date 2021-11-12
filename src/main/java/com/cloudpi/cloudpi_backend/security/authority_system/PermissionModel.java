@@ -7,5 +7,4 @@ public interface PermissionModel extends AuthorityModel, Comparable<PermissionMo
     GrantedAuthority getAuthority();
 
 
-
 }

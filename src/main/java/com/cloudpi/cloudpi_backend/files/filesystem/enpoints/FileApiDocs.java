@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +14,7 @@ import java.util.List;
 @Tag(name = "File API", description =
         "API for uploading, downloading, deleting files and directories")
 public interface FileApiDocs
-        extends FileAPI
-{
+        extends FileAPI {
 
     @Operation(
             summary = "Image uploads",
@@ -61,9 +59,9 @@ public interface FileApiDocs
     @Override
     void uploadNewFile(
             FileType fileType,
-          @Parameter(example = "steve:/dir1/dir2/my-awesome-file.awesome")
-          String filePath,
-          MultipartFile file);
+            @Parameter(example = "steve:/dir1/dir2/my-awesome-file.awesome")
+                    String filePath,
+            MultipartFile file);
 
     @Operation(
             summary = "Forces file upload",

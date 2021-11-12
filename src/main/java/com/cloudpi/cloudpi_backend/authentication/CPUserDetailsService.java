@@ -4,6 +4,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface CPUserDetailsService extends UserDetailsService {
 
-    public String findUsernameByLogin(String login);
+    String findUsernameByLogin(String login);
 
 }

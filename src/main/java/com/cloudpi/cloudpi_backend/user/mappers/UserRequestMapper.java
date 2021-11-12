@@ -3,7 +3,6 @@ package com.cloudpi.cloudpi_backend.user.mappers;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
-import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;

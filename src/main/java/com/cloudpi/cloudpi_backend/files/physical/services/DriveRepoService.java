@@ -11,6 +11,4 @@ public interface DriveRepoService extends RepoService<DriveEntity, Long> {
     DriveDTO getDriveByFileId(Long driveId);
 
 
-
-
 }

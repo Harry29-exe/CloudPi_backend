@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-public class AuthorityManagementServiceImp implements AuthorityManagementService{
-    private RoleRepository roleRepository;
-    private PermissionRepository permissionRepository;
+public class AuthorityManagementServiceImp implements AuthorityManagementService {
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
     public AuthorityManagementServiceImp(RoleRepository roleRepository, PermissionRepository permissionRepository) {
         this.roleRepository = roleRepository;
@@ -21,7 +21,7 @@ public class AuthorityManagementServiceImp implements AuthorityManagementService
 
     @Override
     public void giveUserAuthority(String nickname, AuthorityDTO authority) {
-        if(authority.type() == AuthorityType.ROLE) {
+        if (authority.type() == AuthorityType.ROLE) {
             roleRepository.giveUserRole(nickname, authority.authority());
         } else {
             permissionRepository.giveUserPermission(nickname, authority.authority());

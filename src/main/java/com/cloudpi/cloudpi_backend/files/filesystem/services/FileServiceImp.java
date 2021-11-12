@@ -2,8 +2,6 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.files.FileNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
-import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
-import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.mappers.FileMapper;
@@ -13,6 +11,8 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
+import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
+import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +90,7 @@ public class FileServiceImp implements FileService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteFile(UUID fileId) {
         var fileToDelete = fileRepository.findById(fileId)
-                        .orElseThrow(FileNotFoundException::new);
+                .orElseThrow(FileNotFoundException::new);
 
         drivesService.freeDriveSpace(fileToDelete.getDrive().getId(), fileToDelete.getSize());
 
@@ -102,7 +102,7 @@ public class FileServiceImp implements FileService {
     }
 
     private FileEntity createFileEntity(CreateFileDTO fileInfo) {
-        var fileDriveId =  drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
+        var fileDriveId = drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
         var fileEntity = new FileEntity(
                 directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
                         .orElseThrow(PathNotFoundException::noSuchDirectory),
@@ -110,8 +110,8 @@ public class FileServiceImp implements FileService {
                         .orElseThrow(IllegalStateException::new),
                 driveRepository.getById(fileDriveId),
                 fileInfo.path().getParentDirectoryPath() + fileInfo.path().getEntityName(),
-                fileInfo.fileType() == null?
-                        FileType.UNDEFINED:
+                fileInfo.fileType() == null ?
+                        FileType.UNDEFINED :
                         fileInfo.fileType(),
                 fileInfo.size()
         );

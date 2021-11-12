@@ -16,12 +16,12 @@ import java.util.UUID;
 public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID> {
 
     /**
-     * @param fileModifiedAt file creation/modification/deletion date
+     * @param fileModifiedAt     file creation/modification/deletion date
      * @param fileSizeDifference if file is created this is its size, if deleted it is its -size,
-     *                          in case of file modification this is difference between current size
+     *                           in case of file modification this is difference between current size
      *                           and size after modification
-     * @param paths paths to every parent of modified file so in case of file with path: username/dir1/dir2/file.ext
-     *              paths should be {username, username/dir1, username/dir2}
+     * @param paths              paths to every parent of modified file so in case of file with path: username/dir1/dir2/file.ext
+     *                           paths should be {username, username/dir1, username/dir2}
      */
     @Transactional
     @Modifying
