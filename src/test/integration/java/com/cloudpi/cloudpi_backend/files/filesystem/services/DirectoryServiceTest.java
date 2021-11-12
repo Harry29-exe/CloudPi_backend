@@ -31,6 +31,10 @@ class DirectoryServiceTest {
         addBasicDiscDrive.deleteAllDiscAndDrives();
     }
 
+    void createUserWithVirtualDrive() {
+
+    }
+
 }
 
 class CreateDirectory {

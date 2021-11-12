@@ -29,22 +29,23 @@ server:
   servlet:
     contextPath: /api/
 
-cloud:
-  pi:
-    #jwt config
-    auth:
-      jwt-secret: W24Sfgw21A24A2AWf2Ga233r51gfvw2
-      jwt-expire-time: 3600
-      refresh-expire-time: 7200
+cloud-pi:
+  #jwt config
+  auth:
+    jwt-secret: W24Sfgw21A24A2AWf2Ga233r51gfvw2
+    jwt-expire-time: 3600
+    refresh-expire-time: 7200
 
-    #custom properties
-    storage:
-      root: C:\\Users\\Kamil\\cloudpi
+  #custom properties
+  storage:
+    root: C:\\Users\\Kamil\\cloudpi
+    default-space-on-virtual-drive: 1000000
 
-    config:
-      modifications-only-from-local-network: true
-    schedule-delete:
-      time-in-hours: 48
+  security:
+    modifications-only-from-local-network: true
+
+  schedule-delete:
+    time-in-hours: 48
 
 #openapi-springdoc
 springdoc:

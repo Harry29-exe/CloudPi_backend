@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class SystemPreferences {
     public Boolean userManagementLANOnly;
 
-    public SystemPreferences(@Value("${cloud.pi.config.modifications-only-from-local-network}") String fromLocalHostOnly) {
+    public SystemPreferences(@Value("${cloud-pi.security.modifications-only-from-local-network}") String fromLocalHostOnly) {
         userManagementLANOnly = fromLocalHostOnly.equals("true");
     }
 

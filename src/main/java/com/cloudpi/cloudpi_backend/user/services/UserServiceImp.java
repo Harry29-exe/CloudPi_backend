@@ -3,53 +3,59 @@ package com.cloudpi.cloudpi_backend.user.services;
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.authorities.services.AuthorityManagementService;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.VirtualDriveService;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserDetailsRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
+import com.cloudpi.cloudpi_backend.utils.EntityReference;
+import com.cloudpi.cloudpi_backend.utils.RepoService;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.cloudpi.cloudpi_backend.user.enpoints.UserAPIAuthorities.GET_DETAILS;
-
 @Service
-public class UserServiceImp implements UserService {
-    private final UserRepository repository;
+public class UserServiceImp implements UserService, RepoService<UserEntity, Long> {
+    private final UserRepository userRepository;
     private final UserDetailsRepository detailsRepository;
     private final AuthorityManagementService authorityService;
     private final PasswordEncoder passwordEncoder;
+    private final VirtualDriveService virtualDriveService;
 
-    public UserServiceImp(UserRepository repository, UserDetailsRepository detailsRepository,
-                          AuthorityManagementService authorityService, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
+    public UserServiceImp(UserRepository userRepository,
+                          UserDetailsRepository detailsRepository,
+                          AuthorityManagementService authorityService,
+                          PasswordEncoder passwordEncoder,
+                          VirtualDriveService virtualDriveService) {
+        this.userRepository = userRepository;
         this.detailsRepository = detailsRepository;
         this.authorityService = authorityService;
         this.passwordEncoder = passwordEncoder;
+        this.virtualDriveService = virtualDriveService;
     }
 
 
     @Override
     public ImmutableList<UserPublicIdDTO> getAllUsers() {
-        return repository.findAll().stream()
+        return userRepository.findAll().stream()
                 .map(UserEntity::toUserPublicIdDTO)
                 .collect(ImmutableList.toImmutableList());
     }
 
     @Override
     public List<UserWithDetailsDTO> getAllUsersWithDetails() {
-        return repository.findAll()
+        return userRepository.findAll()
                 .stream()
                 .map(UserEntity::toUserWithDetailsDTO)
                 .toList();
@@ -58,19 +64,21 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<UserWithDetailsDTO> getUserDetails(String username) {
-        return repository.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .map(UserEntity::toUserWithDetailsDTO);
     }
 
     @Override
+    @Transactional
     public List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword) {
-        var userEntity = new UserEntity(null, user.getLogin(), user.getUsername(),
-                passwordEncoder.encode(nonEncodedPassword), false,
-                user.getAccountType(), user.getUserDetails().toEntity(),
-                null, null, null, null);
-
-        userEntity.getUserDetails().setUser(userEntity);
-        repository.save(userEntity);
+        var userEntity = new UserEntity(user.getLogin(),
+                user.getUsername(),
+                passwordEncoder.encode(nonEncodedPassword),
+                user.getAccountType(),
+                user.getUserDetails().toEntity(),
+                null, null);
+        userRepository.save(userEntity);
+        virtualDriveService.createVirtualDriveAndRootDir(userEntity.getId());
 
         var defaultRoles = AuthorityModelsAggregator.getDefaultAuthorities(user.getAccountType().name());
         List<AuthorityDTO> authoritiesThatCouldNotBeGiven = new ArrayList<>();
@@ -87,41 +95,41 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void updateUserDetails(String username, UserDetailsDTO userDetails) {
-        var user = repository.findByUsername(username)
+        var user = userRepository.findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
         UserMapper.INSTANCE.updateUserEntity(user.getUserDetails(), userDetails);
 
-        repository.save(user);
+        userRepository.save(user);
     }
 
     @Override
     public void lockUser(UserPublicIdDTO user) {
-        var userEntity = repository
+        var userEntity = userRepository
                 .findByUsername(user.getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         userEntity.setLocked(true);
-        repository.save(userEntity);
+        userRepository.save(userEntity);
     }
 
     @Override
     public void lockUser(String username) {
-        var userEntity = repository
+        var userEntity = userRepository
                 .findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
         userEntity.setLocked(true);
-        repository.save(userEntity);
+        userRepository.save(userEntity);
     }
 
     @Override
     public void deleteUser(String username) {
-        repository.deleteByUsername(username);
+        userRepository.deleteByUsername(username);
     }
 
     @Override
     public void scheduleUserDeleting(String username) {
-        var userToBeDeleted = repository
+        var userToBeDeleted = userRepository
                 .findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
@@ -129,6 +137,11 @@ public class UserServiceImp implements UserService {
                 new UserDeleteEntity()
         );
 
-        repository.save(userToBeDeleted);
+        userRepository.save(userToBeDeleted);
+    }
+
+    @Override
+    public EntityReference<UserEntity> getReference(Long entityId) {
+        return EntityReference.of(userRepository.getById(entityId));
     }
 }

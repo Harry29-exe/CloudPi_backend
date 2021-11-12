@@ -22,9 +22,9 @@ public class JWTServiceImp implements JWTService {
     private static final String tokenTypeClaim = "token";
 
     public JWTServiceImp(
-            @Value("${cloud.pi.auth.jwt-secret}") String secret,
-            @Value("${cloud.pi.auth.jwt-expire-time}") String accessTokenExpireTime,
-            @Value("${cloud.pi.auth.refresh-expire-time}") String refreshExpireTime) {
+            @Value("${cloud-pi.auth.jwt-secret}") String secret,
+            @Value("${cloud-pi.auth.jwt-expire-time}") String accessTokenExpireTime,
+            @Value("${cloud-pi.auth.refresh-expire-time}") String refreshExpireTime) {
         jwtAlgorithm = Algorithm.HMAC256(secret);
         this.accessTokenExpireTime = (long) Integer.parseInt(accessTokenExpireTime) * 1000L;
         this.refreshExpireTime = (long) Integer.parseInt(refreshExpireTime) * 1000L;

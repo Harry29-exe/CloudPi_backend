@@ -17,6 +17,11 @@ import javax.persistence.*;
 @Table(name = "virtual_drives")
 public class VirtualDriveEntity {
 
+    public VirtualDriveEntity(Long assignedCapacity, UserEntity owner) {
+        this.assignedCapacity = assignedCapacity;
+        this.owner = owner;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -25,9 +30,6 @@ public class VirtualDriveEntity {
     @Column(nullable = false)
     private Long assignedCapacity;
 
-    @Column(nullable = false)
-    private Long childrenSize = 0L;
-
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, updatable = false)
     private UserEntity owner;
@@ -35,11 +37,6 @@ public class VirtualDriveEntity {
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "root_directory")
     private DirectoryEntity rootDirectory;
-
-    public VirtualDriveEntity(Long assignedCapacity, UserEntity owner) {
-        this.assignedCapacity = assignedCapacity;
-        this.owner = owner;
-    }
 
     @PrePersist
     void checkIdRootDirectoryNotNull() {

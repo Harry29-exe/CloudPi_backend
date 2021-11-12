@@ -20,12 +20,27 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class UserEntity {
+
+    public UserEntity(@NonNull String login,
+                      @NonNull String username,
+                      @NonNull String password,
+                      @NonNull AccountType accountType,
+                      @NonNull UserDetailsEntity userDetails,
+                      Set<RoleEntity> roles,
+                      Set<PermissionEntity> permissions) {
+        this.login = login;
+        this.username = username;
+        this.password = password;
+        this.accountType = accountType;
+        this.userDetails = userDetails;
+        this.userDetails.setUser(this);
+        this.roles = roles;
+        this.permissions = permissions;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

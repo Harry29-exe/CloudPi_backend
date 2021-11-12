@@ -11,7 +11,7 @@ public class EntityReference<T> {
         return new EntityReference<>(reference);
     }
 
-    public T getEntityReference() {
+    public T getReference() {
         return entityReference;
     }
 }
