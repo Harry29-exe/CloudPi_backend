@@ -1,6 +1,8 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
 
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.PathIdDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.PathEntity;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,12 +26,47 @@ public interface PathRepository extends JpaRepository<PathEntity, UUID> {
             """)
     void changeDirectoryPath(Long virtualDriveId, String oldPath, String newPath);
 
+    @Query(value = """
+            WITH RECURSIVE cte (id, parent_id)
+            AS (
+                SELECT p.id, p.parent_id
+                FROM paths p
+                WHERE p.id = :id
+                UNION ALL
+                SELECT p.id, p.parent_id
+                FROM paths p
+                INNER JOIN cte c
+                    ON p.id = c.parent_id
+            )
+            SELECT CAST(id AS VARCHAR) as id,
+                    CAST(parent_id as VARCHAR) as parentId
+            FROM cte
+            """, nativeQuery = true)
+    Set<PathId> selectPathAndItsParentsIds(UUID id);
+
 
     @Query(value = """
-            SELECT p.id
-            FROM PathEntity p
-            LEFT JOIN FETCH p.parent
-            """)
-    List<UUID> selectParentsIds(UUID id);
+            WITH RECURSIVE cte (id, parent_id)
+            AS (
+                SELECT p.id, p.parent_id
+                FROM paths p
+                WHERE p.id = :id
+                UNION ALL
+                SELECT p.id, p.parent_id
+                FROM paths p
+                INNER JOIN cte c
+                    ON p.parent_id = c.id
+            )
+            SELECT CAST(id AS VARCHAR) as id,
+                    CAST(parent_id as VARCHAR) as parentId
+            FROM cte
+            """, nativeQuery = true)
+    Set<PathId> selectPathAndItsChildrenIds(UUID id);
 
+    interface PathId {
+
+        UUID getId();
+        UUID getParentId();
+
+    }
 }

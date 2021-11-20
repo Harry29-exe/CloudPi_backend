@@ -46,7 +46,7 @@ public class DirectoryServiceImp implements DirectoryService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void createDirectory(VirtualPath path) {
         var user = userRepository.findByUsername(path.getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);

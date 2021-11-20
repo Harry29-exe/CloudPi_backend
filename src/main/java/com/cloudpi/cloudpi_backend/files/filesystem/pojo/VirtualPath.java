@@ -24,7 +24,7 @@ public class VirtualPath {
             throw new IllegalArgumentException("Incorrect path");
         }
         this.path = path;
-        int fileNameIndex = path.lastIndexOf('/');
+        int fileNameIndex = path.indexOf('/');
         username = path.substring(0, fileNameIndex);
         var lastSlashIndex = path.lastIndexOf('/');
         parentDirectoryPath = path.substring(0, lastSlashIndex);

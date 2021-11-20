@@ -9,9 +9,6 @@ import java.util.List;
 public interface FilesystemApiDocs extends FilesystemAPI {
 
     @Override
-    DirectoryDto getUsersFileStructure(String username);
-
-    @Override
     default DirectoryDto getPartOfUsersFileStructure(String username, Integer structureLevels, String fileStructureRoot) {
         return null;
     }
