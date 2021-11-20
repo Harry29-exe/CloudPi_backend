@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface PermissionRepository extends JpaRepository<PermissionEntity, String> {
+public interface PermissionRepository extends JpaRepository<PermissionEntity, Long> {
 
     @Query("""
             SELECT r from PermissionEntity r
@@ -60,7 +60,10 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
 
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "DELETE FROM users_permissions up WHERE up.user_id = :userId AND up.permission_id = :permissionId", nativeQuery = true)
+    @Query(value = """
+            DELETE FROM users_permissions up
+            WHERE up.user_id = :userId AND up.permission_id = :permissionId
+            """, nativeQuery = true)
     void removeUsersPermission(Long userId, Integer permissionId);
 
     @Transactional

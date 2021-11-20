@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
+import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
@@ -27,8 +28,10 @@ public class VirtualDriveServiceImp implements VirtualDriveService {
 
     @Override
     public void createVirtualDriveAndRootDir(Long userId, Long driveSize) {
-        var usersDrive = new VirtualDriveEntity(driveSize, userRepository.getById(userId));
-        var rootDir = new DirectoryEntity(null, usersDrive, "/");
+        var user = userRepository.findById(userId)
+                .orElseThrow(NoSuchUserException::notFoundById);
+        var usersDrive = new VirtualDriveEntity(driveSize, user);
+        var rootDir = new DirectoryEntity(null, usersDrive, user.getUsername());
         usersDrive.setRootDirectory(rootDir);
 
         virtualDriveRepo.save(usersDrive);

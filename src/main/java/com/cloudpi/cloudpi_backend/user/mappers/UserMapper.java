@@ -28,12 +28,12 @@ public interface UserMapper {
 
     UserDetailsDTO userDetailsEntityToDTO(UserDetailsEntity entity);
 
-    @Mapping(target = "user", source = "")
-    @Mapping(target = "id", source = "")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
     UserDetailsEntity userDetailsDTOToEntity(UserDetailsDTO userDetails);
 
-    @Mapping(target = "user")
-    @Mapping(target = "id")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserEntity(@MappingTarget UserDetailsEntity userDetailsEntity, UserDetailsDTO userDetails);
 

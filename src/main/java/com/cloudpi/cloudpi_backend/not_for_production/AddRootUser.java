@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "test"})
 public class AddRootUser {
 
     @Autowired

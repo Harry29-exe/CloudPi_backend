@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.files.DirectoryNotEmptyException;
+import com.cloudpi.cloudpi_backend.exepctions.files.PathAlreadyExistException;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.files.UserVirtualDriveNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
@@ -13,8 +14,10 @@ import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class DirectoryServiceImp implements DirectoryService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createDirectory(VirtualPath path) {
         var user = userRepository.findByUsername(path.getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
@@ -52,8 +56,9 @@ public class DirectoryServiceImp implements DirectoryService {
                         .orElseThrow(() -> PathNotFoundException.noSuchDirectory(path.getPath())),
                 virtualDriveRepository.findByOwner_Id(user.getId())
                         .orElseThrow(() -> new UserVirtualDriveNotFoundException(path.getUsername())),
-                path.getParentDirectoryPath() + path.getEntityName()
+                path.getParentDirectoryPath() + "/" + path.getEntityName()
         );
+
 
         dirRepository.save(dir);
     }

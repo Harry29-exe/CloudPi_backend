@@ -16,9 +16,6 @@ import java.util.List;
 public interface FilesystemAPI {
 
     @GetMapping("user/{username}")
-    DirectoryDto getUsersFileStructure(@PathVariable("username") String username);
-
-    @GetMapping("user/{username}/")
     DirectoryDto getPartOfUsersFileStructure(
             @PathVariable("username") String username,
             @RequestParam(defaultValue = "2") Integer structureLevels,

@@ -16,7 +16,7 @@ import java.util.Set;
 public class PermissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     @Column(unique = true, nullable = false, updatable = false)
     private String authority;
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)

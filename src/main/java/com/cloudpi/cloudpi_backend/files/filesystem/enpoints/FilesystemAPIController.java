@@ -11,11 +11,6 @@ import java.util.List;
 public class FilesystemAPIController implements FilesystemAPI {
 
     @Override
-    public DirectoryDto getUsersFileStructure(String username) {
-        return null;
-    }
-
-    @Override
     public DirectoryDto getPartOfUsersFileStructure(String username, Integer structureLevels, String fileStructureRoot) {
         return null;
     }

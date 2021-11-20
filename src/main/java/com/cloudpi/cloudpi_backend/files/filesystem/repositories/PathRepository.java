@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -21,5 +23,13 @@ public interface PathRepository extends JpaRepository<PathEntity, UUID> {
             WHERE p.root = :virtualDriveId
             """)
     void changeDirectoryPath(Long virtualDriveId, String oldPath, String newPath);
+
+
+    @Query(value = """
+            SELECT p.id
+            FROM PathEntity p
+            LEFT JOIN FETCH p.parent
+            """)
+    List<UUID> selectParentsIds(UUID id);
 
 }

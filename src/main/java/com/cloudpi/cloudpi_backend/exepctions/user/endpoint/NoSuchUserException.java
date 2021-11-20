@@ -2,34 +2,26 @@ package com.cloudpi.cloudpi_backend.exepctions.user.endpoint;
 
 public class NoSuchUserException extends RuntimeException {
 
-    NoSuchUserException(Types noUserWith) {
-        super("We could not find user with such " + noUserWith.name);
+    NoSuchUserException(String noUserWith) {
+        super("We could not find user with such " + noUserWith);
 
     }
 
     public static NoSuchUserException notFoundByUsername() {
-        return new NoSuchUserException(Types.WITH_USERNAME);
+        return new NoSuchUserException("username");
     }
 
 
     public static NoSuchUserException notFoundByLogin() {
-        return new NoSuchUserException(Types.WITH_LOGIN);
+        return new NoSuchUserException("login");
     }
 
 
     public static NoSuchUserException notFoundByEmail() {
-        return new NoSuchUserException(Types.WITH_EMAIL);
+        return new NoSuchUserException("email");
     }
 
-    private enum Types {
-        WITH_LOGIN("login"),
-        WITH_USERNAME("username"),
-        WITH_EMAIL("email");
-
-        public final String name;
-
-        Types(String name) {
-            this.name = name;
-        }
+    public static NoSuchUserException notFoundById() {
+        return new NoSuchUserException("id");
     }
 }

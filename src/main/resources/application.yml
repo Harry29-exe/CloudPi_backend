@@ -25,9 +25,12 @@ spring:
   servlet:
     contextPath: /api/
 
+
 server:
   servlet:
     contextPath: /api/
+  error:
+    include-stacktrace: NEVER
 
 cloud-pi:
   #jwt config
@@ -64,6 +67,7 @@ test:
 #spring.jpa.properties.javax.persistence.schema-generation.scripts.create-source=metadata
 
 ---
+#dev
 spring:
   config:
     activate:
@@ -72,11 +76,20 @@ spring:
 test:
   value: some-value2
 
+server:
+  error:
+    include-stacktrace: ALWAYS
+
 ---
+#test
 spring:
   config:
     activate:
-      on-profile: tests
+      on-profile: test
 
 cloud-pi:
   test-storage-path: ~/cloud-pi-test-dir
+
+#server:
+#  error:
+#    include-stacktrace: true

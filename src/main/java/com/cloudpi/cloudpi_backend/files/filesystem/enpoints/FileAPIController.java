@@ -3,6 +3,7 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileOnDiscService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
@@ -21,13 +22,16 @@ public class FileAPIController implements FileApiDocs {
     private final FileOnDiscService fileOnDiscService;
     private final FileService filesystemService;
     private final DrivesService drivesService;
+    private final DirectoryService dirService;
 
     public FileAPIController(FileOnDiscService fileOnDiscService,
                              FileService filesystemService,
-                             DrivesService drivesService) {
+                             DrivesService drivesService,
+                             DirectoryService dirService) {
         this.fileOnDiscService = fileOnDiscService;
         this.filesystemService = filesystemService;
         this.drivesService = drivesService;
+        this.dirService = dirService;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class FileAPIController implements FileApiDocs {
 
     @Override
     public void createDirectory(String directoryPath) {
-
+        dirService.createDirectory(new VirtualPath(directoryPath));
     }
 
     @Override
@@ -87,4 +91,5 @@ public class FileAPIController implements FileApiDocs {
     public void forceDeleteDirectory(String directoryId) {
 
     }
+
 }

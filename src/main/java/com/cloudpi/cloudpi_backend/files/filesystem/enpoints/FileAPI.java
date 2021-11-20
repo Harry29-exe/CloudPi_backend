@@ -50,8 +50,8 @@ public interface FileAPI {
             @RequestBody MultipartFile file);
 
 
-    @PostMapping("directory/{directoryPath}")
-    void createDirectory(@PathVariable String directoryPath);
+    @PostMapping("directory")
+    void createDirectory(@RequestParam String directoryPath);
 
 
     @GetMapping("file/{fileId}")
