@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("FILE")
+@DiscriminatorValue("F")
 public class FileEntity extends PathEntity {
 
     public FileEntity(@NonNull DirectoryEntity parent,
@@ -31,13 +31,18 @@ public class FileEntity extends PathEntity {
         this.fileType = fileType == null ? FileType.UNDEFINED : fileType;
     }
 
+//    @Column(nullable = true)
+//    private DriveEntity thumbnailDrive;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "drive_files")
-    private @NonNull DriveEntity drive;
+    @Column
+    private Boolean hasThumbnail = false;
 
     @Column
     @Enumerated(EnumType.ORDINAL)
     private @NonNull FileType fileType = FileType.UNDEFINED;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "drive_files")
+    private @NonNull DriveEntity drive;
 
 }

@@ -1,7 +1,9 @@
-package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
+package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSDirectoryDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.test.utils.mock_auth.AuthenticationSetter;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
@@ -16,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class PathRepositoryTest {
+class FilesystemInfoServiceImplTest {
 
     @Autowired
     UserService userService;
     @Autowired
     DirectoryService dirService;
     @Autowired
-    PathRepository pathRepository;
+    FilesystemInfoService fsInfoService;
 
     @BeforeEach
     void setUp() {
@@ -42,26 +44,21 @@ class PathRepositoryTest {
     @Transactional
     void selectParentsIds() {
         //given
-        var dir = dirService.getDirectoryDto(new VirtualPath("bob/dir1/dir11"));
-        var ids = pathRepository.selectPathAndItsParentsIds(dir.getId());
 
-        assert ids.size()  == 3;
-        ids.forEach(id -> {
-            System.out.println(id.getEntityType() + ", " + id.getId() +", " + id.getParentId());
-        });
+
+        var fs = fsInfoService.getFileStructure(0, new VirtualPath("bob"));
+        printFS(fs.getRootDirectory(), 0);
+
     }
 
-    @Test
-    @Transactional
-    void selectChildrenIds() {
-        //given
-        var dir = dirService.getDirectoryDto(new VirtualPath("bob/dir1"));
-        var ids = pathRepository.selectPathAndItsChildrenIds(dir.getId());
+    private void printFS(FSDirectoryDTO fsDir, int level) {
+        String offset = " ".repeat(level*4);
+        System.out.println(offset + fsDir.getDetails().getName());
+        fsDir.getDirectories().forEach(d -> printFS(d, level+1));
+        fsDir.getFiles().forEach(f ->
+                System.out.println(offset + f.getDetail().getName())
+        );
 
-        assert ids.size()  == 2;
-        ids.forEach(id -> {
-            System.out.println(id.getEntityType() + ", " + id.getId() +", " + id.getParentId());
-        });
     }
 
 }

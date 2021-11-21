@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
 
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryInfoDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,10 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID> {
@@ -37,7 +35,10 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
             List<String> paths
     );
 
-    @Query(value = "SELECT d.id FROM DirectoryEntity d WHERE d.relativePath = :path", nativeQuery = true)
+    @Query(value = """
+            SELECT d.id
+            FROM DirectoryEntity d
+            WHERE d.relativePath = :path""", nativeQuery = true)
     Long getIdOfPath(String path);
 
     @Query("""
@@ -48,5 +49,7 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
     Integer countChildren(UUID dirId);
 
     Optional<DirectoryEntity> findByPath(String path);
+
+    List<DirectoryInfoDto> findAllByIdIn(Set<UUID> ids);
 
 }

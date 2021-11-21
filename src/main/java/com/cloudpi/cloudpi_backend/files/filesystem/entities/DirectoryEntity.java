@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 
 @Entity
-@DiscriminatorValue("DIR")
+@DiscriminatorValue("D")
 public class DirectoryEntity extends PathEntity {
 
     public DirectoryEntity(

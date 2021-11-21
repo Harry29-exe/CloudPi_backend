@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.filesystem.services;
+package com.cloudpi.cloudpi_backend.files.physical.services;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import org.springframework.core.io.Resource;

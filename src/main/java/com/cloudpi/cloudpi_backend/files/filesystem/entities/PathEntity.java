@@ -17,7 +17,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "paths")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "object_type")
+@DiscriminatorColumn(name = "object_type", discriminatorType = DiscriminatorType.CHAR)
+@DiscriminatorValue("P")
 public class PathEntity {
 
     PathEntity(
@@ -65,6 +66,7 @@ public class PathEntity {
     @Column(nullable = false)
     private @NonNull Long size;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private @NonNull Date modifiedAt;
 

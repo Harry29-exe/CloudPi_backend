@@ -1,5 +1,7 @@
 package com.cloudpi.cloudpi_backend;
 
+import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
+
 import java.util.HashSet;
 import java.util.Set;
 

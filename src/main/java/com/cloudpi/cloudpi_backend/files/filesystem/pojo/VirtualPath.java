@@ -25,10 +25,16 @@ public class VirtualPath {
         }
         this.path = path;
         int fileNameIndex = path.indexOf('/');
-        username = path.substring(0, fileNameIndex);
-        var lastSlashIndex = path.lastIndexOf('/');
-        parentDirectoryPath = path.substring(0, lastSlashIndex);
-        entityName = path.substring(lastSlashIndex + 1);
+        if(fileNameIndex < 0) {
+            username = path;
+            parentDirectoryPath = null;
+            entityName = path;
+        } else {
+            username = path.substring(0, fileNameIndex);
+            var lastSlashIndex = path.lastIndexOf('/');
+            parentDirectoryPath = path.substring(0, lastSlashIndex);
+            entityName = path.substring(lastSlashIndex + 1);
+        }
     }
 
     public ImmutableList<String> getDirectoriesInPath() {

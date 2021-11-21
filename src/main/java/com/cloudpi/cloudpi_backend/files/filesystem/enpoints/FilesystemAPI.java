@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
 import com.cloudpi.cloudpi_backend.not_for_production.SpringDocUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,9 +17,9 @@ import java.util.List;
 public interface FilesystemAPI {
 
     @GetMapping("user/{username}")
-    DirectoryDto getPartOfUsersFileStructure(
+    FileStructureDTO getPartOfUsersFileStructure(
             @PathVariable("username") String username,
-            @RequestParam(defaultValue = "2") Integer structureLevels,
+            @RequestParam(defaultValue = "0") Integer structureLevels,
             @RequestParam(defaultValue = "/") String fileStructureRoot);
 
     @GetMapping("info/{fileId}")

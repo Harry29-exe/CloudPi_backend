@@ -4,7 +4,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FileOnDiscService;
+import com.cloudpi.cloudpi_backend.files.physical.services.FileOnDiscService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import org.springframework.core.io.Resource;
