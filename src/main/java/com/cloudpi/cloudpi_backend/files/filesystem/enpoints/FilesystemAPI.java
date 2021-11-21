@@ -6,9 +6,11 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
 import com.cloudpi.cloudpi_backend.not_for_production.SpringDocUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/filesystem/")
 @Tag(name = "Filesystem API",
@@ -16,22 +18,31 @@ import java.util.List;
                 "API for retrieving user's file structure and modify it.")
 public interface FilesystemAPI {
 
-    @GetMapping("user/{username}")
+    @GetMapping("structure")
     FileStructureDTO getPartOfUsersFileStructure(
-            @PathVariable("username") String username,
             @RequestParam(defaultValue = "0") Integer structureLevels,
-            @RequestParam(defaultValue = "/") String fileStructureRoot);
+            @RequestParam(defaultValue = "/") String fileStructureRoot,
+            Authentication auth);
 
-    @GetMapping("info/{fileId}")
+    @GetMapping("file/{fileId}")
     FileDto getFileInfo(
-            @PathVariable("fileId") Long fileId,
+            @PathVariable("fileId") String fileId,
             @PathVariable(name = "with-permissions", required = false)
-                    Boolean withPermissions);
+                    Boolean getWithPermissions);
 
-    @GetMapping("users-drives")
-    List<GetUserDriveInfo> getUsersDrivesInfo();
+    @GetMapping("dir/{dirId}")
+    DirectoryDto getDirInfo(
+            @PathVariable("fileId") String fileId,
+            @PathVariable(name = "with-permissions", required = false)
+                    Boolean getWithPermissions);
 
-    @PostMapping("users-drives/{username}")
-    void changeDriveMaxSize(@RequestParam Long newAssignedSpace);
+    @GetMapping("user-drive")
+    List<GetUserDriveInfo> getUsersDrivesInfo(@PathVariable List<String> usernames);
+
+    @PostMapping("user-drive")
+    void changeDriveMaxSize(
+            @PathVariable String username,
+            @RequestParam Long newAssignedSpace
+    );
 
 }

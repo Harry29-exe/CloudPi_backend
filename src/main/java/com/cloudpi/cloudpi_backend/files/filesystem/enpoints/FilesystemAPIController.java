@@ -7,6 +7,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveIn
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.FilesystemInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,27 +21,36 @@ public class FilesystemAPIController implements FilesystemAPI {
     }
 
     @Override
-    public FileStructureDTO getPartOfUsersFileStructure(String username, Integer structureLevels, String fileStructureRoot) {
+    public FileStructureDTO getPartOfUsersFileStructure(
+            Integer structureLevels,
+            String fileStructureRoot,
+            Authentication auth) {
+
         return fsInfoService.getFileStructure(
                 structureLevels,
                 fileStructureRoot.equals("/")?
-                        new VirtualPath(username):
+                        new VirtualPath(auth.getName()):
                         new VirtualPath(fileStructureRoot)
         );
     }
 
     @Override
-    public FileDto getFileInfo(Long fileId, Boolean withPermissions) {
+    public FileDto getFileInfo(String fileId, Boolean getWithPermissions) {
         return null;
     }
 
     @Override
-    public List<GetUserDriveInfo> getUsersDrivesInfo() {
+    public DirectoryDto getDirInfo(String fileId, Boolean getWithPermissions) {
         return null;
     }
 
     @Override
-    public void changeDriveMaxSize(Long newAssignedSpace) {
+    public List<GetUserDriveInfo> getUsersDrivesInfo(List<String> usernames) {
+        return null;
+    }
+
+    @Override
+    public void changeDriveMaxSize(String username, Long newAssignedSpace) {
 
     }
 }

@@ -4,28 +4,28 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 public interface FilesystemApiDocs extends FilesystemAPI {
 
     @Override
-    default FileStructureDTO getPartOfUsersFileStructure(String username, Integer structureLevels, String fileStructureRoot) {
-        return null;
-    }
+    FileStructureDTO getPartOfUsersFileStructure(
+            Integer structureLevels,
+            String fileStructureRoot,
+            Authentication auth);
 
     @Override
-    default FileDto getFileInfo(Long fileId, Boolean withPermissions) {
-        return null;
-    }
+    FileDto getFileInfo(String fileId, Boolean getWithPermissions);
 
     @Override
-    default List<GetUserDriveInfo> getUsersDrivesInfo() {
-        return null;
-    }
+    DirectoryDto getDirInfo(String fileId, Boolean getWithPermissions);
 
     @Override
-    default void changeDriveMaxSize(Long newAssignedSpace) {
+    List<GetUserDriveInfo> getUsersDrivesInfo(List<String> usernames);
 
-    }
+    @Override
+    void changeDriveMaxSize(String username, Long newAssignedSpace);
+
 }
