@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.dto;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.configuration.Default;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = {})
 @EqualsAndHashCode
 public class UserWithDetailsDTO {
     private @Nullable Long id;
@@ -22,9 +22,9 @@ public class UserWithDetailsDTO {
     private AccountType accountType = AccountType.USER;
     private List<AuthorityDTO> roles = new ArrayList<>();
     private List<AuthorityDTO> permissions = new ArrayList<>();
-
     private UserDetailsDTO userDetails;
 
+    @Default
     public UserWithDetailsDTO(String login, String username, List<AuthorityDTO> roles, List<AuthorityDTO> permissions, UserDetailsDTO userDetails) {
         this.login = login;
         this.username = username;
