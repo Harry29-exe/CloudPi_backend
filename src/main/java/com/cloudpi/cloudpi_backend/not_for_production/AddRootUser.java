@@ -1,10 +1,17 @@
 package com.cloudpi.cloudpi_backend.not_for_production;
 
+import com.cloudpi.cloudpi_backend.authentication.CPUserDetailsService;
+import com.cloudpi.cloudpi_backend.authentication.CPUserDetailsServiceImp;
 import com.cloudpi.cloudpi_backend.authorities.repositories.PermissionRepository;
 import com.cloudpi.cloudpi_backend.authorities.repositories.RoleRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
+import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;
@@ -17,6 +24,8 @@ import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +49,12 @@ public class AddRootUser {
     private DiscRepository discRepository;
     @Autowired
     private VirtualDriveRepository virtualDriveRepository;
+    @Autowired
+    private DirectoryService dirService;
+    @Autowired
+    private CPUserDetailsService userDetailsService;
+    @Autowired
+    private FileService fileService;
 
     @Value("${test.value}")
     private String value;
@@ -49,6 +64,7 @@ public class AddRootUser {
         initRootUser();
         addDrive();
         System.out.println("\n\n" + value);
+        addRootDirs();
     }
 
     public void initRootUser() {
@@ -94,6 +110,35 @@ public class AddRootUser {
         virtualDrive.setRootDirectory(dir);
 
         virtualDriveRepository.save(virtualDrive);
+    }
+
+    public void addRootDirs() {
+        var root = userDetailsService
+                .loadUserByUsername("mighty root");
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(
+                        root.getUsername(),
+                        root.getPassword(),
+                        root.getAuthorities()));
+        dirService.createDirectory(new VirtualPath("mighty root/dir1"));
+        dirService.createDirectory(new VirtualPath("mighty root/dir2"));
+        dirService.createDirectory(new VirtualPath("mighty root/dir1/dir12"));
+        dirService.createDirectory(new VirtualPath("mighty root/dir1/dir11"));
+        dirService.createDirectory(new VirtualPath("mighty root/dir1/dir11/dir111"));
+        dirService.createDirectory(new VirtualPath("mighty root/dir2/dir21"));
+        fileService.createFile(new CreateFileDTO(
+                new VirtualPath("mighty root/file1"), 5253343L, FileType.IMAGE));
+        fileService.createFile(new CreateFileDTO(
+                new VirtualPath("mighty root/file2"), 5253343L, FileType.MUSIC));
+        fileService.createFile(new CreateFileDTO(
+                new VirtualPath("mighty root/dir1/file11"), 5253343L, FileType.VIDEO));
+        fileService.createFile(new CreateFileDTO(
+                new VirtualPath("mighty root/dir1/file12"), 5253343L, FileType.COMPRESSED));
+        fileService.createFile(new CreateFileDTO(
+                new VirtualPath("mighty root/dir1/file13"), 5253343L, FileType.TEXT_FILE));
+        fileService.createFile(new CreateFileDTO(
+                new VirtualPath("mighty root/dir1/dir11/file1111"), 5253343L, FileType.IMAGE));
     }
 
     private void addAllAuthorities(String nickname) {
