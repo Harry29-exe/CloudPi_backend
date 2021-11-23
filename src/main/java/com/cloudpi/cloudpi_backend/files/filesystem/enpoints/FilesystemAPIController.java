@@ -21,11 +21,11 @@ public class FilesystemAPIController implements FilesystemAPI {
 
     @Override
     public FileStructureDTO getPartOfUsersFileStructure(String username, Integer structureLevels, String fileStructureRoot) {
+        var path = username + fileStructureRoot;
+        System.out.println(path);
         return fsInfoService.getFileStructure(
                 structureLevels,
-                fileStructureRoot.equals("/")?
-                        new VirtualPath(username):
-                        new VirtualPath(fileStructureRoot)
+                new VirtualPath(path)
         );
     }
 

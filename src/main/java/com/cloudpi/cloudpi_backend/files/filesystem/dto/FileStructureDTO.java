@@ -18,11 +18,11 @@ public class FileStructureDTO {
     @Data
     public static class FSFileDTO {
         private UUID id;
-        private FileInfoDto detail;
+        private FileInfoDto details;
 
-        public FSFileDTO(UUID id, FileInfoDto detail) {
+        public FSFileDTO(UUID id, FileInfoDto details) {
             this.id = id;
-            this.detail = detail;
+            this.details = details;
         }
     }
 

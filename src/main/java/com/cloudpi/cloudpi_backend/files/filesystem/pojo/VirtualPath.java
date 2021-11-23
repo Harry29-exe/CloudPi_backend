@@ -19,6 +19,9 @@ public class VirtualPath {
 
     public VirtualPath(String path) {
         int incorrectIndex = path.indexOf("//");
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
         if (incorrectIndex >= 0) {
             //TODO change exception
             throw new IllegalArgumentException("Incorrect path");
