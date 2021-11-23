@@ -2,21 +2,22 @@ package com.cloudpi.cloudpi_backend.files.filesystem.dto;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
-public class FileDto {
-    private UUID id;
-    private UUID parentId;
-    private String name;
-    private FileType fileType;
-    private Boolean hasThumbnail;
-    private String path;
-    private Long size;
+public class FileDto implements PathObjectDto {
+    private @NonNull UUID id;
+    private @NonNull UUID parentId;
+    private @NonNull String name;
+    private @NonNull FileType fileType;
+    private @NonNull Boolean hasThumbnail;
+    private @NonNull String path;
+    private @NonNull Long size;
 
-    private Date createdAt;
-    private Date modifiedAt;
+    private @NonNull Date createdAt;
+    private @NonNull Date modifiedAt;
 
 }
