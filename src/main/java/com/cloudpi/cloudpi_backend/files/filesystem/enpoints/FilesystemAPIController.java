@@ -21,7 +21,7 @@ public class FilesystemAPIController implements FilesystemAPI {
     }
 
     @Override
-    public FileStructureDTO getPartOfUsersFileStructure(
+    public FileStructureDTO getFileStructure(
             Integer structureLevels,
             String fileStructureRoot,
             Authentication auth) {

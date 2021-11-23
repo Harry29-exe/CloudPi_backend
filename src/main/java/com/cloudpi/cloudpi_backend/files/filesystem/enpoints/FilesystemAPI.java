@@ -15,11 +15,11 @@ import java.util.UUID;
 @RequestMapping("/filesystem/")
 @Tag(name = "Filesystem API",
         description = SpringDocUtils.NOT_IMPLEMENTED +
-                "API for retrieving user's file structure and modify it.")
+                "API for retrieving user's file structure and file info and modify it.")
 public interface FilesystemAPI {
 
-    @GetMapping("structure")
-    FileStructureDTO getPartOfUsersFileStructure(
+    @GetMapping("file-structure")
+    FileStructureDTO getFileStructure(
             @RequestParam(defaultValue = "0") Integer structureLevels,
             @RequestParam(defaultValue = "/") String fileStructureRoot,
             Authentication auth);
@@ -37,7 +37,8 @@ public interface FilesystemAPI {
                     Boolean getWithPermissions);
 
     @GetMapping("user-drive")
-    List<GetUserDriveInfo> getUsersDrivesInfo(@PathVariable List<String> usernames);
+    List<GetUserDriveInfo> getUsersDrivesInfo(
+            @PathVariable List<String> usernames);
 
     @PostMapping("user-drive")
     void changeDriveMaxSize(

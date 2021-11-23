@@ -10,9 +10,9 @@ import java.util.UUID;
 public class FileDto {
     private UUID id;
     private UUID parentId;
-    private Long driveId;
-    private String fileName;
+    private String name;
     private FileType fileType;
+    private Boolean hasThumbnail;
     private String path;
     private Long size;
 

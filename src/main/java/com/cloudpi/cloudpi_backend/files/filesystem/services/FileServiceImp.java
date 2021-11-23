@@ -58,12 +58,14 @@ public class FileServiceImp implements FileService {
 
     @Override
     public FileDto getFile(UUID fileId) {
-        return null;
+        return fileRepository.findDtoById(fileId)
+                .orElseThrow(FileNotFoundException::new);
     }
 
     @Override
     public FileDto getFile(VirtualPath path) {
-        return null;
+        return fileRepository.findDtoByPath(path.getPath())
+                .orElseThrow(FileNotFoundException::new);
     }
 
     @Override
