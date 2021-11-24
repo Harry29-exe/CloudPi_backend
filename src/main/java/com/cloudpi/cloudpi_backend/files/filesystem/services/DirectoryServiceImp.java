@@ -76,7 +76,7 @@ public class DirectoryServiceImp implements DirectoryService {
             paths.add(lastPath);
         }
 
-        dirRepository.updateDirsAfterFileModification(fileModificationDate, fileSizeChange, paths);
+        dirRepository.updateDirsSizeAndModificationAt(fileModificationDate, fileSizeChange, paths);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
@@ -17,24 +18,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class FileInDBServiceImpl implements FileInDBService {
-    private final FileRepository fileRepository;
-    private final DirectoryRepository directoryRepository;
+    private final PathRepository pathRepo;
+    private final FileRepository fileRepo;
+    private final DirectoryRepository dirRepo;
+    private final DirectoryService dirService;
+
+
     private final DrivesService drivesService;
     private final DriveRepository driveRepository;
     private final VirtualDriveRepository virtualDriveRepository;
 
-    public FileInDBServiceImpl(FileRepository fileRepository,
-                               DirectoryRepository directoryRepository,
-                               DrivesService drivesService,
+    public FileInDBServiceImpl(PathRepository pathRepo, FileRepository fileRepo,
+                               DirectoryRepository dirRepo,
+                               DirectoryService dirService, DrivesService drivesService,
                                DriveRepository driveRepository,
                                VirtualDriveRepository virtualDriveRepository) {
-        this.fileRepository = fileRepository;
-        this.directoryRepository = directoryRepository;
+        this.pathRepo = pathRepo;
+        this.fileRepo = fileRepo;
+        this.dirRepo = dirRepo;
+        this.dirService = dirService;
         this.drivesService = drivesService;
         this.driveRepository = driveRepository;
         this.virtualDriveRepository = virtualDriveRepository;
@@ -60,38 +68,50 @@ public class FileInDBServiceImpl implements FileInDBService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public FileDto forceCreateFile(CreateFileDTO fileInfo) {
         var path = fileInfo.path().getPath();
-        if(fileRepository.existsByPath(path)) {
-            fileRepository.deleteByPath(path);
+        if(fileRepo.existsByPath(path)) {
+            fileRepo.deleteByPath(path);
         }
-        
+
         return this.createAndReturnFile(fileInfo);
     }
 
     @Override
     public FileDto getFile(UUID fileId) {
-        return fileRepository.findDtoById(fileId)
+        return fileRepo.findDtoById(fileId)
                 .orElseThrow(FileNotFoundException::new);
     }
 
     @Override
     public FileDto getFile(VirtualPath path) {
-        return fileRepository.findDtoByPath(path.getPath())
+        return fileRepo.findDtoByPath(path.getPath())
                 .orElseThrow(FileNotFoundException::new);
     }
 
     @Override
     public List<FileDto> getFilesByIds(List<UUID> filesIds) {
-        return null;
+        return fileRepo.findAllDtoByIdIn(filesIds);
     }
 
     @Override
     public List<FileDto> getFiles(List<VirtualPath> filesPaths) {
-        return null;
+        return fileRepo.findAllDtoByPathIn(filesPaths.stream()
+                .map(VirtualPath::getPath).toList()
+        );
     }
 
     @Override
+    @Transactional
     public void updateFileSize(UUID fileId, Long newSize) {
+        var modificationDate = new Date();
+        var file = fileRepo.findDtoById(fileId)
+                .orElseThrow(PathNotFoundException::noSuchFile);
+        var fileSizeChange = file.getSize() - newSize;
 
+        fileRepo.updateFileSize(fileId, newSize, modificationDate);
+        dirService.updateDirsAfterFileUpdate(
+                new VirtualPath(file.getPath()),
+                fileSizeChange,
+                modificationDate);
     }
 
     @Override
@@ -99,10 +119,11 @@ public class FileInDBServiceImpl implements FileInDBService {
 
     }
 
+    //TODO
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteFile(UUID fileId) {
-        var fileToDelete = fileRepository.findById(fileId)
+        var fileToDelete = fileRepo.findById(fileId)
                 .orElseThrow(FileNotFoundException::new);
 
         drivesService.freeDriveSpace(fileToDelete.getDrive().getId(), fileToDelete.getSize());
@@ -117,7 +138,7 @@ public class FileInDBServiceImpl implements FileInDBService {
     private FileEntity createFileEntity(CreateFileDTO fileInfo) {
         var fileDriveId = drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
         var fileEntity = new FileEntity(
-                directoryRepository.findByPath(fileInfo.path().getParentDirectoryPath())
+                dirRepo.findByPath(fileInfo.path().getParentDirectoryPath())
                         .orElseThrow(PathNotFoundException::noSuchDirectory),
                 virtualDriveRepository.findByOwner_Username(fileInfo.path().getUsername())
                         .orElseThrow(IllegalStateException::new),
@@ -130,7 +151,7 @@ public class FileInDBServiceImpl implements FileInDBService {
         );
 
 
-        return fileRepository.save(fileEntity);
+        return fileRepo.saveAndFlush(fileEntity);
     }
 
 

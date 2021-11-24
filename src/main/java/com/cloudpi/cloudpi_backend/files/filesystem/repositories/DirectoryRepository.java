@@ -29,7 +29,7 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
                 d.size = d.size + :fileSizeDifference
             WHERE d.path IN :paths
             """)
-    void updateDirsAfterFileModification(
+    void updateDirsSizeAndModificationAt(
             Date fileModifiedAt,
             Long fileSizeDifference,
             List<String> paths
