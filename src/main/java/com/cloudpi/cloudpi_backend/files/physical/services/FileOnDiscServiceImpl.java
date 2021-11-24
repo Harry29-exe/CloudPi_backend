@@ -22,8 +22,8 @@ public class FileOnDiscServiceImpl implements FileOnDiscService {
     }
 
     @Override
-    public void saveFile(UUID fileId, Long driveId, MultipartFile file) {
-        var physicalPath = drivesService.fileIdToPath(fileId, driveId);
+    public void saveFile(UUID fileId, MultipartFile file) {
+        var physicalPath = drivesService.fileIdToPath(fileId);
 
         //TODO to potrzebuje testu (teoretycznie powinno działać:
         //          spóbuj przekazać ownership pliku

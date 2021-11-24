@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.test.utils.mock_auth;
+package com.cloudpi.cloudpi_backend.utils.mock_auth;
 
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
 import com.cloudpi.cloudpi_backend.security.authority_system.PermissionModel;

@@ -1,10 +1,8 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSDirectoryDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
-import com.cloudpi.cloudpi_backend.test.utils.mock_auth.AuthenticationSetter;
+import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")

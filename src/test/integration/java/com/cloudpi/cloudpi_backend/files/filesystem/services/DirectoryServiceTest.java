@@ -3,8 +3,7 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathAlreadyExistException;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.utils.AddBasicDiscDrive;
-import com.cloudpi.cloudpi_backend.test.utils.mock_mvc_users.WithUser;
-import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
+import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import org.junit.jupiter.api.*;
@@ -13,12 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.cloudpi.cloudpi_backend.test.utils.mock_auth.AuthenticationSetter.*;
+import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.clearAuth;
+import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.setRootAuth;
 
 @SpringBootTest
 @AutoConfigureMockMvc

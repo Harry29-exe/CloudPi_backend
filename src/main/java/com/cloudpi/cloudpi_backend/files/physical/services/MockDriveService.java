@@ -36,7 +36,7 @@ public class MockDriveService implements DrivesService {
     }
 
     @Override
-    public Path fileIdToPath(UUID fileId, Long driveId) {
+    public Path fileIdToPath(UUID fileId) {
         return root.resolve(fileId.toString());
     }
 }

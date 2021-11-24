@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface FileOnDiscService {
 
     @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
-    void saveFile(UUID fileId, Long driveId, MultipartFile file);
+    void saveFile(UUID fileId, MultipartFile file);
 
     @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
     Resource readFile(VirtualPath path);

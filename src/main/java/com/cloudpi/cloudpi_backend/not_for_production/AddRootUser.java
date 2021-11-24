@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-@Profile({"dev", "test"})
+@Profile({"dev"})
 public class AddRootUser {
 
     @Autowired
@@ -65,6 +65,8 @@ public class AddRootUser {
         addDrive();
         System.out.println("\n\n" + value);
         addRootDirs();
+
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 
     public void initRootUser() {

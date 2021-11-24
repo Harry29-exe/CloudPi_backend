@@ -9,6 +9,6 @@ public interface DrivesService {
 
     void freeDriveSpace(Long driveId, Long space);
 
-    Path fileIdToPath(UUID fileId, Long driveId);
+    Path fileIdToPath(UUID fileId);
 
 }

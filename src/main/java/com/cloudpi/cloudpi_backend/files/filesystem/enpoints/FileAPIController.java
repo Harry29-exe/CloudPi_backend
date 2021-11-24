@@ -54,7 +54,7 @@ public class FileAPIController implements FileApiDocs {
         );
 
         var createdFile = filesystemService.createAndReturnFile(createFile);
-//        fileOnDiscService.saveFile(createdFile.getId(), createdFile.getDriveId(), file);
+        fileOnDiscService.saveFile(createdFile.getId(), file);
     }
 
     @Override
