@@ -27,7 +27,6 @@ public interface FileAPI {
     @GetMapping(path = "image-preview")
     List<Resource> getImagesPreview(
             @RequestParam(defaultValue = "64") Integer previewResolution,
-            @RequestParam(defaultValue = ".jpg") String imageFormat,
             @RequestBody List<String> imageNames);
 
 
@@ -36,9 +35,10 @@ public interface FileAPI {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     void uploadNewFile(
-            @RequestParam(required = false) FileType fileType,
+            @RequestParam(defaultValue = "UNDEFINED") FileType fileType,
             @RequestParam String filepath,
-            @RequestParam MultipartFile file);
+            @RequestParam MultipartFile file,
+            Authentication auth);
 
 
     @PutMapping(
@@ -47,11 +47,14 @@ public interface FileAPI {
     void forceUploadNewFile(
             @RequestParam(required = false) FileType fileType,
             @RequestParam String filepath,
-            @RequestBody MultipartFile file);
+            @RequestBody MultipartFile file,
+            Authentication auth);
 
 
     @PostMapping("directory")
-    void createDirectory(@RequestParam String directoryPath);
+    void createDirectory(
+            @RequestParam String directoryPath,
+            Authentication auth);
 
 
     @GetMapping("file/{fileId}")

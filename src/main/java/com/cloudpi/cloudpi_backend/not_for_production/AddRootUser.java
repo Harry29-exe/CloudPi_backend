@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.not_for_production;
 
 import com.cloudpi.cloudpi_backend.authentication.CPUserDetailsService;
-import com.cloudpi.cloudpi_backend.authentication.CPUserDetailsServiceImp;
 import com.cloudpi.cloudpi_backend.authorities.repositories.PermissionRepository;
 import com.cloudpi.cloudpi_backend.authorities.repositories.RoleRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
@@ -11,7 +10,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.FileInDBService;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;
@@ -54,7 +53,7 @@ public class AddRootUser {
     @Autowired
     private CPUserDetailsService userDetailsService;
     @Autowired
-    private FileService fileService;
+    private FileInDBService fileInDBService;
 
     @Value("${test.value}")
     private String value;
@@ -129,17 +128,17 @@ public class AddRootUser {
         dirService.createDirectory(new VirtualPath("mighty root/dir1/dir11"));
         dirService.createDirectory(new VirtualPath("mighty root/dir1/dir11/dir111"));
         dirService.createDirectory(new VirtualPath("mighty root/dir2/dir21"));
-        fileService.createFile(new CreateFileDTO(
+        fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("mighty root/file1"), 5253343L, FileType.IMAGE));
-        fileService.createFile(new CreateFileDTO(
+        fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("mighty root/file2"), 5253343L, FileType.MUSIC));
-        fileService.createFile(new CreateFileDTO(
+        fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("mighty root/dir1/file11"), 5253343L, FileType.VIDEO));
-        fileService.createFile(new CreateFileDTO(
+        fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("mighty root/dir1/file12"), 5253343L, FileType.COMPRESSED));
-        fileService.createFile(new CreateFileDTO(
+        fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("mighty root/dir1/file13"), 5253343L, FileType.TEXT_FILE));
-        fileService.createFile(new CreateFileDTO(
+        fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("mighty root/dir1/dir11/file1111"), 5253343L, FileType.IMAGE));
     }
 

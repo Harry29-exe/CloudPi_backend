@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Profile({"test"})
 public class BeforeAppStarts {
 
-    private DiscRepository discRepo;
-    private DriveRepository driveRepo;
-    private String path;
+    private final DiscRepository discRepo;
+    private final DriveRepository driveRepo;
+    private final String path;
 
     public BeforeAppStarts(
             DiscRepository discRepo,

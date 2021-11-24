@@ -15,7 +15,7 @@ class FileRepositoryTest {
     @Autowired
     FileRepository fileRepository;
 
-    @Test
+//    @Test
     void findDtoById() {
         var file = fileRepository.findAll().get(0);
         var dto = fileRepository.findDtoById(file.getId())
@@ -23,7 +23,7 @@ class FileRepositoryTest {
         assert dto.getId().equals(file.getId());
     }
 
-    @Test
+//    @Test
     void findDtoByPath() {
     }
 }

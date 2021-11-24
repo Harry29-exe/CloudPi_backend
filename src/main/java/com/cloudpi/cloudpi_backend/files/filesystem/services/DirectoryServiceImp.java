@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.files.DirectoryNotEmptyException;
-import com.cloudpi.cloudpi_backend.exepctions.files.PathAlreadyExistException;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.files.UserVirtualDriveNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
@@ -14,10 +13,8 @@ import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -31,18 +28,18 @@ public class DirectoryServiceImp implements DirectoryService {
     private final VirtualDriveRepository virtualDriveRepository;
     private final DirectoryRepository dirRepository;
     private final PathRepository pathRepository;
-    private final FileService fileService;
+    private final FileInDBService fileInDBService;
 
     public DirectoryServiceImp(UserRepository userRepository,
                                VirtualDriveRepository virtualDriveRepository,
                                DirectoryRepository dirRepository,
                                PathRepository pathRepository,
-                               FileService fileService) {
+                               FileInDBService fileInDBService) {
         this.userRepository = userRepository;
         this.virtualDriveRepository = virtualDriveRepository;
         this.dirRepository = dirRepository;
         this.pathRepository = pathRepository;
-        this.fileService = fileService;
+        this.fileInDBService = fileInDBService;
     }
 
     @Override
@@ -120,7 +117,7 @@ public class DirectoryServiceImp implements DirectoryService {
         var dir = dirRepository.findByPath(path.getPath())
                 .orElseThrow(PathNotFoundException::noSuchDirectory);
         dir.getChildrenFiles().forEach(f ->
-                fileService.deleteFile(f.getId()));
+                fileInDBService.deleteFile(f.getId()));
         dir.getChildrenDirectories().forEach(d ->
                 this.forceDeleteDirectory(new VirtualPath(d.getPath()))
         );

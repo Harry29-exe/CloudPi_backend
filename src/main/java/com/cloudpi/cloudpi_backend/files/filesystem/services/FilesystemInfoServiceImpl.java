@@ -1,8 +1,8 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryInfoDto;
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileInfoDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDetailsDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDetailsDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSDirectoryDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSFileDTO;
@@ -37,7 +37,7 @@ public class FilesystemInfoServiceImpl implements FilesystemInfoService {
         structureCreator.structureFiles();
 
         var structure = structureCreator.getStructureRoot();
-        var filesDetails = fileRepo.findAllByIdIn(
+        var filesDetails = fileRepo.findAllDetailsByIdIn(
                 new HashSet<>(structureCreator.getFileFetchList()));
         var dirsDetails = dirRepo.findAllByIdIn(
                 new HashSet<>(structureCreator.getDirFetchList()));
@@ -49,12 +49,12 @@ public class FilesystemInfoServiceImpl implements FilesystemInfoService {
 
     private static class FileStructureMapper {
         private final DirStructure dirStructure;
-        private final Map<UUID, DirectoryInfoDto> dirsInfo = new HashMap<>();
-        private final Map<UUID, FileInfoDto> filesInfo = new HashMap<>();
+        private final Map<UUID, DirectoryDetailsDto> dirsInfo = new HashMap<>();
+        private final Map<UUID, FileDetailsDto> filesInfo = new HashMap<>();
 
         private FSDirectoryDTO fsDirectoryDTO;
 
-        FileStructureMapper(DirStructure dirStructure, List<DirectoryInfoDto> dirsInfo, List<FileInfoDto> filesInfo) {
+        FileStructureMapper(DirStructure dirStructure, List<DirectoryDetailsDto> dirsInfo, List<FileDetailsDto> filesInfo) {
             this.dirStructure = dirStructure;
             dirsInfo.forEach(d -> this.dirsInfo.put(d.getId(), d));
             filesInfo.forEach(f -> this.filesInfo.put(f.getId(), f));
@@ -62,7 +62,7 @@ public class FilesystemInfoServiceImpl implements FilesystemInfoService {
             mapFSDirectoryDTO(this.fsDirectoryDTO, dirStructure);
         }
 
-        public static FSDirectoryDTO map(DirStructure dirStructure, List<DirectoryInfoDto> dirsInfo, List<FileInfoDto> filesInfo) {
+        public static FSDirectoryDTO map(DirStructure dirStructure, List<DirectoryDetailsDto> dirsInfo, List<FileDetailsDto> filesInfo) {
             var fsMapper = new FileStructureMapper(dirStructure, dirsInfo, filesInfo);
             return fsMapper.fsDirectoryDTO;
         }

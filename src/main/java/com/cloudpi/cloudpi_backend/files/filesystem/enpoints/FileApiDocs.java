@@ -42,7 +42,7 @@ public interface FileApiDocs
             }
     )
     @Override
-    List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames);
+    List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames);
 
     @Operation(
             summary = "Uploads file",
@@ -61,7 +61,8 @@ public interface FileApiDocs
             FileType fileType,
             @Parameter(example = "steve:/dir1/dir2/my-awesome-file.awesome")
                     String filePath,
-            MultipartFile file);
+            MultipartFile file,
+            Authentication auth);
 
     @Operation(
             summary = "Forces file upload",
@@ -75,7 +76,7 @@ public interface FileApiDocs
                     @ApiResponse(responseCode = "400", description = "bad path")
             })
     @Override
-    void forceUploadNewFile(FileType fileType, String filePath, MultipartFile file);
+    void forceUploadNewFile(FileType fileType, String filePath, MultipartFile file, Authentication auth);
 
     @Operation(
             summary = "Creates empty directory",
@@ -84,7 +85,7 @@ public interface FileApiDocs
                     """
     )
     @Override
-    void createDirectory(String directoryPath);
+    void createDirectory(String directoryPath, Authentication auth);
 
 
     @Operation(

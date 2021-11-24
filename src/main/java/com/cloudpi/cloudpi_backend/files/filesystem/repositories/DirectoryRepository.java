@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
 
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryInfoDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDetailsDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -50,6 +50,6 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
 
     Optional<DirectoryEntity> findByPath(String path);
 
-    List<DirectoryInfoDto> findAllByIdIn(Set<UUID> ids);
+    List<DirectoryDetailsDto> findAllByIdIn(Set<UUID> ids);
 
 }

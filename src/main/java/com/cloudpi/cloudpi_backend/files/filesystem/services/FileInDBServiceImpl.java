@@ -21,18 +21,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class FileServiceImp implements FileService {
+public class FileInDBServiceImpl implements FileInDBService {
     private final FileRepository fileRepository;
     private final DirectoryRepository directoryRepository;
     private final DrivesService drivesService;
     private final DriveRepository driveRepository;
     private final VirtualDriveRepository virtualDriveRepository;
 
-    public FileServiceImp(FileRepository fileRepository,
-                          DirectoryRepository directoryRepository,
-                          DrivesService drivesService,
-                          DriveRepository driveRepository,
-                          VirtualDriveRepository virtualDriveRepository) {
+    public FileInDBServiceImpl(FileRepository fileRepository,
+                               DirectoryRepository directoryRepository,
+                               DrivesService drivesService,
+                               DriveRepository driveRepository,
+                               VirtualDriveRepository virtualDriveRepository) {
         this.fileRepository = fileRepository;
         this.directoryRepository = directoryRepository;
         this.drivesService = drivesService;
@@ -54,6 +54,17 @@ public class FileServiceImp implements FileService {
         var createdFile = this.createFileEntity(fileInfo);
 
         return FileMapper.INSTANCE.fileEntityToDTO(createdFile);
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public FileDto forceCreateFile(CreateFileDTO fileInfo) {
+        var path = fileInfo.path().getPath();
+        if(fileRepository.existsByPath(path)) {
+            fileRepository.deleteByPath(path);
+        }
+        
+        return this.createAndReturnFile(fileInfo);
     }
 
     @Override

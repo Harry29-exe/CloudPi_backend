@@ -5,7 +5,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
 import com.cloudpi.cloudpi_backend.files.physical.services.FileOnDiscService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.FileInDBService;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
@@ -20,16 +20,16 @@ import java.util.UUID;
 @RestController
 public class FileAPIController implements FileApiDocs {
     private final FileOnDiscService fileOnDiscService;
-    private final FileService filesystemService;
+    private final FileInDBService fileInDBService;
     private final DrivesService drivesService;
     private final DirectoryService dirService;
 
     public FileAPIController(FileOnDiscService fileOnDiscService,
-                             FileService filesystemService,
+                             FileInDBService fileInDBService,
                              DrivesService drivesService,
                              DirectoryService dirService) {
         this.fileOnDiscService = fileOnDiscService;
-        this.filesystemService = filesystemService;
+        this.fileInDBService = fileInDBService;
         this.drivesService = drivesService;
         this.dirService = dirService;
     }
@@ -40,26 +40,35 @@ public class FileAPIController implements FileApiDocs {
     }
 
     @Override
-    public List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames) {
+    public List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames) {
         return null;
     }
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void uploadNewFile(FileType fileType, String filepath, MultipartFile file) {
+    public void uploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
         var createFile = new CreateFileDTO(
                 new VirtualPath(filepath),
                 file.getSize(),
                 fileType
         );
 
-        var createdFile = filesystemService.createAndReturnFile(createFile);
+        var createdFile = fileInDBService.createAndReturnFile(createFile);
         fileOnDiscService.saveFile(createdFile.getId(), file);
     }
 
     @Override
-    public void forceUploadNewFile(FileType fileType, String filepath, MultipartFile file) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void forceUploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
+        var createFile = new CreateFileDTO(
+                new VirtualPath(filepath),
+                file.getSize(),
+                fileType
+        );
 
+
+        var createdFile = fileInDBService.createAndReturnFile(createFile);
+        fileOnDiscService.saveFile(createdFile.getId(), file);
     }
 
     @Override
@@ -73,7 +82,7 @@ public class FileAPIController implements FileApiDocs {
     }
 
     @Override
-    public void createDirectory(String directoryPath) {
+    public void createDirectory(String directoryPath, Authentication auth) {
         dirService.createDirectory(new VirtualPath(directoryPath));
     }
 

@@ -99,3 +99,12 @@ cloud-pi:
 #server:
 #  error:
 #    include-stacktrace: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev-deploy
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/postgres
