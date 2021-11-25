@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
 import com.cloudpi.cloudpi_backend.configuration.springdoc.NotImplemented;
+import com.cloudpi.cloudpi_backend.configuration.springdoc.Stability;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
@@ -38,6 +39,7 @@ public class FileAPIController implements FileAPI {
     }
 
     @Override
+    @Stability.InitialTests
     public void uploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
         var createFile = new CreateFileDTO(
                 new VirtualPath(filepath),
