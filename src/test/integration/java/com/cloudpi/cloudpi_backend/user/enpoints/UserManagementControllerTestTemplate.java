@@ -425,7 +425,7 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
 
         //then
         var responseBody = getBody(result, GetUserResponse[].class);
-        assert user.getUsername() == responseBody[0].getUsername();
+        assert user.getUsername().equals(responseBody[0].getUsername());
     }
 
     private ResultActions performPost(PostUserRequest user) throws Exception {
@@ -496,18 +496,21 @@ class UpdateUser extends UserManagementControllerTestTemplate {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(detailsRequest))
         ).andExpect(
-                status().is(202)
+                status().is(201)
         ).andReturn();
 
         var result = mock.perform(
                 get(testingEndpoint + newUsername)
+        ).andExpect(
+                status().is2xxSuccessful()
         ).andReturn();
 
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
-        assert "someone" == responseBody.username();
+        assert "someone".equals(responseBody.username());
     }
 
+    //TODO poprawić jwt[princibal: bob] -> change username -> principal != username
     @Test
     @WithUser(username = "bob")
     public void should_update_users_own_details() throws Exception {
@@ -522,16 +525,18 @@ class UpdateUser extends UserManagementControllerTestTemplate {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(detailsRequest))
         ).andExpect(
-                status().is(202)
+                status().is(201)
         ).andReturn();
 
         var result = mock.perform(
                 get(testingEndpoint + newUsername)
+        ).andExpect(
+                status().is2xxSuccessful()
         ).andReturn();
 
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
-        assert "someone" == responseBody.username();
+        assert "someone".equals(responseBody.username());
     }
 
     private UpdateUserDetailsRequest defaultUserDetails() {
@@ -598,6 +603,7 @@ class DeleteUser extends UserManagementControllerTestTemplate {
         ).andReturn();
     }
 
+    //TODO virtual drive nie gubi dzieci w db
     @Test
     @WithUser(authorities = {UserAPIAuthorities.DELETE, UserAPIAuthorities.GET_DETAILS})
     public void should_delete_with_authority() throws Exception {

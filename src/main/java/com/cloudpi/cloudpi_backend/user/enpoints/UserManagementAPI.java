@@ -37,7 +37,7 @@ public interface UserManagementAPI {
 
     //    @PreAuthorize("hasAuthority(USER_MODIFY) or" +
 //            "#login == principal")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     @PatchMapping("{username}")
     void updateUserDetails(@PathVariable(name = "username") String username,
                            @RequestBody UpdateUserDetailsRequest request);

@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.user.mappers;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
+import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
@@ -36,7 +37,18 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserEntity(@MappingTarget UserDetailsEntity userDetailsEntity, UserDetailsDTO userDetails);
-
+    
+    @Mapping(target = "userDrive", ignore = true)
+    @Mapping(target = "userDeleteSchedule", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "permissions", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "login", ignore = true)
+    @Mapping(target = "locked", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateUserEntity(@MappingTarget UserEntity userEntity, UpdateUserVal update);
+    
     default GrantedAuthority entityToGrantedAuthority(PermissionEntity entity) {
         return new SimpleGrantedAuthority(entity.getAuthority());
     }

@@ -5,7 +5,7 @@ import com.cloudpi.cloudpi_backend.authorities.services.AuthorityManagementServi
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.VirtualDriveService;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
-import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
@@ -64,8 +64,8 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
 
     @Override
     public Optional<UserWithDetailsDTO> getUserDetails(String username) {
-        return userRepository.findByUsername(username)
-                .map(UserEntity::toUserWithDetailsDTO);
+        var user = userRepository.findByUsername(username);
+        return user.map(UserEntity::toUserWithDetailsDTO);
     }
 
     @Override
@@ -94,10 +94,10 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     }
 
     @Override
-    public void updateUserDetails(String username, UserDetailsDTO userDetails) {
+    public void updateUser(String username, UpdateUserVal userDetails) {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
-        UserMapper.INSTANCE.updateUserEntity(user.getUserDetails(), userDetails);
+        UserMapper.INSTANCE.updateUserEntity(user, userDetails);
 
         userRepository.save(user);
     }
