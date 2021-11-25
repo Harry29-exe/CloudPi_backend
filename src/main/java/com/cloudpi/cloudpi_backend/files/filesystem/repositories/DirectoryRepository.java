@@ -38,7 +38,8 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
     @Query(value = """
             SELECT d.id
             FROM DirectoryEntity d
-            WHERE d.relativePath = :path""", nativeQuery = true)
+            WHERE d.relativePath = :path
+            """, nativeQuery = true)
     Long getIdOfPath(String path);
 
     @Query("""

@@ -14,6 +14,7 @@ import java.util.*;
 @Repository
 public interface FileRepository extends JpaRepository<FileEntity, UUID> {
 
+
     List<FileDetailsDto> findAllDetailsByIdIn(Iterable<UUID> ids);
 
     List<FileDto> findAllDtoByIdIn(Iterable<UUID> ids);
@@ -33,9 +34,9 @@ public interface FileRepository extends JpaRepository<FileEntity, UUID> {
     @Transactional
     @Modifying
     @Query("""
-            UPDATE files f
+            UPDATE FileEntity f
             SET f.size = :newSize,
-                f.modifiedAt = updateDate
+                f.modifiedAt = :updateDate
             WHERE f.id = :id
             """)
     void updateFileSize(UUID id, Long newSize, Date updateDate);

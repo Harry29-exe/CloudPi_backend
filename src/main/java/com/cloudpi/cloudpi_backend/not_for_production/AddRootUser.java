@@ -10,7 +10,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FileInDBService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;

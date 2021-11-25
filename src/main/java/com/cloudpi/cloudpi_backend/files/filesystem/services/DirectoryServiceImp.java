@@ -11,8 +11,10 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,18 +30,18 @@ public class DirectoryServiceImp implements DirectoryService {
     private final VirtualDriveRepository virtualDriveRepository;
     private final DirectoryRepository dirRepository;
     private final PathRepository pathRepository;
-    private final FileInDBService fileInDBService;
+//    private final FileInDBService fileInDBService;
 
     public DirectoryServiceImp(UserRepository userRepository,
                                VirtualDriveRepository virtualDriveRepository,
                                DirectoryRepository dirRepository,
-                               PathRepository pathRepository,
-                               FileInDBService fileInDBService) {
+                               PathRepository pathRepository
+                               ) {
         this.userRepository = userRepository;
         this.virtualDriveRepository = virtualDriveRepository;
         this.dirRepository = dirRepository;
         this.pathRepository = pathRepository;
-        this.fileInDBService = fileInDBService;
+//        this.fileInDBService = fileInDBService;
     }
 
     @Override
@@ -114,13 +116,14 @@ public class DirectoryServiceImp implements DirectoryService {
 
     @Override
     public void forceDeleteDirectory(VirtualPath path) {
-        var dir = dirRepository.findByPath(path.getPath())
-                .orElseThrow(PathNotFoundException::noSuchDirectory);
-        dir.getChildrenFiles().forEach(f ->
-                fileInDBService.deleteFile(f.getId()));
-        dir.getChildrenDirectories().forEach(d ->
-                this.forceDeleteDirectory(new VirtualPath(d.getPath()))
-        );
+//        var dir = dirRepository.findByPath(path.getPath())
+//                .orElseThrow(PathNotFoundException::noSuchDirectory);
+//        dir.getChildrenFiles().forEach(f ->
+//                fileInDBService.deleteFile(f.getId()));
+//        dir.getChildrenDirectories().forEach(d ->
+//                this.forceDeleteDirectory(new VirtualPath(d.getPath()))
+//        );
+        throw new NotImplementedException();
     }
 
     @Override

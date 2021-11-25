@@ -1,5 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
+import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocMessages;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,9 +18,9 @@ public interface FileApiDocs
         extends FileAPI {
 
     @Operation(
-            summary = "Image uploads",
-            description = """
-                    <h1>Not implemented</h1>
+            summary = "Image uploads " + SpringDocMessages.notImplemented,
+            description =
+                    SpringDocMessages.methodNotImplemented1 + """
                     Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
                     but this method use user .images folder instead of precisely defined path.
                     """,

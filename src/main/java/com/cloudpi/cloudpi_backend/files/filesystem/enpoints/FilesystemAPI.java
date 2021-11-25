@@ -4,13 +4,12 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
-import com.cloudpi.cloudpi_backend.not_for_production.SpringDocUtils;
+import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/filesystem/")
 @Tag(name = "Filesystem API",

@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.files.filesystem.services;
+package com.cloudpi.cloudpi_backend.files.filesystem.services.file;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
@@ -9,9 +9,7 @@ import java.util.UUID;
 
 public interface FileInDBService {
 
-    UUID createFile(CreateFileDTO fileInfo);
-
-    FileDto createAndReturnFile(CreateFileDTO fileInfo);
+    FileDto createFile(CreateFileDTO fileInfo);
 
     FileDto forceCreateFile(CreateFileDTO fileInfo);
 
