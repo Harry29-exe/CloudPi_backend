@@ -50,26 +50,16 @@ public class FilesystemAPIController implements FilesystemAPI {
         return null;
     }
 
-    @Override
-    public void moveFile(MoveFileRequest requestBody) {
-
-    }
-
     @NotImplemented.HIGH
     @Override
     public DirectoryDto getDirInfo(String fileId, Boolean getWithPermissions) {
         return null;
     }
 
-    @NotImplemented.HIGH
-    @Override
-    public void deleteFile(String fileId) {
-
-    }
 
     @NotImplemented.MEDIUM
     @Override
-    public void deleteFiles(@NotEmpty List<String> fileId) {
+    public void moveFile(MoveFileRequest requestBody) {
 
     }
 

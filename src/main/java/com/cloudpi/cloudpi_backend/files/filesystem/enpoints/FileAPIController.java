@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,7 +76,7 @@ public class FileAPIController implements FileAPI {
     }
 
 
-
+    @Stability.InitialTests
     @Override
     public Resource downloadFile(String fileId) {
         return fileService.readFile(UUID.fromString(fileId));
@@ -97,6 +98,18 @@ public class FileAPIController implements FileAPI {
     @NotImplemented.LOW
     @Override
     public void forceDeleteDirectory(String directoryId) {
+
+    }
+
+    @NotImplemented.HIGH
+    @Override
+    public void deleteFile(UUID fileId) {
+        fileService.deleteFile(fileId);
+    }
+
+    @NotImplemented.MEDIUM
+    @Override
+    public void deleteFiles(@NotEmpty List<UUID> fileId) {
 
     }
 

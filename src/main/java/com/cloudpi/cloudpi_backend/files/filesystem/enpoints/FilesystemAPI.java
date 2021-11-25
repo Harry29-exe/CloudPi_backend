@@ -55,17 +55,6 @@ public interface FilesystemAPI {
                     Boolean getWithPermissions);
 
 
-    @DeleteMapping("file/{fileId}")
-    void deleteFile(@PathVariable String fileId);
-
-
-    @DeleteMapping(
-            path = "file",
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
-    void deleteFiles(@RequestBody @NotEmpty List<String> fileId);
-
-
     @DeleteMapping("directory/{directoryId}")
     void deleteDirectory(@PathVariable String directoryId);
 

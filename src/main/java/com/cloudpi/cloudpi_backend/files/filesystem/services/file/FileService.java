@@ -10,16 +10,19 @@ import java.util.UUID;
 
 public interface FileService {
 
-    @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
+//    @PreAuthorize("@fileAuthorityVerifier.canWrite(Principal, #path)")
     void saveFile(CreateFileDTO fileInfo, MultipartFile file);
 
-    @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
+//    @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
     Resource readFile(VirtualPath path);
 
-    @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
+//    @PreAuthorize("fileAuthorityVerifier.canRead(Principal, #path)")
     Resource readFile(UUID fileId);
 
-    @PreAuthorize("fileAuthorityVerifier.canWrite(Principal, #path)")
+//    @PreAuthorize("fileAuthorityVerifier.canWrite(Principal, #path)")
     void deleteFile(VirtualPath path);
+
+//    @PreAuthorize("fileAuthorityVerifier.canWrite(Principal, #path)")
+    void deleteFile(UUID fileId);
 
 }

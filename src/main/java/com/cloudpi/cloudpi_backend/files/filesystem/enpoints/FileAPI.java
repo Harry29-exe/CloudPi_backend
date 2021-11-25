@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/files/")
 @Tag(name = "File API",
@@ -68,6 +70,17 @@ public interface FileAPI {
 
     @DeleteMapping("directory/{directoryId}/force")
     void forceDeleteDirectory(@PathVariable String directoryId);
+
+
+    @DeleteMapping("file/{fileId}")
+    void deleteFile(@PathVariable UUID fileId);
+
+
+    @DeleteMapping(
+            path = "file",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    void deleteFiles(@RequestBody @NotEmpty List<UUID> fileId);
 
 
 }
