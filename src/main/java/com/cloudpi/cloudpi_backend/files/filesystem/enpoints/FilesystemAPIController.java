@@ -45,12 +45,12 @@ public class FilesystemAPIController implements FilesystemAPI {
     }
 
     @Override
-    public List<GetUserDriveInfo> getUsersDrivesInfo(List<String> usernames) {
+    public List<GetUserDriveInfo> getUsersVirtualDrivesInfo(List<String> usernames) {
         return null;
     }
 
     @Override
-    public void changeDriveMaxSize(String username, Long newAssignedSpace) {
+    public void changeVirtualDriveMaxSize(String username, Long newAssignedSpace) {
 
     }
 }

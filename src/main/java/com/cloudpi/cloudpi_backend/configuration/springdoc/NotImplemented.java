@@ -7,11 +7,33 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Operation(
-        summary = SpringDocMessages.notImplemented,
-        description = SpringDocMessages.methodNotImplemented1
-)
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface NotImplemented {
+public class NotImplemented {
+
+    @Operation(
+            summary = SpringDocMessages.notImplemented,
+            description = SpringDocMessages.methodNotImplemented1
+    )
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface LOW {
+    }
+
+    @Operation(
+            summary = SpringDocMessages.notImplemented,
+            description = SpringDocMessages.methodNotImplemented2
+    )
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface MEDIUM {
+    }
+
+    @Operation(
+            summary = SpringDocMessages.notImplemented,
+            description = SpringDocMessages.methodNotImplemented1
+    )
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface HIGH {
+    }
+
 }

@@ -1,6 +1,8 @@
-package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
+package com.cloudpi.cloudpi_backend.files.filesystem.enpoints.doc;
 
 import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocMessages;
+import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.DirectoryAPI;
+import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.FileAPI;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +17,7 @@ import java.util.List;
 @Tag(name = "File API", description =
         "API for uploading, downloading, deleting files and directories")
 public interface FileApiDocs
-        extends FileAPI {
+        extends FileAPI, DirectoryAPI {
 
     @Operation(
             summary = "Image uploads " + SpringDocMessages.notImplemented,

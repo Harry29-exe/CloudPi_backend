@@ -36,13 +36,15 @@ public interface FilesystemAPI {
                     Boolean getWithPermissions);
 
     @GetMapping("user-drive")
-    List<GetUserDriveInfo> getUsersDrivesInfo(
+    List<GetUserDriveInfo> getUsersVirtualDrivesInfo(
             @PathVariable List<String> usernames);
 
     @PostMapping("user-drive")
-    void changeDriveMaxSize(
+    void changeVirtualDriveMaxSize(
             @PathVariable String username,
             @RequestParam Long newAssignedSpace
     );
+
+
 
 }

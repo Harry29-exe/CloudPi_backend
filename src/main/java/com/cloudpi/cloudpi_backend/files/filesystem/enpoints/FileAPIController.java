@@ -8,7 +8,7 @@ import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
-import io.swagger.v3.oas.annotations.Operation;
+import lombok.NonNull;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-public class FileAPIController implements FileApiDocs {
+public class FileAPIController implements FileAPI {
     private final FileService fileService;
     private final FileInDBService fileInDBService;
     private final DrivesService drivesService;
@@ -37,13 +37,12 @@ public class FileAPIController implements FileApiDocs {
         this.dirService = dirService;
     }
 
-    @NotImplemented
+    @NotImplemented.LOW
     @Override
     public void uploadNewImage(String imageName, byte[] image, Authentication auth) {
-
+        throw new NotImplementedException();
     }
 
-    @NotImplemented
     @Override
     public List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames) {
         return null;
@@ -86,23 +85,7 @@ public class FileAPIController implements FileApiDocs {
     }
 
     @Override
-    public void createDirectory(String directoryPath, Authentication auth) {
-        dirService.createDirectory(new VirtualPath(directoryPath));
-    }
-
-    @Override
-    public Resource compressAndDownloadDirectory(String directoryId) {
-        return null;
-    }
-
-    @Override
-    public void deleteDirectory(String directoryId) {
+    public void deleteFiles(@NonNull List<String> fileId) {
 
     }
-
-    @Override
-    public void forceDeleteDirectory(String directoryId) {
-
-    }
-
 }
