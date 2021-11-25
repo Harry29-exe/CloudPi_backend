@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class FilesystemInfoServiceImpl implements FilesystemInfoService {
+public class FilesystemServiceImpl implements FilesystemService {
     private final DirectoryRepository dirRepo;
     private final FileRepository fileRepo;
     private final PathRepository pathRepo;
 
 
-    public FilesystemInfoServiceImpl(DirectoryRepository dirRepo, FileRepository fileRepo, PathRepository pathRepo) {
+    public FilesystemServiceImpl(DirectoryRepository dirRepo, FileRepository fileRepo, PathRepository pathRepo) {
         this.dirRepo = dirRepo;
         this.fileRepo = fileRepo;
         this.pathRepo = pathRepo;

@@ -46,7 +46,7 @@ public class DirectoryServiceImp implements DirectoryService {
 
     @Override
     @Transactional
-    public void createDirectory(VirtualPath path) {
+    public DirectoryDto createDirectory(VirtualPath path) {
         var user = userRepository.findByUsername(path.getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
@@ -58,8 +58,8 @@ public class DirectoryServiceImp implements DirectoryService {
                 path.getParentDirectoryPath() + "/" + path.getEntityName()
         );
 
-
-        dirRepository.save(dir);
+        var createdDir = dirRepository.save(dir);
+        return DirectoryMapper.INSTANCE.directoryEntityToDto(createdDir);
     }
 
     @Override

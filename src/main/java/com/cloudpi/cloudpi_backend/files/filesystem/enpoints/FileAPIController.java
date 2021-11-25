@@ -37,17 +37,6 @@ public class FileAPIController implements FileAPI {
         this.dirService = dirService;
     }
 
-    @NotImplemented.LOW
-    @Override
-    public void uploadNewImage(String imageName, byte[] image, Authentication auth) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames) {
-        return null;
-    }
-
     @Override
     public void uploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
         var createFile = new CreateFileDTO(
@@ -59,6 +48,8 @@ public class FileAPIController implements FileAPI {
         fileService.saveFile(createFile, file);
     }
 
+
+    @NotImplemented.LOW
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void forceUploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
@@ -74,18 +65,37 @@ public class FileAPIController implements FileAPI {
 //        fileService.saveFile(createdFile.getId(), file);
     }
 
+
+    @NotImplemented.LOW
+    @Override
+    public void uploadNewImage(String imageName, byte[] image, Authentication auth) {
+        throw new NotImplementedException();
+    }
+
+
+
     @Override
     public Resource downloadFile(String fileId) {
         return fileService.readFile(UUID.fromString(fileId));
     }
 
+
+    @NotImplemented.LOW
     @Override
-    public void deleteFile(String fileId) {
+    public List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames) {
+        return null;
+    }
+
+    @NotImplemented.LOW
+    @Override
+    public Resource compressAndDownloadDirectory(String directoryId) {
+        return null;
+    }
+
+    @NotImplemented.LOW
+    @Override
+    public void forceDeleteDirectory(String directoryId) {
 
     }
 
-    @Override
-    public void deleteFiles(@NonNull List<String> fileId) {
-
-    }
 }

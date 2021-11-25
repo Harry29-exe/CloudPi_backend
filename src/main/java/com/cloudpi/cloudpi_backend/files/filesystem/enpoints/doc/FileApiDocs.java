@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints.doc;
 
 import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocMessages;
-import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.DirectoryAPI;
 import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.FileAPI;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,7 @@ import java.util.List;
 @Tag(name = "File API", description =
         "API for uploading, downloading, deleting files and directories")
 public interface FileApiDocs
-        extends FileAPI, DirectoryAPI {
+        extends FileAPI {
 
     @Operation(
             summary = "Image uploads " + SpringDocMessages.notImplemented,
@@ -87,7 +86,6 @@ public interface FileApiDocs
 
                     """
     )
-    @Override
     void createDirectory(String directoryPath, Authentication auth);
 
 
@@ -111,14 +109,12 @@ public interface FileApiDocs
     @Operation(
             summary = "override standard description"
     )
-    @Override
     void deleteFile(String fileId);
 
 
     @Operation(
             summary = "deletes empty directory"
     )
-    @Override
     void deleteDirectory(String directoryId);
 
 
@@ -126,6 +122,5 @@ public interface FileApiDocs
             summary = "forces to delete directory",
             description = "Deletes directory whether there are files in it or not"
     )
-    @Override
     void forceDeleteDirectory(String directoryId);
 }

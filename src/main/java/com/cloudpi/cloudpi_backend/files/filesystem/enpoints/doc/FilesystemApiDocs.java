@@ -9,24 +9,23 @@ import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
-public interface FilesystemApiDocs extends FilesystemAPI {
+public interface FilesystemApiDocs   {
 
-    @Override
+
     FileStructureDTO getFileStructure(
             Integer structureLevels,
             String fileStructureRoot,
             Authentication auth);
 
-    @Override
+
     FileDto getFileInfo(String fileId, Boolean getWithPermissions);
 
-    @Override
+
     DirectoryDto getDirInfo(String fileId, Boolean getWithPermissions);
 
-    @Override
+
     List<GetUserDriveInfo> getUsersVirtualDrivesInfo(List<String> usernames);
 
-    @Override
     void changeVirtualDriveMaxSize(String username, Long newAssignedSpace);
 
 }

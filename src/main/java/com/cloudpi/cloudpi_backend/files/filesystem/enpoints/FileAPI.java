@@ -16,25 +16,8 @@ import java.util.List;
 
 @RequestMapping("/files/")
 @Tag(name = "File API",
-        description = "API for uploading and downloading files")
+        description = "API for uploading, downloading and deleting files")
 public interface FileAPI {
-
-
-    @PostMapping(
-            path = "image/{imageName}",
-            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    void uploadNewImage(
-            @PathVariable String imageName,
-            @RequestBody byte[] image,
-            Authentication auth);
-
-
-    @GetMapping(path = "image-preview")
-    List<Resource> getImagesPreview(
-            @RequestParam(defaultValue = "64") Integer previewResolution,
-            @RequestBody List<String> imageNames);
-
 
     @PostMapping(
             path = "file",
@@ -57,22 +40,34 @@ public interface FileAPI {
             Authentication auth);
 
 
-//    @PatchMapping("file/move")
-//    void moveFile(@PathVariable )
+    @PostMapping(
+            path = "image/{imageName}",
+            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    void uploadNewImage(
+            @PathVariable String imageName,
+            @RequestBody byte[] image,
+            Authentication auth);
+
 
 
     @GetMapping("file/{fileId}")
     Resource downloadFile(@PathVariable String fileId);
 
 
-    @DeleteMapping("file/{fileId}")
-    void deleteFile(@PathVariable String fileId);
+    @GetMapping("directory/{directoryId}")
+    Resource compressAndDownloadDirectory(@PathVariable String directoryId);
 
 
-    @DeleteMapping(
-            path = "file",
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
-    void deleteFiles(@RequestBody @NonNull List<String> fileId);
+    @GetMapping(path = "image-preview")
+    List<Resource> getImagesPreview(
+            @RequestParam(defaultValue = "64") Integer previewResolution,
+            @RequestBody List<String> imageNames);
+
+
+
+    @DeleteMapping("directory/{directoryId}/force")
+    void forceDeleteDirectory(@PathVariable String directoryId);
+
 
 }

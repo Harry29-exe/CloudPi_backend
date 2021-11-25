@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class FilesystemInfoServiceImplTest {
+class FilesystemServiceImplTest {
 
     @Autowired
     UserService userService;
     @Autowired
     DirectoryService dirService;
     @Autowired
-    FilesystemInfoService fsInfoService;
+    FilesystemService fsInfoService;
 
     @BeforeEach
     void setUp() {
