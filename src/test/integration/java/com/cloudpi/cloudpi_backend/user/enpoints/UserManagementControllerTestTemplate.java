@@ -1,6 +1,8 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
+import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
 import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
@@ -10,6 +12,7 @@ import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import lombok.With;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -105,6 +109,14 @@ abstract class UserManagementControllerTestTemplate {
 
         ObjectMapper mapper = new JsonMapper();
         return mapper.readValue(rawBody, clazz);
+    }
+
+    protected static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
@@ -347,5 +359,266 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
         ).andExpect(
                 status().is(404)
         ).andReturn();
+    }
+}
+
+@DisplayName("/user-management/")
+@Transactional
+class CreateNewUser extends UserManagementControllerTestTemplate {
+    private final String testingEndpoint = "/user-management/";
+
+    private PostUserRequest defaultUser() {
+        PostUserRequest user = new PostUserRequest();
+        user.setUsername("someone");
+        user.setLogin("somebody");
+        user.setPassword("secret");
+        return user;
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_201_when_created() throws Exception {
+        //given
+        var user = defaultUser();
+        //when
+        performPost(user).andExpect(
+                status().is(201)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(username = "bob")
+    public void should_return_403_when_no_permission() throws Exception {
+        //given
+        var user = defaultUser();
+        //when
+        performPost(user).andExpect(
+                status().is(403)
+        ).andReturn();
+    }
+
+    @Test
+    public void should_return_403_when_no_authority() throws Exception {
+        //given
+        var user = defaultUser();
+        //when
+        performPost(user).andExpect(
+                status().is(403)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_post_valid_user() throws Exception {
+        //given
+        var user = defaultUser();
+        //when
+        performPost(user).andExpect(
+                status().is(201)
+        ).andReturn();
+
+        var result = mock.perform(
+                get(testingEndpoint + "get-all")
+        ).andExpect(
+                status().is(200)
+        ).andReturn();
+
+        //then
+        var responseBody = getBody(result, GetUserResponse[].class);
+        assert user.getUsername() == responseBody[0].getUsername();
+    }
+
+    private ResultActions performPost(PostUserRequest user) throws Exception {
+        return mock.perform(
+                post(testingEndpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(user))
+        );
+    }
+}
+
+//todo update nie zmienia username, jedynie inne atrybuty
+@DisplayName("/user-management/{username} PATCH")
+@Transactional
+class UpdateUser extends UserManagementControllerTestTemplate {
+    private final String testingEndpoint = "/user-management/";
+    private List<UserWithDetailsDTO> usersInDB;
+
+    @BeforeEach
+    void setUp() {
+        usersInDB = beforeTestSaveDefaultUsers();
+    }
+
+    @Test
+    public void should_return_403_when_no_authority() throws Exception {
+        //given
+        String username = "bob";
+        var detailsRequest = defaultUserDetails();
+
+        //when
+        mock.perform(
+                patch(testingEndpoint + username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(detailsRequest))
+        ).andExpect(
+                status().is(403)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(username = "Alice")
+    public void should_return_403_when_no_permission() throws Exception {
+        //given
+        String username = "bob";
+        var detailsRequest = defaultUserDetails();
+
+        //when
+        mock.perform(
+                patch(testingEndpoint + username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(detailsRequest))
+        ).andExpect(
+                status().is(403)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(authorities ={UserAPIAuthorities.MODIFY, UserAPIAuthorities.GET_DETAILS})
+    public void should_update_user_with_authority() throws Exception {
+        //given
+        String username = "bob";
+        String newUsername = "someone";
+        var detailsRequest = defaultUserDetails();
+
+        //when
+        mock.perform(
+                patch(testingEndpoint + username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(detailsRequest))
+        ).andExpect(
+                status().is(202)
+        ).andReturn();
+
+        var result = mock.perform(
+                get(testingEndpoint + newUsername)
+        ).andReturn();
+
+        //then
+        var responseBody = getBody(result, GetUserWithDetailsResponse.class);
+        assert "someone" == responseBody.username();
+    }
+
+    @Test
+    @WithUser(username = "bob")
+    public void should_update_users_own_details() throws Exception {
+        //given
+        String username = "bob";
+        String newUsername = "someone";
+        var detailsRequest = defaultUserDetails();
+
+        //when
+        mock.perform(
+                patch(testingEndpoint + username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(detailsRequest))
+        ).andExpect(
+                status().is(202)
+        ).andReturn();
+
+        var result = mock.perform(
+                get(testingEndpoint + newUsername)
+        ).andReturn();
+
+        //then
+        var responseBody = getBody(result, GetUserWithDetailsResponse.class);
+        assert "someone" == responseBody.username();
+    }
+
+    private UpdateUserDetailsRequest defaultUserDetails() {
+        return new UpdateUserDetailsRequest("someone", "someone@gmail.com", null);
+    }
+}
+
+//todo przygotowac jak bedzie endpoint do tego
+@DisplayName("/user-management/{username} DELETE")
+@Transactional
+class ScheduleUserDelete extends UserManagementControllerTestTemplate {
+
+}
+//todo zbadac NestedServletException po probie wyslania zapytania po usunieciu usera (metoda hould_delete_with_authority)
+@DisplayName("/user-management/{username}/delete-now")
+@Transactional
+class DeleteUser extends UserManagementControllerTestTemplate {
+    private final String testingEndpoint = "/user-management/";
+    private List<UserWithDetailsDTO> usersInDB;
+
+    @BeforeEach
+    void setUp() {
+        usersInDB = beforeTestSaveDefaultUsers();
+    }
+
+    @Test
+    public void should_return_403_when_no_authority() throws Exception {
+        //given
+        String userToDelete = "bob";
+
+        //when
+        mock.perform(
+                delete(testingEndpoint + userToDelete + "/delete-now")
+        ).andExpect(
+                status().is(403)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(username = "Alice")
+    public void should_return_403_when_no_permission() throws Exception {
+        //given
+        String userToDelete = "bob";
+
+        //when
+        mock.perform(
+                delete(testingEndpoint + userToDelete + "/delete-now")
+        ).andExpect(
+                status().is(403)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(username = "bob")
+    public void should_delete_users_account() throws Exception {
+        //given
+        String userToDelete = "bob";
+
+        //when
+        mock.perform(
+                delete(testingEndpoint + userToDelete + "/delete-now")
+        ).andExpect(
+                status().is(200)
+        ).andReturn();
+    }
+
+    @Test
+    @WithUser(authorities = {UserAPIAuthorities.DELETE, UserAPIAuthorities.GET_DETAILS})
+    public void should_delete_with_authority() throws Exception {
+        //given
+        String userToDelete = "bob";
+
+        //when
+        mock.perform(
+                delete(testingEndpoint + userToDelete + "/delete-now")
+        ).andExpect(
+                status().is(200)
+        );
+
+        //then
+        var result = mock.perform(
+                get(testingEndpoint + "get-all")
+        ).andReturn();
+
+        var responseBody = getBody(result, GetUserResponse[].class);
+
+        //then
+        assert responseBody.length == 2;
     }
 }

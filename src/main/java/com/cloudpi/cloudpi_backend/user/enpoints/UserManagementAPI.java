@@ -39,7 +39,7 @@ public interface UserManagementAPI {
 //            "#login == principal")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("{username}")
-    void updateUserDetails(@RequestParam("username") String username,
+    void updateUserDetails(@PathVariable(name = "username") String username,
                            @RequestBody UpdateUserDetailsRequest request);
 
     //    @ResponseStatus(HttpStatus.OK)
