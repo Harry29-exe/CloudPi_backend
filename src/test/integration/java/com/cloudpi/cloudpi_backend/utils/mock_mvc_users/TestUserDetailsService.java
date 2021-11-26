@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @TestConfiguration
 public class TestUserDetailsService {
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public TestUserDetailsService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;

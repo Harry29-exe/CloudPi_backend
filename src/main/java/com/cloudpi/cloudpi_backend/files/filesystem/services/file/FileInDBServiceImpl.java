@@ -67,7 +67,7 @@ public class FileInDBServiceImpl implements FileInDBService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public FileDto forceCreateFile(CreateFileDTO fileInfo) {
         var path = fileInfo.path().getPath();
-        if(fileRepo.existsByPath(path)) {
+        if (fileRepo.existsByPath(path)) {
             fileRepo.deleteByPath(path);
         }
 
@@ -138,7 +138,7 @@ public class FileInDBServiceImpl implements FileInDBService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteFiles(List<UUID> filesIds) {
-        for(var fileId : filesIds) {
+        for (var fileId : filesIds) {
             this.deleteFile(fileId);
         }
     }

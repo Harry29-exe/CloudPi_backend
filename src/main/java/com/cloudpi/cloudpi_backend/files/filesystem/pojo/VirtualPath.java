@@ -28,7 +28,7 @@ public class VirtualPath {
         }
         this.path = path;
         int fileNameIndex = path.indexOf('/');
-        if(fileNameIndex < 0) {
+        if (fileNameIndex < 0) {
             username = path;
             parentDirectoryPath = null;
             entityName = path;

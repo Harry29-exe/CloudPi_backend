@@ -7,7 +7,6 @@ import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 

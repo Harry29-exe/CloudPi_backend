@@ -11,7 +11,6 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
 import org.apache.commons.lang3.NotImplementedException;
@@ -36,7 +35,7 @@ public class DirectoryServiceImp implements DirectoryService {
                                VirtualDriveRepository virtualDriveRepository,
                                DirectoryRepository dirRepository,
                                PathRepository pathRepository
-                               ) {
+    ) {
         this.userRepository = userRepository;
         this.virtualDriveRepository = virtualDriveRepository;
         this.dirRepository = dirRepository;

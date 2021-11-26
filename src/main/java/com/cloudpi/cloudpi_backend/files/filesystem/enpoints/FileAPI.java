@@ -2,16 +2,13 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.NonNull;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +49,6 @@ public interface FileAPI {
             Authentication auth);
 
 
-
     @GetMapping("file/{fileId}")
     Resource downloadFile(@PathVariable String fileId);
 
@@ -65,7 +61,6 @@ public interface FileAPI {
     List<Resource> getImagesPreview(
             @RequestParam(defaultValue = "64") Integer previewResolution,
             @RequestBody List<String> imageNames);
-
 
 
     @DeleteMapping("directory/{directoryId}/force")

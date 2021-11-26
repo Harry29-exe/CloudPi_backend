@@ -1,13 +1,13 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
-import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
-import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
+import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
+import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
+import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.assertj.core.api.Assertions;
@@ -30,9 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static com.cloudpi.cloudpi_backend.user.utils.UserEntityBuilder.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -44,23 +45,23 @@ abstract class UserManagementControllerTestTemplate {
     protected MockMvc mock;
     @Autowired
     protected UserService userService;
-    
+
     protected ModelComparator<UserWithDetailsDTO, GetUserWithDetailsResponse> getGetUserWithDetailsComparator() {
         return (u, r) -> {
-            if(u.getRoles() != null) {
+            if (u.getRoles() != null) {
                 if (r.usersRoles() != null && r.usersRoles().size() > 0) {
                     throw new AssertionError("User DTO object has not any role while");
                 }
                 Assertions.assertThat(r.usersRoles()).hasSameElementsAs(u.getRoles().stream().map(AuthorityDTO::authority).toList());
             }
-            if(u.getPermissions() != null) {
+            if (u.getPermissions() != null) {
                 if (r.usersPermissions() != null && r.usersPermissions().size() > 0) {
                     throw new AssertionError();
                 }
                 Assertions.assertThat(r.usersPermissions()).hasSameElementsAs(u.getPermissions().stream().map(AuthorityDTO::authority).toList());
             }
             return Objects.equals(r.isLocked(), u.getLocked()) &&
-                    Objects.equals(r.username(),u.getUsername()) &&
+                    Objects.equals(r.username(), u.getUsername()) &&
                     Objects.equals(r.accountType(), u.getAccountType()) &&
                     Objects.equals(r.email(), u.getUserDetails().getEmail());
         };
@@ -73,7 +74,7 @@ abstract class UserManagementControllerTestTemplate {
      * bob <br/>
      */
     protected List<UserWithDetailsDTO> beforeTestSaveDefaultUsers() {
-        if(SecurityContextHolder.getContext().getAuthentication() != null){
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
             throw new IllegalStateException("""
                     User should be injected after @BeforeEach is invoked, please add:
                     setupBefore = TestExecutionEvent.TEST_EXECUTION
@@ -90,7 +91,7 @@ abstract class UserManagementControllerTestTemplate {
                 aBobUser().build().toUserWithDetailsDTO()
         );
 
-        for(var user : usersToSave) {
+        for (var user : usersToSave) {
             userService.createUserWithDefaultAuthorities(user, "123");
         }
 
@@ -188,6 +189,7 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
     @DisplayName("With defaults users in db")
     class WithUsersInDB {
         private List<UserWithDetailsDTO> usersInDB;
+
         @BeforeEach
         void setUp() {
             usersInDB = beforeTestSaveDefaultUsers();
@@ -313,7 +315,7 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
 
         //when
         mock.perform(
-                get(testingEndpoint+searchedUsername)
+                get(testingEndpoint + searchedUsername)
         ).andExpect(
                 //then
                 status().is(403)
@@ -328,7 +330,7 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
 
         //when
         mock.perform(
-                get(testingEndpoint+searchedUsername)
+                get(testingEndpoint + searchedUsername)
         ).andExpect(
                 //then
                 status().is(403)

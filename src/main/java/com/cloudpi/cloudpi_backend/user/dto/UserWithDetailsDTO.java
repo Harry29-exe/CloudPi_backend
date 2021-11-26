@@ -3,7 +3,6 @@ package com.cloudpi.cloudpi_backend.user.dto;
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.configuration.Default;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +14,8 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = {})
 @EqualsAndHashCode
 public class UserWithDetailsDTO {
-    private @Nullable Long id;
+    private @Nullable
+    Long id;
     private String login;
     private String username;
     private Boolean locked = false;

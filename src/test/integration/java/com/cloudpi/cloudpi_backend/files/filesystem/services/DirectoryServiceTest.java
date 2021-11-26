@@ -3,9 +3,9 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathAlreadyExistException;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.utils.AddBasicDiscDrive;
-import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
+import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -92,7 +92,7 @@ class CreateDirectory extends DirectoryServiceTest {
     @WithUser(username = "Alice")
     void should_throw_AccessDeniedException_when_access_without_file_permission() {
         //given
-        var newDirPath= new VirtualPath("bob/newDir");
+        var newDirPath = new VirtualPath("bob/newDir");
 
         //then
         Assertions.assertThrows(DataIntegrityViolationException.class, () -> {

@@ -4,12 +4,11 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
-import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.FilesystemAPI;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
-public interface FilesystemApiDocs   {
+public interface FilesystemApiDocs {
 
 
     FileStructureDTO getFileStructure(

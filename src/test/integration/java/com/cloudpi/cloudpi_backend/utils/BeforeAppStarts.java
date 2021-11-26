@@ -21,7 +21,7 @@ public class BeforeAppStarts {
             DriveRepository driveRepo, @Value("${cloud-pi.test-storage-path}") String path) {
         this.discRepo = discRepo;
         this.driveRepo = driveRepo;
-        if(path.startsWith("~")) {
+        if (path.startsWith("~")) {
             this.path = System.getenv("user.home") + path;
         } else {
             this.path = path;

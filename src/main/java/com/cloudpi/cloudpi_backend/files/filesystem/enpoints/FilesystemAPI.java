@@ -1,21 +1,17 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
+import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocUtils;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.requests.MoveFileRequest;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
-import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.NonNull;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/filesystem/")
 @Tag(name = "Filesystem API",
@@ -57,7 +53,6 @@ public interface FilesystemAPI {
 
     @DeleteMapping("directory/{directoryId}")
     void deleteDirectory(@PathVariable String directoryId);
-
 
 
     //todo do innego api

@@ -52,7 +52,7 @@ public class FilesystemServiceImpl implements FilesystemService {
         private final Map<UUID, DirectoryDetailsDto> dirsInfo = new HashMap<>();
         private final Map<UUID, FileDetailsDto> filesInfo = new HashMap<>();
 
-        private FSDirectoryDTO fsDirectoryDTO;
+        private final FSDirectoryDTO fsDirectoryDTO;
 
         FileStructureMapper(DirStructure dirStructure, List<DirectoryDetailsDto> dirsInfo, List<FileDetailsDto> filesInfo) {
             this.dirStructure = dirStructure;
@@ -73,11 +73,11 @@ public class FilesystemServiceImpl implements FilesystemService {
 
         private void mapFSDirectoryDTO(FSDirectoryDTO directoryDTO, DirStructure dirStruct) {
             directoryDTO.setDetails(dirsInfo.get(dirStruct.id));
-            for(var f : dirStruct.fileChildren) {
+            for (var f : dirStruct.fileChildren) {
                 directoryDTO.getFiles().add(new FSFileDTO(f, filesInfo.get(f)));
             }
 
-            for(var d : dirStruct.dirChildren) {
+            for (var d : dirStruct.dirChildren) {
                 var dir = new FSDirectoryDTO(d.id);
                 directoryDTO.getDirectories().add(dir);
                 mapFSDirectoryDTO(dir, d);
@@ -124,7 +124,7 @@ public class FilesystemServiceImpl implements FilesystemService {
 
         private void structureChildren(DirStructure dir, int dirLevel) {
             var children = parentChildrenMap.get(dir.id);
-            if(children == null) {
+            if (children == null) {
                 return;
             }
 

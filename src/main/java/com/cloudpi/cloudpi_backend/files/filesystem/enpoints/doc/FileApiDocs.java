@@ -22,9 +22,9 @@ public interface FileApiDocs
             summary = "Image uploads " + NotImplemented.notImplemented,
             description =
                     NotImplemented.methodNotImplemented1 + """
-                    Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
-                    but this method use user .images folder instead of precisely defined path.
-                    """,
+                            Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
+                            but this method use user .images folder instead of precisely defined path.
+                            """,
             parameters = @Parameter(name = "imageName", description = "Name with extension of image to upload", example = "funny-cat.jpg"),
             responses = {
                     @ApiResponse(responseCode = "201", description = "success"),

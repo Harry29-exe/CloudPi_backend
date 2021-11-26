@@ -12,7 +12,6 @@ import com.cloudpi.cloudpi_backend.files.filesystem.services.FilesystemService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @RestController
@@ -38,8 +37,8 @@ public class FilesystemAPIController implements FilesystemAPI {
 
         return fsInfoService.getFileStructure(
                 structureLevels,
-                fileStructureRoot.equals("/")?
-                        new VirtualPath(auth.getName()):
+                fileStructureRoot.equals("/") ?
+                        new VirtualPath(auth.getName()) :
                         new VirtualPath(fileStructureRoot)
         );
     }

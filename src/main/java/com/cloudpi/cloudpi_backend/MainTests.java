@@ -1,13 +1,7 @@
 package com.cloudpi.cloudpi_backend;
 
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainTests {
 
@@ -30,7 +24,7 @@ public class MainTests {
         var fileSystem = FileSystems.getDefault();
         var fss = fileSystem.getFileStores();
         fss.forEach(f -> {
-            if(f.name().startsWith("/dev/s")) {
+            if (f.name().startsWith("/dev/s")) {
                 System.out.println(f.getClass());
                 System.out.println(f);
                 System.out.println(f.name());
@@ -43,7 +37,7 @@ public class MainTests {
         var fileSystem = FileSystems.getDefault();
         var fss = fileSystem.getFileStores();
         fss.forEach(f -> {
-            if(f.name().startsWith("/dev/s")) {
+            if (f.name().startsWith("/dev/s")) {
                 System.out.println(f.getClass());
                 System.out.println(f);
                 System.out.println(f.name());
