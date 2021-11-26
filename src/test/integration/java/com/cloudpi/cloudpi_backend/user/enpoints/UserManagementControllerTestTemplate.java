@@ -1,9 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.test.utils.mock_mvc_users.WithUser;
-import com.cloudpi.cloudpi_backend.test.utils.assertions.CustomAssertions;
-import com.cloudpi.cloudpi_backend.test.utils.assertions.ModelComparator;
+import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
+import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
+import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
@@ -309,7 +309,7 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
     @Test
     public void should_return_403_to_non_logged_user() throws Exception {
         //given
-        var searchedUsername = usersInDB.get(0);
+        var searchedUsername = usersInDB.get(0).getUsername();
 
         //when
         mock.perform(
@@ -321,6 +321,7 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
     }
 
     @Test
+    @WithUser(username = "bob")
     public void should_return_403_to_user_without_permissions() throws Exception {
         //given
         var searchedUsername = usersInDB.get(0).getUsername();

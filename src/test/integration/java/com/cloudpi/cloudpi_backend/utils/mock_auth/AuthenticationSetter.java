@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.test.utils.mock_auth;
+package com.cloudpi.cloudpi_backend.utils.mock_auth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

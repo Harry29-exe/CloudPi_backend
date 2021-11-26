@@ -11,9 +11,7 @@ public interface FileMapper {
 
     FileMapper INSTANCE = Mappers.getMapper(FileMapper.class);
 
-    @Mapping(target = "driveId", expression = "java(entity.getDrive().getId())")
     @Mapping(target = "parentId", expression = "java(entity.getParent().getId())")
-    @Mapping(target = "fileName", source = "name")
     FileDto fileEntityToDTO(FileEntity entity);
 
 }

@@ -19,7 +19,7 @@ public class MockDriveService implements DrivesService {
         this.driveRepository = driveRepository;
     }
 
-    private final Path root = Paths.get("/home/kamil/spring-test/");
+    private final Path root = Paths.get(System.getProperty("user.home") + "/spring-test/");
     private final Base64.Encoder encoder = Base64.getEncoder();
     private final Base64.Decoder decoder = Base64.getDecoder();
 
@@ -30,13 +30,13 @@ public class MockDriveService implements DrivesService {
 
     @Override
     @Transactional
-    public void freeDriveSpace(Long driveId, Long space) {
+    public void updateDriveUsedSpace(Long driveId, Long spaceChange) {
         DriveEntity drive = driveRepository.findAll().get(0);
-        drive.setSpaceInUse(drive.getSpaceInUse() + space);
+        drive.setSpaceInUse(drive.getSpaceInUse() + spaceChange);
     }
 
     @Override
-    public Path fileIdToPath(UUID fileId, Long driveId) {
+    public Path getFilePath(UUID fileId) {
         return root.resolve(fileId.toString());
     }
 }

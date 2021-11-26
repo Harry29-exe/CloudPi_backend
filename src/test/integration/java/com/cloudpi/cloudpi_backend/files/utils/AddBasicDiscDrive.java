@@ -4,11 +4,8 @@ import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
-import com.cloudpi.cloudpi_backend.user.utils.UserEntityBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.TestComponent;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,8 +15,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cloudpi.cloudpi_backend.test.utils.mock_auth.AuthenticationSetter.clearAuth;
-import static com.cloudpi.cloudpi_backend.test.utils.mock_auth.AuthenticationSetter.setRootAuth;
+import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.clearAuth;
+import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.setRootAuth;
 
 @Component
 public class AddBasicDiscDrive {

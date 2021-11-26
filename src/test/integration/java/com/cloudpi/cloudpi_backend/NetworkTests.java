@@ -73,7 +73,7 @@ public class NetworkTests {
 
     }
 
-    @Test
+//    @Test
     public void network3() throws UnknownHostException, SocketException {
         InetAddress localHost = Inet4Address.getLocalHost();
         NetworkInterface networkInterface = NetworkInterface.getByInetAddress(localHost);

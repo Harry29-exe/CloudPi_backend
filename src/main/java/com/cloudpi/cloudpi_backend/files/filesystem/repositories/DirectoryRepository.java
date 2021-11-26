@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
 
-import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryInfoDto;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDetailsDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,7 +29,7 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
                 d.size = d.size + :fileSizeDifference
             WHERE d.path IN :paths
             """)
-    void updateDirsAfterFileModification(
+    void updateDirsSizeAndModificationAt(
             Date fileModifiedAt,
             Long fileSizeDifference,
             List<String> paths
@@ -38,7 +38,8 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
     @Query(value = """
             SELECT d.id
             FROM DirectoryEntity d
-            WHERE d.relativePath = :path""", nativeQuery = true)
+            WHERE d.relativePath = :path
+            """, nativeQuery = true)
     Long getIdOfPath(String path);
 
     @Query("""
@@ -50,6 +51,6 @@ public interface DirectoryRepository extends JpaRepository<DirectoryEntity, UUID
 
     Optional<DirectoryEntity> findByPath(String path);
 
-    List<DirectoryInfoDto> findAllByIdIn(Set<UUID> ids);
+    List<DirectoryDetailsDto> findAllByIdIn(Set<UUID> ids);
 
 }

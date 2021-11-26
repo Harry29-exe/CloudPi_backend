@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.test.utils.mock_mvc_users;
+package com.cloudpi.cloudpi_backend.utils.mock_mvc_users;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;

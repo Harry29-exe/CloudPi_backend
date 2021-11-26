@@ -1,5 +1,7 @@
-package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
+package com.cloudpi.cloudpi_backend.files.filesystem.enpoints.doc;
 
+import com.cloudpi.cloudpi_backend.configuration.springdoc.NotImplemented;
+import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.FileAPI;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,9 +19,9 @@ public interface FileApiDocs
         extends FileAPI {
 
     @Operation(
-            summary = "Image uploads",
-            description = """
-                    <h1>Not implemented</h1>
+            summary = "Image uploads " + NotImplemented.notImplemented,
+            description =
+                    NotImplemented.methodNotImplemented1 + """
                     Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
                     but this method use user .images folder instead of precisely defined path.
                     """,
@@ -42,7 +44,7 @@ public interface FileApiDocs
             }
     )
     @Override
-    List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames);
+    List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames);
 
     @Operation(
             summary = "Uploads file",
@@ -61,7 +63,8 @@ public interface FileApiDocs
             FileType fileType,
             @Parameter(example = "steve:/dir1/dir2/my-awesome-file.awesome")
                     String filePath,
-            MultipartFile file);
+            MultipartFile file,
+            Authentication auth);
 
     @Operation(
             summary = "Forces file upload",
@@ -75,7 +78,7 @@ public interface FileApiDocs
                     @ApiResponse(responseCode = "400", description = "bad path")
             })
     @Override
-    void forceUploadNewFile(FileType fileType, String filePath, MultipartFile file);
+    void forceUploadNewFile(FileType fileType, String filePath, MultipartFile file, Authentication auth);
 
     @Operation(
             summary = "Creates empty directory",
@@ -83,8 +86,7 @@ public interface FileApiDocs
 
                     """
     )
-    @Override
-    void createDirectory(String directoryPath);
+    void createDirectory(String directoryPath, Authentication auth);
 
 
     @Operation(
@@ -107,14 +109,12 @@ public interface FileApiDocs
     @Operation(
             summary = "override standard description"
     )
-    @Override
     void deleteFile(String fileId);
 
 
     @Operation(
             summary = "deletes empty directory"
     )
-    @Override
     void deleteDirectory(String directoryId);
 
 
@@ -122,6 +122,5 @@ public interface FileApiDocs
             summary = "forces to delete directory",
             description = "Deletes directory whether there are files in it or not"
     )
-    @Override
     void forceDeleteDirectory(String directoryId);
 }

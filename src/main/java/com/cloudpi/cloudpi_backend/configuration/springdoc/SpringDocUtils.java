@@ -1,4 +1,4 @@
-package com.cloudpi.cloudpi_backend.not_for_production;
+package com.cloudpi.cloudpi_backend.configuration.springdoc;
 
 public class SpringDocUtils {
 

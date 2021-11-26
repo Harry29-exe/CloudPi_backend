@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.exepctions.files.DirectoryNotEmptyException;
-import com.cloudpi.cloudpi_backend.exepctions.files.PathAlreadyExistException;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.files.UserVirtualDriveNotFoundException;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
@@ -12,12 +11,12 @@ import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -31,23 +30,23 @@ public class DirectoryServiceImp implements DirectoryService {
     private final VirtualDriveRepository virtualDriveRepository;
     private final DirectoryRepository dirRepository;
     private final PathRepository pathRepository;
-    private final FileService fileService;
+//    private final FileInDBService fileInDBService;
 
     public DirectoryServiceImp(UserRepository userRepository,
                                VirtualDriveRepository virtualDriveRepository,
                                DirectoryRepository dirRepository,
-                               PathRepository pathRepository,
-                               FileService fileService) {
+                               PathRepository pathRepository
+                               ) {
         this.userRepository = userRepository;
         this.virtualDriveRepository = virtualDriveRepository;
         this.dirRepository = dirRepository;
         this.pathRepository = pathRepository;
-        this.fileService = fileService;
+//        this.fileInDBService = fileInDBService;
     }
 
     @Override
     @Transactional
-    public void createDirectory(VirtualPath path) {
+    public DirectoryDto createDirectory(VirtualPath path) {
         var user = userRepository.findByUsername(path.getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
@@ -59,8 +58,8 @@ public class DirectoryServiceImp implements DirectoryService {
                 path.getParentDirectoryPath() + "/" + path.getEntityName()
         );
 
-
-        dirRepository.save(dir);
+        var createdDir = dirRepository.save(dir);
+        return DirectoryMapper.INSTANCE.directoryEntityToDto(createdDir);
     }
 
     @Override
@@ -79,7 +78,7 @@ public class DirectoryServiceImp implements DirectoryService {
             paths.add(lastPath);
         }
 
-        dirRepository.updateDirsAfterFileModification(fileModificationDate, fileSizeChange, paths);
+        dirRepository.updateDirsSizeAndModificationAt(fileModificationDate, fileSizeChange, paths);
     }
 
     @Override
@@ -117,13 +116,14 @@ public class DirectoryServiceImp implements DirectoryService {
 
     @Override
     public void forceDeleteDirectory(VirtualPath path) {
-        var dir = dirRepository.findByPath(path.getPath())
-                .orElseThrow(PathNotFoundException::noSuchDirectory);
-        dir.getChildrenFiles().forEach(f ->
-                fileService.deleteFile(f.getId()));
-        dir.getChildrenDirectories().forEach(d ->
-                this.forceDeleteDirectory(new VirtualPath(d.getPath()))
-        );
+//        var dir = dirRepository.findByPath(path.getPath())
+//                .orElseThrow(PathNotFoundException::noSuchDirectory);
+//        dir.getChildrenFiles().forEach(f ->
+//                fileInDBService.deleteFile(f.getId()));
+//        dir.getChildrenDirectories().forEach(d ->
+//                this.forceDeleteDirectory(new VirtualPath(d.getPath()))
+//        );
+        throw new NotImplementedException();
     }
 
     @Override

@@ -3,35 +3,72 @@ package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
+import com.cloudpi.cloudpi_backend.files.filesystem.dto.requests.MoveFileRequest;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.responses.GetUserDriveInfo;
-import com.cloudpi.cloudpi_backend.not_for_production.SpringDocUtils;
+import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.NonNull;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/filesystem/")
 @Tag(name = "Filesystem API",
         description = SpringDocUtils.NOT_IMPLEMENTED +
-                "API for retrieving user's file structure and modify it.")
+                "API for retrieving user's file structure and file/directory" +
+                " info and modify it.")
 public interface FilesystemAPI {
 
-    @GetMapping("user/{username}")
-    FileStructureDTO getPartOfUsersFileStructure(
-            @PathVariable("username") String username,
+
+    @PostMapping("directory")
+    DirectoryDto createDirectory(
+            @RequestParam String directoryPath,
+            Authentication auth);
+
+    @GetMapping("file-structure")
+    FileStructureDTO getFileStructure(
             @RequestParam(defaultValue = "0") Integer structureLevels,
-            @RequestParam(defaultValue = "/") String fileStructureRoot);
+            @RequestParam(defaultValue = "/") String fileStructureRoot,
+            Authentication auth);
 
-    @GetMapping("info/{fileId}")
+
+    @GetMapping("file/{fileId}")
     FileDto getFileInfo(
-            @PathVariable("fileId") Long fileId,
+            @PathVariable("fileId") String fileId,
             @PathVariable(name = "with-permissions", required = false)
-                    Boolean withPermissions);
+                    Boolean getWithPermissions);
 
-    @GetMapping("users-drives")
-    List<GetUserDriveInfo> getUsersDrivesInfo();
 
-    @PostMapping("users-drives/{username}")
-    void changeDriveMaxSize(@RequestParam Long newAssignedSpace);
+    @PatchMapping("move")
+    void moveFile(@RequestBody @Valid MoveFileRequest requestBody);
 
+
+    @GetMapping("directory/{dirId}")
+    DirectoryDto getDirInfo(
+            @PathVariable("fileId") String fileId,
+            @PathVariable(name = "with-permissions", required = false)
+                    Boolean getWithPermissions);
+
+
+    @DeleteMapping("directory/{directoryId}")
+    void deleteDirectory(@PathVariable String directoryId);
+
+
+
+    //todo do innego api
+    @GetMapping("user-drive")
+    List<GetUserDriveInfo> getUsersVirtualDrivesInfo(
+            @PathVariable List<String> usernames);
+
+
+    @PostMapping("user-drive")
+    void changeVirtualDriveMaxSize(
+            @PathVariable String username,
+            @RequestParam Long newAssignedSpace
+    );
 }

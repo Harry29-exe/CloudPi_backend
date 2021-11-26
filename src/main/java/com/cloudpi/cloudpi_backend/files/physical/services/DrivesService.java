@@ -7,8 +7,8 @@ public interface DrivesService {
 
     Long getDriveIdAndReserveSpaceOnIt(Long fileSize);
 
-    void freeDriveSpace(Long driveId, Long space);
+    void updateDriveUsedSpace(Long driveId, Long spaceChange);
 
-    Path fileIdToPath(UUID fileId, Long driveId);
+    Path getFilePath(UUID fileId);
 
 }

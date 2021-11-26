@@ -1,12 +1,16 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
 
+import com.cloudpi.cloudpi_backend.configuration.springdoc.NotImplemented;
+import com.cloudpi.cloudpi_backend.configuration.springdoc.Stability;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
-import com.cloudpi.cloudpi_backend.files.physical.services.FileOnDiscService;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.FileService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
+import lombok.NonNull;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Isolation;
@@ -14,81 +18,98 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-public class FileAPIController implements FileApiDocs {
-    private final FileOnDiscService fileOnDiscService;
-    private final FileService filesystemService;
+public class FileAPIController implements FileAPI {
+    private final FileService fileService;
+    private final FileInDBService fileInDBService;
     private final DrivesService drivesService;
     private final DirectoryService dirService;
 
-    public FileAPIController(FileOnDiscService fileOnDiscService,
-                             FileService filesystemService,
+    public FileAPIController(FileService fileService,
+                             FileInDBService fileInDBService,
                              DrivesService drivesService,
                              DirectoryService dirService) {
-        this.fileOnDiscService = fileOnDiscService;
-        this.filesystemService = filesystemService;
+        this.fileService = fileService;
+        this.fileInDBService = fileInDBService;
         this.drivesService = drivesService;
         this.dirService = dirService;
     }
 
     @Override
-    public void uploadNewImage(String imageName, byte[] image, Authentication auth) {
-
-    }
-
-    @Override
-    public List<Resource> getImagesPreview(Integer previewResolution, String imageFormat, List<String> imageNames) {
-        return null;
-    }
-
-    @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void uploadNewFile(FileType fileType, String filepath, MultipartFile file) {
+    @Stability.InitialTests
+    public void uploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
         var createFile = new CreateFileDTO(
                 new VirtualPath(filepath),
                 file.getSize(),
                 fileType
         );
 
-        var createdFile = filesystemService.createAndReturnFile(createFile);
-        fileOnDiscService.saveFile(createdFile.getId(), createdFile.getDriveId(), file);
+        fileService.saveFile(createFile, file);
     }
 
+
+    @NotImplemented.LOW
     @Override
-    public void forceUploadNewFile(FileType fileType, String filepath, MultipartFile file) {
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void forceUploadNewFile(FileType fileType, String filepath, MultipartFile file, Authentication auth) {
+        throw new NotImplementedException();
+//        var createFile = new CreateFileDTO(
+//                new VirtualPath(filepath),
+//                file.getSize(),
+//                fileType
+//        );
+//
+//
+//        var createdFile = fileInDBService.createFile(createFile);
+//        fileService.saveFile(createdFile.getId(), file);
     }
 
+
+    @NotImplemented.LOW
+    @Override
+    public void uploadNewImage(String imageName, byte[] image, Authentication auth) {
+        throw new NotImplementedException();
+    }
+
+
+    @Stability.InitialTests
     @Override
     public Resource downloadFile(String fileId) {
-        return fileOnDiscService.readFile(UUID.fromString(fileId));
+        return fileService.readFile(UUID.fromString(fileId));
     }
 
+
+    @NotImplemented.LOW
     @Override
-    public void deleteFile(String fileId) {
-
+    public List<Resource> getImagesPreview(Integer previewResolution, List<String> imageNames) {
+        return null;
     }
 
-    @Override
-    public void createDirectory(String directoryPath) {
-        dirService.createDirectory(new VirtualPath(directoryPath));
-    }
-
+    @NotImplemented.LOW
     @Override
     public Resource compressAndDownloadDirectory(String directoryId) {
         return null;
     }
 
+    @NotImplemented.LOW
     @Override
-    public void deleteDirectory(String directoryId) {
+    public void forceDeleteDirectory(String directoryId) {
 
     }
 
+    @NotImplemented.HIGH
     @Override
-    public void forceDeleteDirectory(String directoryId) {
+    public void deleteFile(UUID fileId) {
+        fileService.deleteFile(fileId);
+    }
+
+    @NotImplemented.MEDIUM
+    @Override
+    public void deleteFiles(@NotEmpty List<UUID> fileId) {
 
     }
 
