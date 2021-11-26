@@ -37,7 +37,7 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserEntity(@MappingTarget UserDetailsEntity userDetailsEntity, UserDetailsDTO userDetails);
-    
+
     @Mapping(target = "userDrive", ignore = true)
     @Mapping(target = "userDeleteSchedule", ignore = true)
     @Mapping(target = "roles", ignore = true)
@@ -48,7 +48,7 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserEntity(@MappingTarget UserEntity userEntity, UpdateUserVal update);
-    
+
     default GrantedAuthority entityToGrantedAuthority(PermissionEntity entity) {
         return new SimpleGrantedAuthority(entity.getAuthority());
     }

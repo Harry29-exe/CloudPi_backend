@@ -1,12 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
-import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
-import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
-import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
-import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
@@ -15,7 +12,6 @@ import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import lombok.With;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.cloudpi.cloudpi_backend.user.utils.UserEntityBuilder.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -488,7 +484,7 @@ class UpdateUser extends UserManagementControllerTestTemplate {
     }
 
     @Test
-    @WithUser(authorities ={UserAPIAuthorities.MODIFY, UserAPIAuthorities.GET_DETAILS})
+    @WithUser(authorities = {UserAPIAuthorities.MODIFY, UserAPIAuthorities.GET_DETAILS})
     public void should_update_user_with_authority() throws Exception {
         //given
         String username = "bob";
@@ -555,6 +551,7 @@ class UpdateUser extends UserManagementControllerTestTemplate {
 class ScheduleUserDelete extends UserManagementControllerTestTemplate {
 
 }
+
 //todo zbadac NestedServletException po probie wyslania zapytania po usunieciu usera (metoda hould_delete_with_authority)
 @DisplayName("/user-management/{username}/delete-now")
 @Transactional
