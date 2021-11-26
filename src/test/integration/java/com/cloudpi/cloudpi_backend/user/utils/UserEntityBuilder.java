@@ -52,7 +52,7 @@ public final class UserEntityBuilder {
 
     public static UserEntityBuilder anAliceUser() {
         var builder = new UserEntityBuilder();
-        builder.login = "super@lice";
+        builder.login = "superAlice";
         builder.username = "Alice";
         builder.password = "alice";
         builder.accountType = AccountType.USER;

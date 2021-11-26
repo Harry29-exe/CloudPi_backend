@@ -428,6 +428,126 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
         assert user.getUsername().equals(responseBody[0].getUsername());
     }
 
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_too_short() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setLogin("bb");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_too_long() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setLogin("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_has_spacebar() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setLogin("theres spacebar");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_has_invalid_character() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setLogin("thats_almostgood");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_too_short() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("rr");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_spacebars_at_beginning_and_end() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername(" nickname ");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_multiple_spacebars() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("mighty   rOOt");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_invalid_character() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("thats_almostgood");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
     private ResultActions performPost(PostUserRequest user) throws Exception {
         return mock.perform(
                 post(testingEndpoint)
@@ -537,6 +657,23 @@ class UpdateUser extends UserManagementControllerTestTemplate {
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
         assert "someone".equals(responseBody.username());
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.MODIFY)
+    public void should_return_400_when_incorrect_username() throws Exception {
+        //given
+        String username = "johny";
+        var detailsRequest = defaultUserDetails();
+
+        //when
+        mock.perform(
+                patch(testingEndpoint + username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(detailsRequest))
+        ).andExpect(
+                status().is(404)
+        ).andReturn();
     }
 
     private UpdateUserDetailsRequest defaultUserDetails() {
