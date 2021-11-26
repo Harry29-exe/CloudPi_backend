@@ -3,6 +3,8 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 import com.cloudpi.cloudpi_backend.exepctions.files.PathAlreadyExistException;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.utils.AddBasicDiscDrive;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
@@ -51,12 +53,10 @@ class CreateDirectory extends DirectoryServiceTest {
     void setUp() {
         setRootAuth();
         userService.createUserWithDefaultAuthorities(
-                new UserWithDetailsDTO("mighty_root", "root"),
-                "123"
+                new CreateUserVal("root", "123", "mighty root", AccountType.ROOT, null)
         );
         userService.createUserWithDefaultAuthorities(
-                new UserWithDetailsDTO("super_Bob", "bob"),
-                "321"
+                new CreateUserVal("bob", "123","super bob", AccountType.USER, null)
         );
         clearAuth();
     }

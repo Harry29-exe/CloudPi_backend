@@ -11,8 +11,7 @@ public class UserDetailsDTO {
 
     private String email;
     private String pathToProfilePicture;
+    private String nickname;
+    private AccountType accountType;
 
-    public UserDetailsEntity toEntity() {
-        return UserMapper.INSTANCE.userDetailsDTOToEntity(this);
-    }
 }

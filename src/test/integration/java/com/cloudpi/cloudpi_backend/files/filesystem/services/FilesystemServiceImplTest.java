@@ -2,6 +2,8 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSDirectoryDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
@@ -28,8 +30,7 @@ class FilesystemServiceImplTest {
     void setUp() {
         AuthenticationSetter.setRootAuth();
         userService.createUserWithDefaultAuthorities(
-                new UserWithDetailsDTO("super bob", "bob"),
-                "123"
+                new CreateUserVal("bob", "123", "super bob", AccountType.USER, null)
         );
         dirService.createDirectory(new VirtualPath("bob/dir1"));
         dirService.createDirectory(new VirtualPath("bob/dir2"));

@@ -32,7 +32,7 @@ public interface UserManagementAPI {
 
     //    @Secured(UserAPIAuthorities.CREATE)
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
+    @PostMapping
     void createNewUser(@RequestBody @Valid PostUserRequest user);
 
     //    @PreAuthorize("hasAuthority(USER_MODIFY) or" +

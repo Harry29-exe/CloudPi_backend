@@ -32,8 +32,8 @@ public class CPUserDetailsServiceImp implements CPUserDetailsService {
     }
 
     @Override
-    public String findUsernameByLogin(String login) {
-        return userRepository.findByLogin(login)
+    public String findUsernameByLogin(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByLogin)
                 .getUsername();
     }

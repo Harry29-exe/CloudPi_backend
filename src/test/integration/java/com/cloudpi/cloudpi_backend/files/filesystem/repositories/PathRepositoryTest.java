@@ -2,6 +2,8 @@ package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
@@ -27,8 +29,7 @@ class PathRepositoryTest {
     void setUp() {
         AuthenticationSetter.setRootAuth();
         userService.createUserWithDefaultAuthorities(
-                new UserWithDetailsDTO("super bob", "bob"),
-                "123"
+                new CreateUserVal("bob", "123", "mighty root", AccountType.ROOT, null)
         );
         dirService.createDirectory(new VirtualPath("bob/dir1"));
         dirService.createDirectory(new VirtualPath("bob/dir2"));

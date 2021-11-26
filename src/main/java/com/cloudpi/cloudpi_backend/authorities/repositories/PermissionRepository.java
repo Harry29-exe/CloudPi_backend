@@ -16,35 +16,30 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, Lo
     @Query("""
             SELECT r from PermissionEntity r
             JOIN UserEntity u
-            WHERE u.login = :login
+            WHERE u.username = :permissionOwner
             """)
-    List<PermissionEntity> findAllByAuthorised(@Param("login") String authorisedUsername);
+    List<PermissionEntity> findAllByPermissionOwner(String permissionOwner);
 
     @Query("""
             SELECT r from PermissionEntity r
             JOIN UserEntity u
             WHERE u.id = :id
             """)
-    List<PermissionEntity> findAllByAuthorised(@Param("id") Long authorisedId);
-
-    @Query("""
-            SELECT r.authority from PermissionEntity r
-            JOIN r.authorised u
-            WHERE u.login = :login
-            """)
-    List<String> getAuthoritiesByAuthorised(@Param("login") String authorisedUsername);
-
+    List<PermissionEntity> findAllByPermissionOwner(@Param("id") Long authorisedId);
 
     @Query("""
             SELECT r.authority from PermissionEntity r
             JOIN r.authorised u
             WHERE u.id = :id
             """)
-    List<String> getAuthoritiesByAuthorised(@Param("id") Long id);
+    List<String> getPermissionsByOwner(@Param("id") Long id);
 
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "INSERT INTO users_permissions(user_id, permission_id) VALUES (:userId, :permissionId)", nativeQuery = true)
+    @Query(value = """
+            INSERT INTO users_permissions(user_id, permission_id) 
+            VALUES (:userId, :permissionId)
+            """, nativeQuery = true)
     void giveUserPermission(Long userId, Integer permissionId);
 
     @Transactional

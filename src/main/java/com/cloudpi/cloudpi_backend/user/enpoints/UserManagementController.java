@@ -1,8 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
+import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
-import com.cloudpi.cloudpi_backend.user.mappers.UserRequestMapper;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
@@ -25,7 +26,7 @@ public class UserManagementController implements UserManagementAPI {
     @Override
     public List<GetUserResponse> getAllUsers() {
         return userService.getAllUsers().stream()
-                .map(UserRequestMapper.INSTANCE::userDTOToResponse)
+                .map(GetUserResponse::fromUserPublicId)
                 .collect(Collectors.toList());
     }
 
@@ -34,7 +35,7 @@ public class UserManagementController implements UserManagementAPI {
         return userService
                 .getAllUsersWithDetails()
                 .stream()
-                .map(UserRequestMapper.INSTANCE::userWithDetailsDTOToResponse)
+                .map(GetUserWithDetailsResponse::from)
                 .toList();
     }
 
@@ -43,22 +44,28 @@ public class UserManagementController implements UserManagementAPI {
         var userWithDetails = userService.getUserDetails(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
-        return UserRequestMapper.INSTANCE
-                .userWithDetailsDTOToResponse(userWithDetails);
+        return GetUserWithDetailsResponse.from(userWithDetails);
     }
 
     @Override
-    //todo cos z tym zrobic bo brzydki jest ten ciag wywolan z brzydkimi dto
     public void createNewUser(PostUserRequest user) {
-        var dto = user.toUserWithDetails();
-
-        userService.createUserWithDefaultAuthorities(user.toUserWithDetails(), user.getPassword());
+       //TODO validate PostUserRequest
+        var createUser = new CreateUserVal(
+                user.getUsername(),
+                user.getPassword(),
+                user.getNickname(),
+                user.getAccountType() != null?
+                    user.getAccountType():
+                    AccountType.USER,
+                user.getEmail()
+        );
+        userService.createUserWithDefaultAuthorities(createUser);
     }
 
     @Override
     public void updateUserDetails(String username, UpdateUserDetailsRequest request) {
         userService.updateUser(username, new UpdateUserVal(
-                request.getUsername(),
+                request.getNickname(),
                 null,
                 request.getEmail(),
                 request.getPathToProfilePicture()));

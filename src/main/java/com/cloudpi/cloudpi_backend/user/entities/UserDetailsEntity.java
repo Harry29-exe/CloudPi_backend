@@ -1,7 +1,9 @@
 package com.cloudpi.cloudpi_backend.user.entities;
 
+import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,10 +15,21 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class UserDetailsEntity {
 
-    public UserDetailsEntity(String email, String pathToProfilePicture) {
+    public UserDetailsEntity(@NonNull String nickname,
+                             @NonNull AccountType accountType,
+                             String email,
+                             String pathToProfilePicture) {
+        this.nickname = nickname;
+        this.accountType = accountType;
         this.email = email;
         this.pathToProfilePicture = pathToProfilePicture;
     }
+
+    @Column(nullable = false)
+    private @NonNull String nickname;
+
+    @Column(nullable = false, updatable = false)
+    private @NonNull AccountType accountType = AccountType.USER;
 
     /**
      * optional: useful for changing, getting info about

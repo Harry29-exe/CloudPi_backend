@@ -5,12 +5,13 @@ import com.cloudpi.cloudpi_backend.authorities.services.AuthorityManagementServi
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.VirtualDriveService;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
+import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
+import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
 import com.cloudpi.cloudpi_backend.user.repositories.UserDetailsRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
@@ -19,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     }
 
     @Override
+    @Transactional
     public List<UserWithDetailsDTO> getAllUsersWithDetails() {
         return userRepository.findAll()
                 .stream()
@@ -70,12 +73,14 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
 
     @Override
     @Transactional
-    public List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword) {
-        var userEntity = new UserEntity(user.getLogin(),
+    public List<AuthorityDTO> createUserWithDefaultAuthorities(CreateUserVal user) {
+        var userEntity = new UserEntity(
                 user.getUsername(),
-                passwordEncoder.encode(nonEncodedPassword),
-                user.getAccountType(),
-                user.getUserDetails().toEntity(),
+                passwordEncoder.encode(user.getNonEncodedPassword()),
+                new UserDetailsEntity(user.getNickname(),
+                        user.getAccountType(),
+                        user.getEmail(),
+                        null),
                 null, null);
         userRepository.save(userEntity);
         virtualDriveService.createVirtualDriveAndRootDir(userEntity.getId());
@@ -97,19 +102,22 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     public void updateUser(String username, UpdateUserVal userDetails) {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
-        UserMapper.INSTANCE.updateUserEntity(user, userDetails);
+
+        if(userDetails.getEmail() != null) {
+            user.getUserDetails().setEmail(userDetails.getEmail());
+        }
+        if(userDetails.getPathToProfilePicture() != null) {
+            user.getUserDetails().setPathToProfilePicture(
+                    userDetails.getPathToProfilePicture());
+        }
+        if(userDetails.getNickname() != null) {
+            user.getUserDetails().setNickname(userDetails.getNickname());
+        }
+        if(userDetails.getAccountType() != null) {
+            user.getUserDetails().setAccountType(userDetails.getAccountType());
+        }
 
         userRepository.save(user);
-    }
-
-    @Override
-    public void lockUser(UserPublicIdDTO user) {
-        var userEntity = userRepository
-                .findByUsername(user.getUsername())
-                .orElseThrow(NoSuchUserException::notFoundByUsername);
-
-        userEntity.setLocked(true);
-        userRepository.save(userEntity);
     }
 
     @Override
@@ -123,8 +131,13 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteUser(String username) {
-        userRepository.deleteByUsername(username);
+        if(userRepository.existsByUsername(username)) {
+            userRepository.deleteByUsername(username);
+        } else {
+            throw NoSuchUserException.notFoundByUsername();
+        }
     }
 
     @Override

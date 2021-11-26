@@ -13,25 +13,13 @@ import javax.validation.constraints.NotBlank;
 @RequiredArgsConstructor
 public class PostUserRequest {
     @NotBlank
-    private String login;
+    private String nickname;
     @NotBlank
     private String username;
     @NotBlank
     private String password;
+    @Nullable
     private AccountType accountType = AccountType.USER;
     @Nullable
     private String email;
-
-    public UserWithDetailsDTO toUserWithDetails() {
-        return new UserWithDetailsDTO(
-                null,
-                login,
-                username,
-                false,
-                accountType,
-                null,
-                null,
-                new UserDetailsDTO(email, null)
-        );
-    }
 }

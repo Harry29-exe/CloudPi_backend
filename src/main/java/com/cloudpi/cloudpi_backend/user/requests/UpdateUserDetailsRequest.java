@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 public class UpdateUserDetailsRequest {
 
     @Nullable
-    private String username;
+    private String nickname;
     @Nullable
     private String email;
     @Nullable

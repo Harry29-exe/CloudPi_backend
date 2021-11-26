@@ -1,6 +1,5 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
-import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
@@ -8,11 +7,11 @@ import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
-import com.cloudpi.cloudpi_backend.utils.assertions.ModelComparator;
+import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.assertj.core.api.Assertions;
+import org.hibernate.AssertionFailure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -28,12 +27,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.cloudpi.cloudpi_backend.user.utils.UserEntityBuilder.*;
+//import static com.cloudpi.cloudpi_backend.user.utils.PostUserRequestBuilder.*;
+import static com.cloudpi.cloudpi_backend.user.utils.CreateUserValBuilder.*;
+import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.clearAuth;
+import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.setRootAuth;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,27 +53,6 @@ abstract class UserManagementControllerTestTemplate {
     @Autowired
     protected UserService userService;
 
-    protected ModelComparator<UserWithDetailsDTO, GetUserWithDetailsResponse> getGetUserWithDetailsComparator() {
-        return (u, r) -> {
-            if (u.getRoles() != null) {
-                if (r.usersRoles() != null && r.usersRoles().size() > 0) {
-                    throw new AssertionError("User DTO object has not any role while");
-                }
-                Assertions.assertThat(r.usersRoles()).hasSameElementsAs(u.getRoles().stream().map(AuthorityDTO::authority).toList());
-            }
-            if (u.getPermissions() != null) {
-                if (r.usersPermissions() != null && r.usersPermissions().size() > 0) {
-                    throw new AssertionError();
-                }
-                Assertions.assertThat(r.usersPermissions()).hasSameElementsAs(u.getPermissions().stream().map(AuthorityDTO::authority).toList());
-            }
-            return Objects.equals(r.isLocked(), u.getLocked()) &&
-                    Objects.equals(r.username(), u.getUsername()) &&
-                    Objects.equals(r.accountType(), u.getAccountType()) &&
-                    Objects.equals(r.email(), u.getUserDetails().getEmail());
-        };
-    }
-
     /**
      * <h3>Saves 3 users:</h3>
      * ROOT <br/>
@@ -83,24 +66,34 @@ abstract class UserManagementControllerTestTemplate {
                     setupBefore = TestExecutionEvent.TEST_EXECUTION
                     to your @WithMockUser annotation""");
         }
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken("user", "123",
-                        List.of(new SimpleGrantedAuthority(UserAPIAuthorities.CREATE)))
-        );
+        setRootAuth();
 
         var usersToSave = List.of(
-                aRootUser().build().toUserWithDetailsDTO(),
-                anAliceUser().build().toUserWithDetailsDTO(),
-                aBobUser().build().toUserWithDetailsDTO()
+                aRootUser().build(),
+                anAliceUser().build(),
+                aBobUser().build()
         );
 
+
         for (var user : usersToSave) {
-            userService.createUserWithDefaultAuthorities(user, "123");
+//            try {
+//                setRootAuth();
+//                mock.perform(
+//                        post("/user-management/")
+//                                .content(asJsonString(user))
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                );
+//                clearAuth();
+//            } catch (Exception ex) {
+//                throw new IllegalStateException();
+//            }
+            userService.createUserWithDefaultAuthorities(user);
         }
+//        setRootAuth();
+        var savedUsers = userService.getAllUsersWithDetails();
+        clearAuth();
 
-        SecurityContextHolder.getContext().setAuthentication(null);
-
-        return usersToSave;
+        return savedUsers;
     }
 
     protected <T> T getBody(MvcResult result, Class<T> clazz) throws Exception {
@@ -122,12 +115,10 @@ abstract class UserManagementControllerTestTemplate {
 }
 
 @DisplayName("/user-management/get-all")
-@Transactional
 class GetALL extends UserManagementControllerTestTemplate {
 
     @Nested
     @DisplayName("With users in db")
-    @Transactional
     class WithUsersInDB {
         private List<UserWithDetailsDTO> inputEntities;
 
@@ -157,8 +148,8 @@ class GetALL extends UserManagementControllerTestTemplate {
             assert responseBody.length == 3;
             for (var userInResponse : responseBody) {
                 assert inputEntities.stream().anyMatch(userEntity ->
-                        userEntity.getUsername().equals(userInResponse.getUsername()) &&
-                                userEntity.getAccountType().equals(userInResponse.getAccountType())
+                        userEntity.getUserDetails().getNickname().equals(userInResponse.getNickname()) &&
+                                userEntity.getUserDetails().getAccountType().equals(userInResponse.getAccountType())
                 );
 
             }
@@ -190,13 +181,11 @@ class GetALL extends UserManagementControllerTestTemplate {
 }
 
 @DisplayName("/user-management/get-all/with-details")
-@Transactional
 class GetAllWithDetails extends UserManagementControllerTestTemplate {
 
     protected static String testingEndpoint = "/user-management/get-all/with-details";
 
     @Nested
-    @Transactional
     @DisplayName("With defaults users in db")
     class WithUsersInDB {
         private List<UserWithDetailsDTO> usersInDB;
@@ -220,9 +209,9 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
             ).andReturn();
 
             var responseBody = getBody(result, GetUserWithDetailsResponse[].class);
-            CustomAssertions.assertThat(usersInDB)
-                    .hasSameElementsAs(List.of(responseBody))
-                    .withCustomComparator(getGetUserWithDetailsComparator());
+
+            assertThat(usersInDB.stream().map(GetUserWithDetailsResponse::from))
+                    .hasSameElementsAs(List.of(responseBody));
         }
 
         @Test
@@ -266,7 +255,6 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
 }
 
 @DisplayName("user-management/{username}")
-@Transactional
 class GetUserDetails extends UserManagementControllerTestTemplate {
     private final String testingEndpoint = "/user-management/";
     private List<UserWithDetailsDTO> usersInDB;
@@ -294,7 +282,8 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
 
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
-        assert getGetUserWithDetailsComparator().areEquals(searchedUser, responseBody);
+        assert responseBody.equals(GetUserWithDetailsResponse
+                .from(searchedUser));
     }
 
     @Test
@@ -316,7 +305,8 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
 
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
-        assert getGetUserWithDetailsComparator().areEquals(searchedUser, responseBody);
+//        assert getGetUserWithDetailsComparator().areEquals(searchedUser, responseBody);
+        assert responseBody.equals(GetUserWithDetailsResponse.from(searchedUser));
     }
 
     @Test
@@ -364,14 +354,13 @@ class GetUserDetails extends UserManagementControllerTestTemplate {
 }
 
 @DisplayName("/user-management/")
-@Transactional
 class CreateNewUser extends UserManagementControllerTestTemplate {
     private final String testingEndpoint = "/user-management/";
 
     private PostUserRequest defaultUser() {
         PostUserRequest user = new PostUserRequest();
         user.setUsername("someone");
-        user.setLogin("somebody");
+        user.setNickname("somebody");
         user.setPassword("secret");
         return user;
     }
@@ -426,7 +415,7 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
 
         //then
         var responseBody = getBody(result, GetUserResponse[].class);
-        assert user.getUsername().equals(responseBody[0].getUsername());
+        assert user.getNickname().equals(responseBody[0].getNickname());
     }
 
     private ResultActions performPost(PostUserRequest user) throws Exception {
@@ -440,7 +429,6 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
 
 //todo update nie zmienia username, jedynie inne atrybuty
 @DisplayName("/user-management/{username} PATCH")
-@Transactional
 class UpdateUser extends UserManagementControllerTestTemplate {
     private final String testingEndpoint = "/user-management/";
     private List<UserWithDetailsDTO> usersInDB;
@@ -488,7 +476,6 @@ class UpdateUser extends UserManagementControllerTestTemplate {
     public void should_update_user_with_authority() throws Exception {
         //given
         String username = "bob";
-        String newUsername = "someone";
         var detailsRequest = defaultUserDetails();
 
         //when
@@ -501,14 +488,14 @@ class UpdateUser extends UserManagementControllerTestTemplate {
         ).andReturn();
 
         var result = mock.perform(
-                get(testingEndpoint + newUsername)
+                get(testingEndpoint + username)
         ).andExpect(
                 status().is2xxSuccessful()
         ).andReturn();
 
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
-        assert "someone".equals(responseBody.username());
+        assert Objects.equals(detailsRequest.getNickname(), responseBody.getNickname());
     }
 
     //TODO poprawić jwt[princibal: bob] -> change username -> principal != username
@@ -517,7 +504,6 @@ class UpdateUser extends UserManagementControllerTestTemplate {
     public void should_update_users_own_details() throws Exception {
         //given
         String username = "bob";
-        String newUsername = "someone";
         var detailsRequest = defaultUserDetails();
 
         //when
@@ -530,14 +516,14 @@ class UpdateUser extends UserManagementControllerTestTemplate {
         ).andReturn();
 
         var result = mock.perform(
-                get(testingEndpoint + newUsername)
+                get(testingEndpoint + username)
         ).andExpect(
                 status().is2xxSuccessful()
         ).andReturn();
 
         //then
         var responseBody = getBody(result, GetUserWithDetailsResponse.class);
-        assert "someone".equals(responseBody.username());
+        assert Objects.equals(detailsRequest.getNickname(), responseBody.getNickname());
     }
 
     private UpdateUserDetailsRequest defaultUserDetails() {
@@ -547,14 +533,12 @@ class UpdateUser extends UserManagementControllerTestTemplate {
 
 //todo przygotowac jak bedzie endpoint do tego
 @DisplayName("/user-management/{username} DELETE")
-@Transactional
 class ScheduleUserDelete extends UserManagementControllerTestTemplate {
 
 }
 
 //todo zbadac NestedServletException po probie wyslania zapytania po usunieciu usera (metoda hould_delete_with_authority)
 @DisplayName("/user-management/{username}/delete-now")
-@Transactional
 class DeleteUser extends UserManagementControllerTestTemplate {
     private final String testingEndpoint = "/user-management/";
     private List<UserWithDetailsDTO> usersInDB;
@@ -603,6 +587,8 @@ class DeleteUser extends UserManagementControllerTestTemplate {
         ).andExpect(
                 status().is(200)
         ).andReturn();
+
+        System.out.println();
     }
 
     //TODO virtual drive nie gubi dzieci w db
@@ -622,6 +608,8 @@ class DeleteUser extends UserManagementControllerTestTemplate {
         //then
         var result = mock.perform(
                 get(testingEndpoint + "get-all")
+        ).andExpect(
+                status().is2xxSuccessful()
         ).andReturn();
 
         var responseBody = getBody(result, GetUserResponse[].class);

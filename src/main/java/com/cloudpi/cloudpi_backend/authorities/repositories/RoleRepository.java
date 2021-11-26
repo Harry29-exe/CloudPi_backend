@@ -17,9 +17,9 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
     @Query("""
             SELECT r from RoleEntity r
             JOIN UserEntity u
-            WHERE u.login = :login
+            WHERE u.username = :roleHolderUsername
             """)
-    List<RoleEntity> findAllByRoleHolder(@Param("login") String roleHolderUsername);
+    List<RoleEntity> findAllByRoleHolder(String roleHolderUsername);
 
     @Query("""
             SELECT r from RoleEntity r
@@ -28,8 +28,12 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
             """)
     List<RoleEntity> findAllByRoleHolder(@Param("id") Long userId);
 
-    @Query("SELECT new java.lang.String(r.role) from RoleEntity r JOIN r.roleHolder u WHERE u.login = :login ")
-    List<String> getAllRolesByRoleHolder(@Param("login") String roleHolderUsername);
+    @Query("""
+            SELECT new java.lang.String(r.role)
+            FROM RoleEntity r JOIN r.roleHolder u
+            WHERE u.username = :roleHolderUsername
+            """)
+    List<String> getAllRolesByRoleHolder(String roleHolderUsername);
 
     @Query("SELECT new java.lang.String(r.role) from RoleEntity r JOIN r.roleHolder u WHERE u.id = :id")
     List<String> getAllRolesByRoleHolder(@Param("id") Long userId);

@@ -72,14 +72,12 @@ public class AddRootUser {
         var nickname = "mighty root";
         UserEntity userEntity = new UserEntity(
                 "root",
-                nickname,
                 passwordEncoder.encode("123"),
-                AccountType.ROOT,
-                new UserDetailsEntity("root@cloud.pl", null),
+                new UserDetailsEntity(nickname, AccountType.ROOT, "root@cloud.pl", null),
                 null,
                 null
         );
-        userEntity.setAccountType(AccountType.ROOT);
+        userEntity.getUserDetails().setAccountType(AccountType.ROOT);
         userEntity.getUserDetails().setUser(userEntity);
         userRepository.save(userEntity);
 
@@ -98,7 +96,8 @@ public class AddRootUser {
                 new DriveEntity(pathToDisc + "cloud_test", space, disc)
         );
 
-        var root = userRepository.findByUsername("mighty root").orElseThrow();
+        var root = userRepository.findByUsername("root")
+                .orElseThrow();
         var virtualDrive = new VirtualDriveEntity();
         virtualDrive.setAssignedCapacity(10_000_000L);
         virtualDrive.setOwner(root);
@@ -106,7 +105,7 @@ public class AddRootUser {
         var dir = new DirectoryEntity(
                 null,
                 virtualDrive,
-                "mighty root"
+                "root"
         );
         virtualDrive.setRootDirectory(dir);
 
@@ -115,31 +114,31 @@ public class AddRootUser {
 
     public void addRootDirs() {
         var root = userDetailsService
-                .loadUserByUsername("mighty root");
+                .loadUserByUsername("root");
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(new UsernamePasswordAuthenticationToken(
                         root.getUsername(),
                         root.getPassword(),
                         root.getAuthorities()));
-        dirService.createDirectory(new VirtualPath("mighty root/dir1"));
-        dirService.createDirectory(new VirtualPath("mighty root/dir2"));
-        dirService.createDirectory(new VirtualPath("mighty root/dir1/dir12"));
-        dirService.createDirectory(new VirtualPath("mighty root/dir1/dir11"));
-        dirService.createDirectory(new VirtualPath("mighty root/dir1/dir11/dir111"));
-        dirService.createDirectory(new VirtualPath("mighty root/dir2/dir21"));
+        dirService.createDirectory(new VirtualPath("root/dir1"));
+        dirService.createDirectory(new VirtualPath("root/dir2"));
+        dirService.createDirectory(new VirtualPath("root/dir1/dir12"));
+        dirService.createDirectory(new VirtualPath("root/dir1/dir11"));
+        dirService.createDirectory(new VirtualPath("root/dir1/dir11/dir111"));
+        dirService.createDirectory(new VirtualPath("root/dir2/dir21"));
         fileInDBService.createFile(new CreateFileDTO(
-                new VirtualPath("mighty root/file1"), 5253343L, FileType.IMAGE));
+                new VirtualPath("root/file1"), 5253343L, FileType.IMAGE));
         fileInDBService.createFile(new CreateFileDTO(
-                new VirtualPath("mighty root/file2"), 5253343L, FileType.MUSIC));
+                new VirtualPath("root/file2"), 5253343L, FileType.MUSIC));
         fileInDBService.createFile(new CreateFileDTO(
-                new VirtualPath("mighty root/dir1/file11"), 5253343L, FileType.VIDEO));
+                new VirtualPath("root/dir1/file11"), 5253343L, FileType.VIDEO));
         fileInDBService.createFile(new CreateFileDTO(
-                new VirtualPath("mighty root/dir1/file12"), 5253343L, FileType.COMPRESSED));
+                new VirtualPath("root/dir1/file12"), 5253343L, FileType.COMPRESSED));
         fileInDBService.createFile(new CreateFileDTO(
-                new VirtualPath("mighty root/dir1/file13"), 5253343L, FileType.TEXT_FILE));
+                new VirtualPath("root/dir1/file13"), 5253343L, FileType.TEXT_FILE));
         fileInDBService.createFile(new CreateFileDTO(
-                new VirtualPath("mighty root/dir1/dir11/file1111"), 5253343L, FileType.IMAGE));
+                new VirtualPath("root/dir1/dir11/file1111"), 5253343L, FileType.IMAGE));
     }
 
     private void addAllAuthorities(String nickname) {
