@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
+import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
@@ -33,11 +34,12 @@ public interface UserService {
     @Secured(CREATE)
     List<AuthorityDTO> createUserWithDefaultAuthorities(UserWithDetailsDTO user, String nonEncodedPassword);
 
+    //TODO? always? #username != login?
     @PreAuthorize(
             "hasAuthority('" + MODIFY + "') or " +
                     "#username == principal"
     )
-    void updateUserDetails(String username, UserDetailsDTO userDetails);
+    void updateUser(String username, UpdateUserVal userDetails);
 
     @Secured(LOCK)
     void lockUser(UserPublicIdDTO user);

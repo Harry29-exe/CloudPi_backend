@@ -1,6 +1,7 @@
 package com.cloudpi.cloudpi_backend.user.enpoints;
 
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
+import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
 import com.cloudpi.cloudpi_backend.user.mappers.UserRequestMapper;
 import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
 import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
@@ -55,9 +56,12 @@ public class UserManagementController implements UserManagementAPI {
     }
 
     @Override
-    public void updateUserDetails(String nickname, UpdateUserDetailsRequest request) {
-        userService.updateUserDetails(nickname,
-                UserRequestMapper.INSTANCE.userDetailsRequestToDTO(request));
+    public void updateUserDetails(String username, UpdateUserDetailsRequest request) {
+        userService.updateUser(username, new UpdateUserVal(
+                request.getUsername(),
+                null,
+                request.getEmail(),
+                request.getPathToProfilePicture()));
     }
 
     @Override
