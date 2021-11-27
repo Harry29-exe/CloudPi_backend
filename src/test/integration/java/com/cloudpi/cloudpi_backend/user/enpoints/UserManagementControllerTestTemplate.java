@@ -9,20 +9,20 @@ import com.cloudpi.cloudpi_backend.user.services.UserService;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,10 +34,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 abstract class UserManagementControllerTestTemplate {
 
     @Autowired
@@ -92,68 +92,10 @@ abstract class UserManagementControllerTestTemplate {
         }
     }
 
-    @PersistenceContext
-    EntityManager em;
-
-    @AfterEach
-    void flush() {
-        em.flush();
-        em.clear();
-    }
-
 }
 
 @DisplayName("/user-management/get-all")
 class GetALL extends UserManagementControllerTestTemplate {
-
-    @Nested
-    @DisplayName("With users in db")
-    class WithUsersInDB {
-        private List<UserWithDetailsDTO> inputEntities;
-
-        @BeforeEach
-        public void setUp() {
-            inputEntities = beforeTestSaveDefaultUsers();
-        }
-
-        @Test
-        @WithUser
-        public void should_return_all_users() throws Exception {
-            //given
-
-            //when
-            var result = mock.perform(
-                    get("/user-management/get-all")
-            ).andExpect(
-                    status().is(200)
-            ).andExpect(
-                    content().contentType(MediaType.APPLICATION_JSON)
-            ).andReturn();
-
-
-            var responseBody = getBody(result, GetUserResponse[].class);
-
-            //then
-            assert responseBody.length == 3;
-            for (var userInResponse : responseBody) {
-                assert inputEntities.stream().anyMatch(userEntity ->
-                        userEntity.getUserDetails().getNickname().equals(userInResponse.getNickname()) &&
-                                userEntity.getUserDetails().getAccountType().equals(userInResponse.getAccountType())
-                );
-
-            }
-        }
-
-        @Test
-        public void should_return_403_unauthorized() throws Exception {
-            //when
-            mock.perform(
-                    get("/user-management/get-all")
-            ).andExpect(
-                    status().is(403)
-            );
-        }
-    }
 
     @Test
     @WithUser
@@ -169,65 +111,58 @@ class GetALL extends UserManagementControllerTestTemplate {
     }
 }
 
+@DisplayName("With users in db")
+class WithUsersInDB extends UserManagementControllerTestTemplate {
+    private List<UserWithDetailsDTO> inputEntities;
+
+    @BeforeEach
+    public void setUp() {
+        inputEntities = beforeTestSaveDefaultUsers();
+    }
+
+    @Test
+    @WithUser
+    public void should_return_all_users() throws Exception {
+        //given
+
+        //when
+        var result = mock.perform(
+                get("/user-management/get-all")
+        ).andExpect(
+                status().is(200)
+        ).andExpect(
+                content().contentType(MediaType.APPLICATION_JSON)
+        ).andReturn();
+
+
+        var responseBody = getBody(result, GetUserResponse[].class);
+
+        //then
+        assert responseBody.length == 3;
+        for (var userInResponse : responseBody) {
+            assert inputEntities.stream().anyMatch(userEntity ->
+                    userEntity.getUserDetails().getNickname().equals(userInResponse.getNickname()) &&
+                            userEntity.getUserDetails().getAccountType().equals(userInResponse.getAccountType())
+            );
+
+        }
+    }
+
+    @Test
+    public void should_return_403_unauthorized() throws Exception {
+        //when
+        mock.perform(
+                get("/user-management/get-all")
+        ).andExpect(
+                status().is(403)
+        );
+    }
+}
+
 @DisplayName("/user-management/get-all/with-details")
 class GetAllWithDetails extends UserManagementControllerTestTemplate {
 
     protected static String testingEndpoint = "/user-management/get-all/with-details";
-
-    @Nested
-    @DisplayName("With defaults users in db")
-    class WithUsersInDB {
-        private List<UserWithDetailsDTO> usersInDB;
-
-        @BeforeEach
-        void setUp() {
-            usersInDB = beforeTestSaveDefaultUsers();
-        }
-
-        @Test
-        @WithUser(authorities = {UserAPIAuthorities.GET_DETAILS})
-        public void should_return_200_with_userWithDetails_list() throws Exception {
-
-            //when
-            var result = mock.perform(
-                    get(testingEndpoint)
-            ).andExpect(
-                    status().is2xxSuccessful()
-            ).andExpect(
-                    content().contentType(MediaType.APPLICATION_JSON)
-            ).andReturn();
-
-            var responseBody = getBody(result, GetUserWithDetailsResponse[].class);
-
-            assertThat(usersInDB.stream().map(GetUserWithDetailsResponse::from))
-                    .hasSameElementsAs(List.of(responseBody));
-        }
-
-        @Test
-        @WithUser
-        public void should_return_403_to_unauthorized_user() throws Exception {
-
-            //when
-            var result = mock.perform(
-                    get(testingEndpoint)
-            ).andExpect(
-                    //then
-                    status().is(403)
-            );
-        }
-
-        @Test
-        public void should_return_403_to_non_logged_user() throws Exception {
-
-            //when
-            var result = mock.perform(
-                    get(testingEndpoint)
-            ).andExpect(
-                    //then
-                    status().is(403)
-            );
-        }
-    }
 
     @Test
     @WithUser(authorities = UserAPIAuthorities.GET_DETAILS)
@@ -240,6 +175,62 @@ class GetAllWithDetails extends UserManagementControllerTestTemplate {
         ).andReturn();
 
         assert getBody(result, GetUserResponse[].class).length == 0;
+    }
+}
+
+@DisplayName("With defaults users in db")
+class GetAllWithDetails_WithUsersInDB extends UserManagementControllerTestTemplate {
+    private List<UserWithDetailsDTO> usersInDB;
+
+    protected static String testingEndpoint = "/user-management/get-all/with-details";
+
+    @BeforeEach
+    void setUp() {
+        usersInDB = beforeTestSaveDefaultUsers();
+    }
+
+    @Test
+    @WithUser(authorities = {UserAPIAuthorities.GET_DETAILS})
+    public void should_return_200_with_userWithDetails_list() throws Exception {
+
+        //when
+        var result = mock.perform(
+                get(testingEndpoint)
+        ).andExpect(
+                status().is2xxSuccessful()
+        ).andExpect(
+                content().contentType(MediaType.APPLICATION_JSON)
+        ).andReturn();
+
+        var responseBody = getBody(result, GetUserWithDetailsResponse[].class);
+
+        assertThat(usersInDB.stream().map(GetUserWithDetailsResponse::from))
+                .hasSameElementsAs(List.of(responseBody));
+    }
+
+    @Test
+    @WithUser
+    public void should_return_403_to_unauthorized_user() throws Exception {
+
+        //when
+        var result = mock.perform(
+                get(testingEndpoint)
+        ).andExpect(
+                //then
+                status().is(403)
+        );
+    }
+
+    @Test
+    public void should_return_403_to_non_logged_user() throws Exception {
+
+        //when
+        var result = mock.perform(
+                get(testingEndpoint)
+        ).andExpect(
+                //then
+                status().is(403)
+        );
     }
 }
 
