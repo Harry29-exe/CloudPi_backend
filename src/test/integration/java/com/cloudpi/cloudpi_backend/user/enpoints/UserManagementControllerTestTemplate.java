@@ -6,34 +6,26 @@ import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
-import com.cloudpi.cloudpi_backend.utils.assertions.CustomAssertions;
-import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.hibernate.AssertionFailure;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 
-//import static com.cloudpi.cloudpi_backend.user.utils.PostUserRequestBuilder.*;
 import static com.cloudpi.cloudpi_backend.user.utils.CreateUserValBuilder.*;
 import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.clearAuth;
 import static com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter.setRootAuth;
@@ -76,20 +68,8 @@ abstract class UserManagementControllerTestTemplate {
 
 
         for (var user : usersToSave) {
-//            try {
-//                setRootAuth();
-//                mock.perform(
-//                        post("/user-management/")
-//                                .content(asJsonString(user))
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                );
-//                clearAuth();
-//            } catch (Exception ex) {
-//                throw new IllegalStateException();
-//            }
             userService.createUserWithDefaultAuthorities(user);
         }
-//        setRootAuth();
         var savedUsers = userService.getAllUsersWithDetails();
         clearAuth();
 
@@ -110,6 +90,15 @@ abstract class UserManagementControllerTestTemplate {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PersistenceContext
+    EntityManager em;
+
+    @AfterEach
+    void flush() {
+        em.flush();
+        em.clear();
     }
 
 }

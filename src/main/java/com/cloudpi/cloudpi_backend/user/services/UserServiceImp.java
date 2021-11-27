@@ -20,9 +20,10 @@ import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -130,14 +131,21 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
         userRepository.save(userEntity);
     }
 
+    @PersistenceContext
+    EntityManager em;
+
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void deleteUser(String username) {
-        if(userRepository.existsByUsername(username)) {
-            userRepository.deleteByUsername(username);
-        } else {
-            throw NoSuchUserException.notFoundByUsername();
-        }
+        var entity = userRepository.findByUsername(username)
+                .orElseThrow(NoSuchUserException::notFoundByUsername);
+        long id = entity.getId();
+//        em.flush();
+//        em.clear();
+        userRepository.delete(entity);
+//        em.flush();
+//        userRepository.deleteUserById(entity.getId());
+        System.out.println("we");
     }
 
     @Override

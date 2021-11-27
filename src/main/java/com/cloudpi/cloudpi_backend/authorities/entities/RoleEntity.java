@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,10 +23,11 @@ public class RoleEntity {
     private Integer id;
     @Column(unique = true, updatable = false, nullable = false)
     private String role;
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<UserEntity> roleHolder;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST)
+    private Set<UserEntity> roleHolder = new HashSet<>();
 
-    public RoleEntity(String role, List<UserEntity> roleHolder) {
+    public RoleEntity(String role, Set<UserEntity> roleHolder) {
         this.role = role;
         this.roleHolder = roleHolder;
     }

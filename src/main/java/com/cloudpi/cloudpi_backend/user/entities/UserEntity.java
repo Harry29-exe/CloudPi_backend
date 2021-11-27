@@ -2,9 +2,7 @@ package com.cloudpi.cloudpi_backend.user.entities;
 
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
-import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
-import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.mappers.UserMapper;
@@ -58,7 +56,7 @@ public class UserEntity {
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             orphanRemoval = true
     )
     private @NonNull UserDetailsEntity userDetails;
@@ -72,6 +70,9 @@ public class UserEntity {
     )
     private @Nullable
     UserDeleteEntity userDeleteSchedule;
+
+    @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private VirtualDriveEntity userDrive;
 
     @ManyToMany
     @JoinTable(
@@ -87,8 +88,6 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<PermissionEntity> permissions;
 
-    @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private VirtualDriveEntity userDrive;
 
     public UserWithDetailsDTO toUserWithDetailsDTO() {
         return UserMapper.INSTANCE.userEntityToUserWithDetailsDTO(this);
@@ -101,6 +100,44 @@ public class UserEntity {
                 this.userDetails.getAccountType(),
                 this.locked,
                 this.getUserDetails().getPathToProfilePicture());
+    }
+
+//    public void addRole(RoleEntity role) {
+//        if(roles == null) {
+//            roles = new HashSet<>();
+//        }
+//        if(role.getRoleHolder() == null ) {
+//            role.setRoleHolder(new HashSet<>());
+//        }
+//        roles.add(role);
+//        role.getRoleHolder().add(this);
+//    }
+
+//    public void addPermission(PermissionEntity permission) {
+//        if(permissions == null) {
+//            permissions = new HashSet<>();
+//        }
+//        if(permission.getAuthorised() == null) {
+//            permission.setAuthorised(new HashSet<>());
+//        }
+//        permissions.add(permission);
+//        permission.getAuthorised().add(this);
+//    }
+
+    @PreRemove
+    public void removeAuthorities() {
+        if (roles != null) {
+            this.roles.forEach(role -> {
+                role.getRoleHolder().remove(this);
+                this.roles.remove(role);
+            });
+        }
+        if (permissions != null) {
+            permissions.forEach(permission -> {
+                permission.getAuthorised().remove(this);
+                permissions.remove(permission);
+            });
+        }
     }
 
     @Override

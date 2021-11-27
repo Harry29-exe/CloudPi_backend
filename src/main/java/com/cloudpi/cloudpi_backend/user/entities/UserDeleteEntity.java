@@ -20,7 +20,7 @@ public class UserDeleteEntity {
 
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(nullable = false, insertable = false)

@@ -2,6 +2,8 @@ package com.cloudpi.cloudpi_backend.user.repositories;
 
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -10,11 +12,15 @@ import java.util.Optional;
 public
 interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    boolean existsByUsername(String username);
-
     Optional<UserEntity> findByUsername(String username);
 
     Optional<UserEntity> findByUserDetails_Nickname(String nickname);
 
-    void deleteByUsername(String username);
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("""
+            DELETE UserEntity u
+            WHERE u.id = :id
+            """)
+    void deleteUserById(Long id);
+
 }

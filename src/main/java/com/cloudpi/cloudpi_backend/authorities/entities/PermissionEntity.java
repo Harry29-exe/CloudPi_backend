@@ -4,6 +4,7 @@ import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -19,8 +20,8 @@ public class PermissionEntity {
     private Long id;
     @Column(unique = true, nullable = false, updatable = false)
     private String authority;
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
-    private Set<UserEntity> authorised;
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<UserEntity> authorised = new HashSet<>();
 
     public PermissionEntity(String authority, Set<UserEntity> authorised) {
         this.authority = authority;
