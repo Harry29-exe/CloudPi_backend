@@ -2,9 +2,9 @@ package com.cloudpi.cloudpi_backend.files.filesystem.repositories;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
-import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
+import com.cloudpi.cloudpi_backend.utils.mock_auth.AuthenticationSetter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +43,9 @@ class PathRepositoryTest {
         var dir = dirService.getDirectoryDto(new VirtualPath("bob/dir1/dir11"));
         var ids = pathRepository.selectPathAndItsParentsIds(dir.getId());
 
-        assert ids.size()  == 3;
+        assert ids.size() == 3;
         ids.forEach(id -> {
-            System.out.println(id.getEntityType() + ", " + id.getId() +", " + id.getParentId());
+            System.out.println(id.getEntityType() + ", " + id.getId() + ", " + id.getParentId());
         });
     }
 
@@ -56,9 +56,9 @@ class PathRepositoryTest {
         var dir = dirService.getDirectoryDto(new VirtualPath("bob/dir1"));
         var ids = pathRepository.selectPathAndItsChildrenIds(dir.getId());
 
-        assert ids.size()  == 2;
+        assert ids.size() == 2;
         ids.forEach(id -> {
-            System.out.println(id.getEntityType() + ", " + id.getId() +", " + id.getParentId());
+            System.out.println(id.getEntityType() + ", " + id.getId() + ", " + id.getParentId());
         });
     }
 

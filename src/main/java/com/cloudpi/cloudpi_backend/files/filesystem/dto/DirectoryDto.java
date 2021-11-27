@@ -12,7 +12,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DirectoryDto {
     private @NonNull UUID id;
-    private @Nullable UUID parentId;
+    private @Nullable
+    UUID parentId;
     private @NonNull String dirName;
     private @NonNull String path;
     private @NonNull Long size;

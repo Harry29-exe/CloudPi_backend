@@ -65,7 +65,9 @@ public interface PathRepository extends JpaRepository<PathEntity, UUID> {
     interface PathId {
 
         UUID getId();
+
         UUID getParentId();
+
         char getEntityType();
 
     }

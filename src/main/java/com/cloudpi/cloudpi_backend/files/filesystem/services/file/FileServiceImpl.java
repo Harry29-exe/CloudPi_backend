@@ -1,14 +1,17 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services.file;
 
+import com.cloudpi.cloudpi_backend.exepctions.files.disc.CanNotDeleteFileException;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 @Service
@@ -57,7 +60,22 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Transactional
     public void deleteFile(VirtualPath path) {
+        var fileToDelete = dbFileService.getFile(path);
+        this.deleteFile(fileToDelete.getId());
+    }
 
+    @Override
+    @Transactional
+    public void deleteFile(UUID fileId) {
+        var fileSystemPath = drivesService.getFilePath(fileId);
+        dbFileService.deleteFile(fileId);
+
+        try {
+            Files.delete(fileSystemPath);
+        } catch (IOException ex) {
+            throw new CanNotDeleteFileException();
+        }
     }
 }

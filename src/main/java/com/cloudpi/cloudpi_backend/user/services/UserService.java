@@ -2,7 +2,6 @@ package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
-import com.cloudpi.cloudpi_backend.user.dto.UserDetailsDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
 import com.google.common.collect.ImmutableList;

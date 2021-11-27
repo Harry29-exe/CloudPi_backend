@@ -1,13 +1,5 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Type;
-
-import java.util.UUID;
-
 public class PathIdDTO {
 
     private final String id;

@@ -15,7 +15,7 @@ public abstract class ListAssertionBuilder<T1, T2> {
     public abstract void check();
 
     protected boolean objectAreEqual(T1 obj1, T2 obj2) {
-        return comparator != null? comparator.areEquals(obj1, obj2):
+        return comparator != null ? comparator.areEquals(obj1, obj2) :
                 obj1.equals(obj2);
     }
 

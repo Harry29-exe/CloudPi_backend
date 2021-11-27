@@ -1,6 +1,7 @@
-package com.cloudpi.cloudpi_backend.files.filesystem.enpoints;
+package com.cloudpi.cloudpi_backend.files.filesystem.enpoints.doc;
 
-import com.cloudpi.cloudpi_backend.configuration.springdoc.SpringDocMessages;
+import com.cloudpi.cloudpi_backend.configuration.springdoc.NotImplemented;
+import com.cloudpi.cloudpi_backend.files.filesystem.enpoints.FileAPI;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,12 +19,12 @@ public interface FileApiDocs
         extends FileAPI {
 
     @Operation(
-            summary = "Image uploads " + SpringDocMessages.notImplemented,
+            summary = "Image uploads " + NotImplemented.notImplemented,
             description =
-                    SpringDocMessages.methodNotImplemented1 + """
-                    Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
-                    but this method use user .images folder instead of precisely defined path.
-                    """,
+                    NotImplemented.methodNotImplemented1 + """
+                            Allows to upload image to server. Endpoint behave similar to POST file/{filePath}
+                            but this method use user .images folder instead of precisely defined path.
+                            """,
             parameters = @Parameter(name = "imageName", description = "Name with extension of image to upload", example = "funny-cat.jpg"),
             responses = {
                     @ApiResponse(responseCode = "201", description = "success"),
@@ -85,7 +86,6 @@ public interface FileApiDocs
 
                     """
     )
-    @Override
     void createDirectory(String directoryPath, Authentication auth);
 
 
@@ -109,14 +109,12 @@ public interface FileApiDocs
     @Operation(
             summary = "override standard description"
     )
-    @Override
     void deleteFile(String fileId);
 
 
     @Operation(
             summary = "deletes empty directory"
     )
-    @Override
     void deleteDirectory(String directoryId);
 
 
@@ -124,6 +122,5 @@ public interface FileApiDocs
             summary = "forces to delete directory",
             description = "Deletes directory whether there are files in it or not"
     )
-    @Override
     void forceDeleteDirectory(String directoryId);
 }

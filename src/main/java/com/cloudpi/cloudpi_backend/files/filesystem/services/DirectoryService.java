@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface DirectoryService extends RepoService<DirectoryEntity, UUID> {
 
-    void createDirectory(VirtualPath path);
+    DirectoryDto createDirectory(VirtualPath path);
 
     DirectoryDto getDirectoryDto(VirtualPath path);
 
