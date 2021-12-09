@@ -2,6 +2,9 @@ package com.cloudpi.cloudpi_backend.utils;
 
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.regex.Pattern;
 
 @Service
 public class UserValidatorImpl implements UserValidator {
@@ -44,15 +47,19 @@ public class UserValidatorImpl implements UserValidator {
 
         return nicknameLength >= nicknameMinLength &&
                 nicknameLength <= nicknameMaxLength &&
-                onlyLettersDigitsAndSpacebars(nickname);
+                StringUtils.isAlphanumericSpace(nickname);
 
     }
 
-    private boolean onlyLettersDigitsAndSpacebars(String nickname) {
-        for(char letter : nickname.toCharArray()) {
-            if(!Character.isLetterOrDigit(letter) && letter != ' ')
-                return false;
+    @Override
+    public boolean validatePassword(String password) {
+        if(password == null || password.isBlank()) {
+            throw new InvalidUserData("Password cannot be null or empty");
         }
-        return true;
+
+        if(password.contains(" ")) {
+            throw new InvalidUserData("Password cannot contain any space");
+        }
+        return Pattern.matches("^[a-zA-Z0-9!@#$%^&_\\-+?]{6,255}$", password);
     }
 }

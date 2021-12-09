@@ -80,6 +80,8 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
             throw new InvalidUserData("Invalid username. Make sure it only consists of letters and digits.");
         } else if(!userValidator.validateNickname(user.getUsername())) {
             throw new InvalidUserData("Invalid nickname. Make sure it only consists of letters, digits and spacebars.");
+        } else if(!userValidator.validatePassword(nonEncodedPassword)) {
+            throw new InvalidUserData("Invalid password. Make sure it only consists of letters, digits and some of special characters");
         }
 
         var userEntity = new UserEntity(user.getLogin(),

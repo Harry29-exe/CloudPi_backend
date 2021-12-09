@@ -32,7 +32,7 @@ public final class UserEntityBuilder {
         var builder = new UserEntityBuilder();
         builder.login = "mightyRoot";
         builder.username = "ROOT";
-        builder.password = "123";
+        builder.password = "123123";
         builder.accountType = AccountType.ROOT;
         builder.userDetails = new UserDetailsEntity(null, null);
 
@@ -43,7 +43,7 @@ public final class UserEntityBuilder {
         var builder = new UserEntityBuilder();
         builder.login = "bobTheWise";
         builder.username = "bob";
-        builder.password = "321";
+        builder.password = "321321";
         builder.accountType = AccountType.USER;
         builder.userDetails = new UserDetailsEntity();
 
@@ -54,7 +54,7 @@ public final class UserEntityBuilder {
         var builder = new UserEntityBuilder();
         builder.login = "superAlice";
         builder.username = "Alice";
-        builder.password = "alice";
+        builder.password = "alice11";
         builder.accountType = AccountType.USER;
         builder.userDetails = new UserDetailsEntity();
 

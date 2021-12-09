@@ -95,7 +95,7 @@ abstract class UserManagementControllerTestTemplate {
         );
 
         for(var user : usersToSave) {
-            userService.createUserWithDefaultAuthorities(user, "123");
+            userService.createUserWithDefaultAuthorities(user, "123asdf");
         }
 
         SecurityContextHolder.getContext().setAuthentication(null);
@@ -520,6 +520,21 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
 
     @Test
     @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_invalid_character() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("thats_almostgood");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
     public void should_return_400_when_nickname_has_multiple_spacebars() throws Exception {
         //given
         var user = defaultUser();
@@ -535,10 +550,40 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
 
     @Test
     @WithUser(authorities = UserAPIAuthorities.CREATE)
-    public void should_return_400_when_nickname_has_invalid_character() throws Exception {
+    public void should_return_201_when_nickname_has_polish_chars() throws Exception {
         //given
         var user = defaultUser();
-        user.setUsername("thats_almostgood");
+        user.setUsername("POLSKA GÓRĄ");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(201)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_password_too_short() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setPassword("wq");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_password_has_invalid_characters() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setPassword("thisIsIncorrectPa((w0rd");
 
         //when
         performPost(user)
@@ -661,7 +706,7 @@ class UpdateUser extends UserManagementControllerTestTemplate {
 
     @Test
     @WithUser(authorities = UserAPIAuthorities.MODIFY)
-    public void should_return_400_when_incorrect_username() throws Exception {
+    public void should_return_404_when_incorrect_username() throws Exception {
         //given
         String username = "johny";
         var detailsRequest = defaultUserDetails();
