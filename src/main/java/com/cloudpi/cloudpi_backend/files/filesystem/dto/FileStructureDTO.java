@@ -19,11 +19,11 @@ public class FileStructureDTO {
     @Data
     public static class FSFileDTO {
         private @NonNull UUID id;
-        private @NonNull FileDetailsDto detail;
+        private @NonNull FileDetailsDto details;
 
-        public FSFileDTO(@NonNull UUID id, @NonNull FileDetailsDto detail) {
+        public FSFileDTO(@NonNull UUID id, @NonNull FileDetailsDto details) {
             this.id = id;
-            this.detail = detail;
+            this.details = details;
         }
     }
 
@@ -32,7 +32,7 @@ public class FileStructureDTO {
         private @NonNull UUID id;
         private @NonNull DirectoryDetailsDto details;
         private @NonNull List<FSFileDTO> files = new ArrayList<>();
-        private @NonNull List<FSDirectoryDTO> directories  = new ArrayList<>();
+        private @NonNull List<FSDirectoryDTO> directories = new ArrayList<>();
 
         public FSDirectoryDTO(@NonNull UUID id) {
             this.id = id;

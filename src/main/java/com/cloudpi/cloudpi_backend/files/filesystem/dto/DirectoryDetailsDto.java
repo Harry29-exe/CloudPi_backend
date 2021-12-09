@@ -2,7 +2,6 @@ package com.cloudpi.cloudpi_backend.files.filesystem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.UUID;

@@ -3,13 +3,11 @@ package com.cloudpi.cloudpi_backend.user.utils;
 import com.cloudpi.cloudpi_backend.authorities.entities.PermissionEntity;
 import com.cloudpi.cloudpi_backend.authorities.entities.RoleEntity;
 import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
-import com.cloudpi.cloudpi_backend.files.permissions.entities.DriveObjectPermissionEntity;
 import com.cloudpi.cloudpi_backend.user.dto.AccountType;
 import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
 import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
 
-import java.util.List;
 import java.util.Set;
 
 public final class UserEntityBuilder {

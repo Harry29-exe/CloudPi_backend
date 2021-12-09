@@ -3,7 +3,7 @@ package com.cloudpi.cloudpi_backend.utils.assertions;
 import java.util.List;
 
 public class AssertListTo<T1> {
-    private List<T1> list;
+    private final List<T1> list;
 
     public AssertListTo(List<T1> list) {
         this.list = list;
@@ -13,21 +13,21 @@ public class AssertListTo<T1> {
         return new ListAssertionBuilder<>(this.list, list) {
             @Override
             public void check() {
-                if(this.list1.size() != this.list2.size()) {
+                if (this.list1.size() != this.list2.size()) {
                     throw listsHaveDifferentLengths();
                 }
 
                 boolean exist;
-                for(var obj : this.list1) {
+                for (var obj : this.list1) {
                     exist = false;
-                    for(var soughtObj : this.list2) {
-                        if(this.objectAreEqual(obj, soughtObj)) {
+                    for (var soughtObj : this.list2) {
+                        if (this.objectAreEqual(obj, soughtObj)) {
                             exist = true;
                             break;
                         }
                     }
 
-                    if(!exist) {
+                    if (!exist) {
                         throw objectNotFound(obj);
                     }
                 }
@@ -40,11 +40,11 @@ public class AssertListTo<T1> {
         return new ListAssertionBuilder<T1, T2>(this.list, list) {
             @Override
             public void check() {
-                if(this.list1.size() != this.list2.size()) {
+                if (this.list1.size() != this.list2.size()) {
                     throw listsHaveDifferentLengths();
                 }
-                for(int i = 0; i < list1.size(); i++) {
-                    if(!this.objectAreEqual(list1.get(i), list2.get(i))) {
+                for (int i = 0; i < list1.size(); i++) {
+                    if (!this.objectAreEqual(list1.get(i), list2.get(i))) {
                         throw objectsAreDifferent(i, list1.get(i), list2.get(i));
                     }
                 }
@@ -61,7 +61,7 @@ public class AssertListTo<T1> {
     }
 
     private static AssertionError objectsAreDifferent(int index, Object obj1, Object obj2) {
-        return new AssertionError("Objects at index " + index + " are different:\n"+
+        return new AssertionError("Objects at index " + index + " are different:\n" +
                 "obj1: " + obj1.toString() +
                 "\nobj2: " + obj2.toString());
     }

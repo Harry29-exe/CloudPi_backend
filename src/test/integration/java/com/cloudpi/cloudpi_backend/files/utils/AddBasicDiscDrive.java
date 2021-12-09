@@ -33,7 +33,7 @@ public class AddBasicDiscDrive {
         Path dirPath;
         if (path.startsWith("~")) {
             dirPath = Paths.get(
-                    System.getProperty("user.home") + "/" +path.substring(1)
+                    System.getProperty("user.home") + "/" + path.substring(1)
             );
         } else {
             dirPath = Paths.get(path);

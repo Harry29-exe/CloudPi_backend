@@ -19,7 +19,7 @@ public class UserBasicPathCreator {
         var virtualDrive = new VirtualDriveEntity(
                 capacity,
                 userRepository.getById(userId)
-                );
+        );
         var rootDir = new DirectoryEntity(null, virtualDrive, "/");
         virtualDrive.setRootDirectory(rootDir);
 

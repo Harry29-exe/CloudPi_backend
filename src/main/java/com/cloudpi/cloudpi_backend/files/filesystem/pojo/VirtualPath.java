@@ -19,13 +19,16 @@ public class VirtualPath {
 
     public VirtualPath(String path) {
         int incorrectIndex = path.indexOf("//");
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
         if (incorrectIndex >= 0) {
             //TODO change exception
             throw new IllegalArgumentException("Incorrect path");
         }
         this.path = path;
         int fileNameIndex = path.indexOf('/');
-        if(fileNameIndex < 0) {
+        if (fileNameIndex < 0) {
             username = path;
             parentDirectoryPath = null;
             entityName = path;
