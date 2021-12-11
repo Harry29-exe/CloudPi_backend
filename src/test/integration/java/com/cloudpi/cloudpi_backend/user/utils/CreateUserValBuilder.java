@@ -22,7 +22,7 @@ public final class CreateUserValBuilder {
         var builder = new CreateUserValBuilder();
         builder.nickname = "mightyRoot";
         builder.username = "ROOT";
-        builder.nonEncodedPassword = "123";
+        builder.nonEncodedPassword = "123123";
         builder.accountType = AccountType.ROOT;
 
         return builder;
@@ -32,7 +32,7 @@ public final class CreateUserValBuilder {
         var builder = new CreateUserValBuilder();
         builder.nickname = "bobTheWise";
         builder.username = "bob";
-        builder.nonEncodedPassword = "321";
+        builder.nonEncodedPassword = "321321";
         builder.accountType = AccountType.USER;
 
         return builder;
@@ -40,9 +40,9 @@ public final class CreateUserValBuilder {
 
     public static CreateUserValBuilder anAliceUser() {
         var builder = new CreateUserValBuilder();
-        builder.nickname = "super@lice";
+        builder.nickname = "super Alice";
         builder.username = "Alice";
-        builder.nonEncodedPassword = "alice";
+        builder.nonEncodedPassword = "alice1";
         builder.accountType = AccountType.USER;
 
         return builder;
