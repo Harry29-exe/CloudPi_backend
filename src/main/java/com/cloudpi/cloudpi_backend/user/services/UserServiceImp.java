@@ -2,6 +2,7 @@ package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.authorities.services.AuthorityManagementService;
+import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.VirtualDriveService;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
@@ -16,6 +17,7 @@ import com.cloudpi.cloudpi_backend.user.repositories.UserDetailsRepository;
 import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
 import com.cloudpi.cloudpi_backend.utils.RepoService;
+import com.cloudpi.cloudpi_backend.utils.UserValidator;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,17 +38,20 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     private final AuthorityManagementService authorityService;
     private final PasswordEncoder passwordEncoder;
     private final VirtualDriveService virtualDriveService;
+    private final UserValidator userValidator;
 
     public UserServiceImp(UserRepository userRepository,
                           UserDetailsRepository detailsRepository,
                           AuthorityManagementService authorityService,
                           PasswordEncoder passwordEncoder,
-                          VirtualDriveService virtualDriveService) {
+                          VirtualDriveService virtualDriveService,
+                          UserValidator userValidator) {
         this.userRepository = userRepository;
         this.detailsRepository = detailsRepository;
         this.authorityService = authorityService;
         this.passwordEncoder = passwordEncoder;
         this.virtualDriveService = virtualDriveService;
+        this.userValidator = userValidator;
     }
 
 
@@ -76,6 +81,14 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     @Override
     @Transactional
     public List<AuthorityDTO> createUserWithDefaultAuthorities(CreateUserVal user) {
+        if(!userValidator.validateUsername(user.getUsername())) {
+            throw new InvalidUserData("Invalid username. Make sure it only consists of letters and digits.");
+        } else if(!userValidator.validateNickname(user.getNickname())) {
+            throw new InvalidUserData("Invalid nickname. Make sure it only consists of letters, digits and spacebars.");
+        } else if(!userValidator.validatePassword(user.getNonEncodedPassword())) {
+            throw new InvalidUserData("Invalid password. Make sure it only consists of letters, digits and some of special characters");
+        }
+
         var userEntity = new UserEntity(
                 user.getUsername(),
                 passwordEncoder.encode(user.getNonEncodedPassword()),

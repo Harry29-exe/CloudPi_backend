@@ -17,7 +17,7 @@ public final class PostUserRequestBuilder {
         var builder = new PostUserRequestBuilder();
         builder.nickname = "mightyRoot";
         builder.username = "ROOT";
-        builder.password = "123";
+        builder.password = "123123";
         builder.accountType = AccountType.ROOT;
 
         return builder;
@@ -27,7 +27,7 @@ public final class PostUserRequestBuilder {
         var builder = new PostUserRequestBuilder();
         builder.nickname = "bobTheWise";
         builder.username = "bob";
-        builder.password = "321";
+        builder.password = "321321";
         builder.accountType = AccountType.USER;
 
         return builder;
@@ -37,7 +37,7 @@ public final class PostUserRequestBuilder {
         var builder = new PostUserRequestBuilder();
         builder.nickname = "super@lice";
         builder.username = "Alice";
-        builder.password = "alice";
+        builder.password = "alice1";
         builder.accountType = AccountType.USER;
 
         return builder;
