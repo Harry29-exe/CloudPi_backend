@@ -6,9 +6,11 @@ import com.cloudpi.cloudpi_backend.user.requests.UpdateUserDetailsRequest;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserResponse;
 import com.cloudpi.cloudpi_backend.user.responses.GetUserWithDetailsResponse;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
+import com.cloudpi.cloudpi_backend.utils.TestDbService;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -37,13 +38,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 abstract class UserManagementControllerTestTemplate {
 
     @Autowired
     protected MockMvc mock;
     @Autowired
     protected UserService userService;
+
+    @Autowired
+    protected TestDbService testDbService;
+
+    @AfterEach
+    void cleanUpDB() {
+        testDbService.resetDatabase();
+    }
 
     /**
      * <h3>Saves 3 users:</h3>
