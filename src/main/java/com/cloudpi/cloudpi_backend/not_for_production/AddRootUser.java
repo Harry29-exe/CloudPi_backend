@@ -73,6 +73,15 @@ public class AddRootUser {
             protected void doInTransactionWithoutResult(TransactionStatus status) {
                 initRootUser();
 
+
+            }
+
+        });
+
+        TransactionTemplate tmpl2 = new TransactionTemplate(txManager);
+        tmpl2.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
                 addDrive();
 
                 addRootDirs();
@@ -81,7 +90,6 @@ public class AddRootUser {
 
                         setAuthentication(null);
             }
-
         });
     }
 

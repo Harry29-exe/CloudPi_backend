@@ -36,14 +36,17 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                //TODO(configure cors)
-                .anonymous().disable()
+                .csrf()
+                .disable()
+                .anonymous()
+                .disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterAfter(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests().anyRequest().permitAll();
+                .addFilterAfter(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+//                .authorizeRequests()
+//                    .anyRequest().
     }
 
     private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
