@@ -89,6 +89,7 @@ public class LoginController {
         );
 
         cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
         //TODO for development only!!
         cookie.setSecure(false);
