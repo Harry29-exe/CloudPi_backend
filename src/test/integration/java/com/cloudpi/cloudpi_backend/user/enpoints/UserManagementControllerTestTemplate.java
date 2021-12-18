@@ -398,6 +398,201 @@ class CreateNewUser extends UserManagementControllerTestTemplate {
         assert user.getNickname().equals(responseBody[0].getNickname());
     }
 
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_too_short() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("bb");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_too_long() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_has_spacebar() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("theres spacebar");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_username_has_invalid_character() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setUsername("thats_almostgood");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_too_short() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setNickname("rr");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_spacebars_at_beginning_and_end() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setNickname(" nickname ");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_multiple_spacebars() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setNickname("mighty   rOOt");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_nickname_has_invalid_character() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setNickname("thats_almostgood");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_201_when_nickname_has_utf8_chars() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setNickname("POLSKA GÓRĄ");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(201)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_password_too_short() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setPassword("bb");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_password_has_invalid_chars() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setPassword("almo(tVal)d");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_400_when_password_has_spacebar() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setPassword("this is no good");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(400)
+                ).andReturn();
+
+    }
+
+    @Test
+    @WithUser(authorities = UserAPIAuthorities.CREATE)
+    public void should_return_201_when_password_valid() throws Exception {
+        //given
+        var user = defaultUser();
+        user.setPassword("tH!Si$w#!^D");
+
+        //when
+        performPost(user)
+                .andExpect(
+                        status().is(201)
+                ).andReturn();
+
+    }
+
     private ResultActions performPost(PostUserRequest user) throws Exception {
         return mock.perform(
                 post(testingEndpoint)
