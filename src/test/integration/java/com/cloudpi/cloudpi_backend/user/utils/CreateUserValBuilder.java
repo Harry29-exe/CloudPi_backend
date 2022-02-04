@@ -1,8 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.utils;
 
-import com.cloudpi.cloudpi_backend.user.dto.AccountType;
-import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
-import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
+import com.cloudpi.cloudpi_backend.user.services.dto.CreateUser;
 
 public final class CreateUserValBuilder {
     String username;
@@ -73,7 +71,7 @@ public final class CreateUserValBuilder {
         return this;
     }
 
-    public CreateUserVal build() {
-        return new CreateUserVal(username, nonEncodedPassword, nickname, accountType, email);
+    public CreateUser build() {
+        return new CreateUser(username, nonEncodedPassword, nickname, accountType, email);
     }
 }

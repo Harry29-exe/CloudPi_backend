@@ -7,21 +7,21 @@ import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSDirectoryDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileStructureDTO.FSFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepo;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepo;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class FilesystemServiceImpl implements FilesystemService {
-    private final DirectoryRepository dirRepo;
-    private final FileRepository fileRepo;
-    private final PathRepository pathRepo;
+    private final DirectoryRepo dirRepo;
+    private final FileRepo fileRepo;
+    private final PathRepo pathRepo;
 
 
-    public FilesystemServiceImpl(DirectoryRepository dirRepo, FileRepository fileRepo, PathRepository pathRepo) {
+    public FilesystemServiceImpl(DirectoryRepo dirRepo, FileRepo fileRepo, PathRepo pathRepo) {
         this.dirRepo = dirRepo;
         this.fileRepo = fileRepo;
         this.pathRepo = pathRepo;
@@ -87,7 +87,7 @@ public class FilesystemServiceImpl implements FilesystemService {
     }
 
     private static class FileStructureCreator {
-        private final Map<UUID, List<PathRepository.PathId>> parentChildrenMap;
+        private final Map<UUID, List<PathRepo.PathId>> parentChildrenMap;
         private final UUID rootDir;
         private final Integer maxLevel;
 
@@ -95,7 +95,7 @@ public class FilesystemServiceImpl implements FilesystemService {
         private List<UUID> dirFetchList;
         private List<UUID> fileFetchList;
 
-        public FileStructureCreator(Set<PathRepository.PathId> ids, UUID rootDirId, int maxLevel) {
+        public FileStructureCreator(Set<PathRepo.PathId> ids, UUID rootDirId, int maxLevel) {
             this.parentChildrenMap = createParentChildrenMap(ids);
             this.rootDir = rootDirId;
             this.maxLevel = maxLevel;
@@ -145,8 +145,8 @@ public class FilesystemServiceImpl implements FilesystemService {
             }
         }
 
-        private Map<UUID, List<PathRepository.PathId>> createParentChildrenMap(Set<PathRepository.PathId> ids) {
-            Map<UUID, List<PathRepository.PathId>> parentChildrenMap = new HashMap<>();
+        private Map<UUID, List<PathRepo.PathId>> createParentChildrenMap(Set<PathRepo.PathId> ids) {
+            Map<UUID, List<PathRepo.PathId>> parentChildrenMap = new HashMap<>();
             for (var id : ids) {
                 var childrenList = parentChildrenMap.get(id.getParentId());
                 if (childrenList == null) {

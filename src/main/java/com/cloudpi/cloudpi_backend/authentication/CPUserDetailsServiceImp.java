@@ -2,8 +2,8 @@ package com.cloudpi.cloudpi_backend.authentication;
 
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
+import com.cloudpi.cloudpi_backend.user.domain.entities.UserEntity;
+import com.cloudpi.cloudpi_backend.user.domain.repositories.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;

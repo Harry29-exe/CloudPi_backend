@@ -10,12 +10,12 @@ import org.springframework.test.context.ActiveProfiles;
 class FileRepositoryTest {
 
     @Autowired
-    FileRepository fileRepository;
+    FileRepo fileRepo;
 
     //    @Test
     void findDtoById() {
-        var file = fileRepository.findAll().get(0);
-        var dto = fileRepository.findDtoById(file.getId())
+        var file = fileRepo.findAll().get(0);
+        var dto = fileRepo.findDtoById(file.getId())
                 .orElseThrow(PathNotFoundException::noSuchFile);
         assert dto.getId().equals(file.getId());
     }

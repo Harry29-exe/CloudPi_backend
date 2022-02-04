@@ -2,7 +2,7 @@ package com.cloudpi.cloudpi_backend.files.permissions.entities;
 
 
 import com.cloudpi.cloudpi_backend.files.permissions.pojo.FilePermissionType;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
+import com.cloudpi.cloudpi_backend.user.domain.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

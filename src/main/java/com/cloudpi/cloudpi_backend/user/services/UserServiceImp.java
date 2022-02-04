@@ -4,17 +4,16 @@ import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
 import com.cloudpi.cloudpi_backend.authorities.services.AuthorityManagementService;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.InvalidUserData;
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
-import com.cloudpi.cloudpi_backend.files.filesystem.services.VirtualDriveService;
+import com.cloudpi.cloudpi_backend.files.filesystem.services.VFilesystemService;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
-import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
-import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
+import com.cloudpi.cloudpi_backend.user.domain.entities.UserDetailsEntity;
+import com.cloudpi.cloudpi_backend.user.domain.entities.UserEntity;
+import com.cloudpi.cloudpi_backend.user.domain.repositories.UserDetailsRepository;
+import com.cloudpi.cloudpi_backend.user.domain.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
-import com.cloudpi.cloudpi_backend.user.entities.UserDeleteEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.repositories.UserDetailsRepository;
-import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
+import com.cloudpi.cloudpi_backend.user.services.dto.CreateUser;
+import com.cloudpi.cloudpi_backend.user.services.dto.UpdateUser;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
 import com.cloudpi.cloudpi_backend.utils.RepoService;
 import com.cloudpi.cloudpi_backend.utils.UserValidator;
@@ -37,20 +36,20 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     private final UserDetailsRepository detailsRepository;
     private final AuthorityManagementService authorityService;
     private final PasswordEncoder passwordEncoder;
-    private final VirtualDriveService virtualDriveService;
+    private final VFilesystemService VFilesystemService;
     private final UserValidator userValidator;
 
     public UserServiceImp(UserRepository userRepository,
                           UserDetailsRepository detailsRepository,
                           AuthorityManagementService authorityService,
                           PasswordEncoder passwordEncoder,
-                          VirtualDriveService virtualDriveService,
+                          VFilesystemService VFilesystemService,
                           UserValidator userValidator) {
         this.userRepository = userRepository;
         this.detailsRepository = detailsRepository;
         this.authorityService = authorityService;
         this.passwordEncoder = passwordEncoder;
-        this.virtualDriveService = virtualDriveService;
+        this.VFilesystemService = VFilesystemService;
         this.userValidator = userValidator;
     }
 
@@ -80,12 +79,12 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
 
     @Override
     @Transactional
-    public List<AuthorityDTO> createUserWithDefaultAuthorities(CreateUserVal user) {
-        if(!userValidator.validateUsername(user.getUsername())) {
+    public List<AuthorityDTO> createUserWithDefaultAuthorities(CreateUser user) {
+        if (!userValidator.validateUsername(user.getUsername())) {
             throw new InvalidUserData("Invalid username. Make sure it only consists of letters and digits.");
-        } else if(!userValidator.validateNickname(user.getNickname())) {
+        } else if (!userValidator.validateNickname(user.getNickname())) {
             throw new InvalidUserData("Invalid nickname. Make sure it only consists of letters, digits and spacebars.");
-        } else if(!userValidator.validatePassword(user.getNonEncodedPassword())) {
+        } else if (!userValidator.validatePassword(user.getNonEncodedPassword())) {
             throw new InvalidUserData("Invalid password. Make sure it only consists of letters, digits and some of special characters");
         }
 
@@ -98,7 +97,7 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
                         null),
                 null, null);
         userRepository.save(userEntity);
-        virtualDriveService.createVirtualDriveAndRootDir(userEntity.getId());
+        VFilesystemService.createVirtualFilesystem(userEntity.getId());
 
         var defaultRoles = AuthorityModelsAggregator.getDefaultAuthorities(user.getAccountType().name());
         List<AuthorityDTO> authoritiesThatCouldNotBeGiven = new ArrayList<>();
@@ -114,21 +113,21 @@ public class UserServiceImp implements UserService, RepoService<UserEntity, Long
     }
 
     @Override
-    public void updateUser(String username, UpdateUserVal userDetails) {
+    public void updateUser(String username, UpdateUser userDetails) {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
-        if(userDetails.getEmail() != null) {
+        if (userDetails.getEmail() != null) {
             user.getUserDetails().setEmail(userDetails.getEmail());
         }
-        if(userDetails.getPathToProfilePicture() != null) {
+        if (userDetails.getPathToProfilePicture() != null) {
             user.getUserDetails().setPathToProfilePicture(
                     userDetails.getPathToProfilePicture());
         }
-        if(userDetails.getNickname() != null) {
-            user.getUserDetails().setNickname(userDetails.getNickname());
+        if (userDetails.getUsername() != null) {
+            user.getUserDetails().setNickname(userDetails.getUsername());
         }
-        if(userDetails.getAccountType() != null) {
+        if (userDetails.getAccountType() != null) {
             user.getUserDetails().setAccountType(userDetails.getAccountType());
         }
 

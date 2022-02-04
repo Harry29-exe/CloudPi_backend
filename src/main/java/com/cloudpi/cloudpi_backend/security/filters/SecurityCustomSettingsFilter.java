@@ -18,4 +18,5 @@ public class SecurityCustomSettingsFilter extends OncePerRequestFilter {
     private Class<?> getEndpointAnnotations() {
         return null;
     }
+
 }

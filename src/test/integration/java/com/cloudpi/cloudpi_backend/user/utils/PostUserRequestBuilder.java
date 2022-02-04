@@ -1,7 +1,6 @@
 package com.cloudpi.cloudpi_backend.user.utils;
 
-import com.cloudpi.cloudpi_backend.user.dto.AccountType;
-import com.cloudpi.cloudpi_backend.user.requests.PostUserRequest;
+import com.cloudpi.cloudpi_backend.user.api.dto.PostUserRequest;
 
 public final class PostUserRequestBuilder {
     private String nickname;

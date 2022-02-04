@@ -1,6 +1,6 @@
 package com.cloudpi.cloudpi_backend.files.physical.entities;
 
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.FileEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.File;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,7 +49,7 @@ public class DriveEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY,
             mappedBy = "drive")
-    private Set<FileEntity> files;
+    private Set<File> files;
 
 
 }

@@ -5,12 +5,12 @@ import com.cloudpi.cloudpi_backend.exepctions.files.PathNotFoundException;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.FileDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.mappers.FileMapper;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.FileEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.File;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepo;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FileRepo;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FilesystemRootRepo;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
 import com.cloudpi.cloudpi_backend.files.physical.services.DrivesService;
@@ -25,26 +25,26 @@ import java.util.UUID;
 
 @Service
 public class FileInDBServiceImpl implements FileInDBService {
-    private final FileRepository fileRepo;
-    private final DirectoryRepository dirRepo;
+    private final FileRepo fileRepo;
+    private final DirectoryRepo dirRepo;
 
     private final DirectoryService dirService;
 
     private final DrivesService drivesService;
     private final DriveRepository driveRepository;
-    private final VirtualDriveRepository virtualDriveRepository;
+    private final FilesystemRootRepo filesystemRootRepo;
 
-    public FileInDBServiceImpl(FileRepository fileRepo,
-                               DirectoryRepository dirRepo,
+    public FileInDBServiceImpl(FileRepo fileRepo,
+                               DirectoryRepo dirRepo,
                                DirectoryService dirService, DrivesService drivesService,
                                DriveRepository driveRepository,
-                               VirtualDriveRepository virtualDriveRepository) {
+                               FilesystemRootRepo filesystemRootRepo) {
         this.fileRepo = fileRepo;
         this.dirRepo = dirRepo;
         this.dirService = dirService;
         this.drivesService = drivesService;
         this.driveRepository = driveRepository;
-        this.virtualDriveRepository = virtualDriveRepository;
+        this.filesystemRootRepo = filesystemRootRepo;
     }
 
 //    @Override
@@ -143,12 +143,12 @@ public class FileInDBServiceImpl implements FileInDBService {
         }
     }
 
-    private FileEntity createFileEntity(CreateFileDTO fileInfo) {
+    private File createFileEntity(CreateFileDTO fileInfo) {
         var fileDriveId = drivesService.getDriveIdAndReserveSpaceOnIt(fileInfo.size());
-        var fileEntity = new FileEntity(
+        var fileEntity = new File(
                 dirRepo.findByPath(fileInfo.path().getParentDirectoryPath())
                         .orElseThrow(PathNotFoundException::noSuchDirectory),
-                virtualDriveRepository.findByOwner_Username(fileInfo.path().getUsername())
+                filesystemRootRepo.findByOwner_Username(fileInfo.path().getUsername())
                         .orElseThrow(IllegalStateException::new),
                 driveRepository.getById(fileDriveId),
                 fileInfo.path().getParentDirectoryPath() + fileInfo.path().getEntityName(),

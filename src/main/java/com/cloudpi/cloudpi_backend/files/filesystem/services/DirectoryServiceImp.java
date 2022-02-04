@@ -6,12 +6,12 @@ import com.cloudpi.cloudpi_backend.exepctions.files.UserVirtualDriveNotFoundExce
 import com.cloudpi.cloudpi_backend.exepctions.user.endpoint.NoSuchUserException;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.mappers.DirectoryMapper;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.Directory;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepository;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
-import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.DirectoryRepo;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FilesystemRootRepo;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.PathRepo;
+import com.cloudpi.cloudpi_backend.user.domain.repositories.UserRepository;
 import com.cloudpi.cloudpi_backend.utils.EntityReference;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
@@ -26,33 +26,33 @@ import java.util.UUID;
 @Service
 public class DirectoryServiceImp implements DirectoryService {
     private final UserRepository userRepository;
-    private final VirtualDriveRepository virtualDriveRepository;
-    private final DirectoryRepository dirRepository;
-    private final PathRepository pathRepository;
+    private final FilesystemRootRepo filesystemRootRepo;
+    private final DirectoryRepo dirRepository;
+    private final PathRepo pathRepo;
 //    private final FileInDBService fileInDBService;
 
     public DirectoryServiceImp(UserRepository userRepository,
-                               VirtualDriveRepository virtualDriveRepository,
-                               DirectoryRepository dirRepository,
-                               PathRepository pathRepository
+                               FilesystemRootRepo filesystemRootRepo,
+                               DirectoryRepo dirRepository,
+                               PathRepo pathRepo
     ) {
         this.userRepository = userRepository;
-        this.virtualDriveRepository = virtualDriveRepository;
+        this.filesystemRootRepo = filesystemRootRepo;
         this.dirRepository = dirRepository;
-        this.pathRepository = pathRepository;
+        this.pathRepo = pathRepo;
 //        this.fileInDBService = fileInDBService;
     }
 
     @Override
     @Transactional
-    public DirectoryDto createDirectory(VirtualPath path) {
+    public DirectoryDto create(VirtualPath path) {
         var user = userRepository.findByUsername(path.getUsername())
                 .orElseThrow(NoSuchUserException::notFoundByUsername);
 
-        var dir = new DirectoryEntity(
+        var dir = new Directory(
                 dirRepository.findByPath(path.getParentDirectoryPath())
                         .orElseThrow(() -> PathNotFoundException.noSuchDirectory(path.getPath())),
-                virtualDriveRepository.findByOwner_Id(user.getId())
+                filesystemRootRepo.findByOwner_Id(user.getId())
                         .orElseThrow(() -> new UserVirtualDriveNotFoundException(path.getUsername())),
                 path.getParentDirectoryPath() + "/" + path.getEntityName()
         );
@@ -62,7 +62,7 @@ public class DirectoryServiceImp implements DirectoryService {
     }
 
     @Override
-    public DirectoryDto getDirectoryDto(VirtualPath path) {
+    public DirectoryDto get(VirtualPath path) {
         var dirEntity = dirRepository.findByPath(path.getPath())
                 .orElseThrow(() -> PathNotFoundException.noSuchDirectory(path.getPath()));
         return DirectoryMapper.INSTANCE.directoryEntityToDto(dirEntity);
@@ -86,7 +86,7 @@ public class DirectoryServiceImp implements DirectoryService {
         var dir = dirRepository.findByPath(path.getPath())
                 .orElseThrow(PathNotFoundException::noSuchDirectory);
         dir.setName(newDirName);
-        pathRepository.changeDirectoryPath(dir.getRoot().getId(), path.getPath(), path.getParentDirectoryPath() + "/" + newDirName);
+        pathRepo.changeDirectoryPath(dir.getRoot().getId(), path.getPath(), path.getParentDirectoryPath() + "/" + newDirName);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class DirectoryServiceImp implements DirectoryService {
                 .orElseThrow(PathNotFoundException::noSuchDirectory);
 
         dir.setParent(newParentDir);
-        pathRepository.changeDirectoryPath(dir.getRoot().getId(), path.getPath(), newPath.getPath());
+        pathRepo.changeDirectoryPath(dir.getRoot().getId(), path.getPath(), newPath.getPath());
     }
 
     @Override
@@ -126,7 +126,7 @@ public class DirectoryServiceImp implements DirectoryService {
     }
 
     @Override
-    public EntityReference<DirectoryEntity> getReference(UUID entityId) {
+    public EntityReference<Directory> getReference(UUID entityId) {
         return EntityReference.of(dirRepository.getById(entityId));
     }
 }

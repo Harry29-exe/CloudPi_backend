@@ -1,30 +1,28 @@
 package com.cloudpi.cloudpi_backend.user.services;
 
 import com.cloudpi.cloudpi_backend.authorities.dto.AuthorityDTO;
-import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
-import com.cloudpi.cloudpi_backend.user.dto.UpdateUserVal;
 import com.cloudpi.cloudpi_backend.user.dto.UserPublicIdDTO;
 import com.cloudpi.cloudpi_backend.user.dto.UserWithDetailsDTO;
+import com.cloudpi.cloudpi_backend.user.services.dto.CreateUser;
+import com.cloudpi.cloudpi_backend.user.services.dto.UpdateUser;
 import com.google.common.collect.ImmutableList;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.cloudpi.cloudpi_backend.user.enpoints.UserAPIAuthorities.*;
+import static com.cloudpi.cloudpi_backend.user.api.UserAPIAuthorities.*;
 
 public interface UserService {
 
-    @PreAuthorize("isAuthenticated()")
+
     ImmutableList<UserPublicIdDTO> getAllUsers();
 
-    @PreAuthorize("#username == authentication.principal or " +
-            "hasAuthority('" + GET_DETAILS + "')")
+
     Optional<UserWithDetailsDTO> getUserDetails(String username);
 
-    @Secured(GET_DETAILS)
+
     List<UserWithDetailsDTO> getAllUsersWithDetails();
 
     /**
@@ -32,15 +30,10 @@ public interface UserService {
      * @return the authorities that could not be added to user
      * because creator of the user doesn't have rights to give them
      */
-    @Secured(CREATE)
-    List<AuthorityDTO> createUserWithDefaultAuthorities(CreateUserVal user);
+    List<AuthorityDTO> createUserWithDefaultAuthorities(CreateUser user);
 
     //TODO? always? #username != login?
-    @PreAuthorize(
-            "hasAuthority('" + MODIFY + "') or " +
-                    "#username == principal"
-    )
-    void updateUser(String username, UpdateUserVal userDetails);
+    void updateUser(String username, UpdateUser userDetails);
 
     @Secured(LOCK)
     void lockUser(String username);

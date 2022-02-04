@@ -26,7 +26,7 @@ public class FilesystemAPIController implements FilesystemAPI {
 
     @Override
     public DirectoryDto createDirectory(String directoryPath, Authentication auth) {
-        return dirService.createDirectory(new VirtualPath(directoryPath));
+        return dirService.create(new VirtualPath(directoryPath));
     }
 
     @Override

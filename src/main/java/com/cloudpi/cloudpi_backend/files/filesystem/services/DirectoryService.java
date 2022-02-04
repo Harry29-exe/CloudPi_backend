@@ -1,18 +1,18 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.Directory;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.utils.RepoService;
 
 import java.util.Date;
 import java.util.UUID;
 
-public interface DirectoryService extends RepoService<DirectoryEntity, UUID> {
+public interface DirectoryService extends RepoService<Directory, UUID> {
 
-    DirectoryDto createDirectory(VirtualPath path);
+    DirectoryDto create(VirtualPath path);
 
-    DirectoryDto getDirectoryDto(VirtualPath path);
+    DirectoryDto get(VirtualPath path);
 
     void updateDirsAfterFileUpdate(VirtualPath modifiedFilePAth, Long fileSizeChange, Date fileModificationDate);
 

@@ -1,7 +1,7 @@
 package com.cloudpi.cloudpi_backend.files.filesystem.dto.mappers;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.DirectoryDto;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.Directory;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -10,7 +10,7 @@ public interface DirectoryMapper {
 
     DirectoryMapper INSTANCE = Mappers.getMapper(DirectoryMapper.class);
 
-    default DirectoryDto directoryEntityToDto(DirectoryEntity entity) {
+    default DirectoryDto directoryEntityToDto(Directory entity) {
         return new DirectoryDto(
                 entity.getId(),
                 entity.getParent().getId(),

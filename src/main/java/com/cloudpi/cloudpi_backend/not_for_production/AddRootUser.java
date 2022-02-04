@@ -4,11 +4,11 @@ import com.cloudpi.cloudpi_backend.authentication.CPUserDetailsService;
 import com.cloudpi.cloudpi_backend.authorities.repositories.PermissionRepository;
 import com.cloudpi.cloudpi_backend.authorities.repositories.RoleRepository;
 import com.cloudpi.cloudpi_backend.files.filesystem.dto.CreateFileDTO;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.DirectoryEntity;
-import com.cloudpi.cloudpi_backend.files.filesystem.entities.VirtualDriveEntity;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.Directory;
+import com.cloudpi.cloudpi_backend.files.filesystem.entities.VFilesystemRoot;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.FileType;
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
-import com.cloudpi.cloudpi_backend.files.filesystem.repositories.VirtualDriveRepository;
+import com.cloudpi.cloudpi_backend.files.filesystem.repositories.FilesystemRootRepo;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.DirectoryService;
 import com.cloudpi.cloudpi_backend.files.filesystem.services.file.FileInDBService;
 import com.cloudpi.cloudpi_backend.files.physical.entities.DiscEntity;
@@ -16,10 +16,9 @@ import com.cloudpi.cloudpi_backend.files.physical.entities.DriveEntity;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DiscRepository;
 import com.cloudpi.cloudpi_backend.files.physical.repositories.DriveRepository;
 import com.cloudpi.cloudpi_backend.security.authority_system.AuthorityModelsAggregator;
-import com.cloudpi.cloudpi_backend.user.dto.AccountType;
-import com.cloudpi.cloudpi_backend.user.entities.UserDetailsEntity;
-import com.cloudpi.cloudpi_backend.user.entities.UserEntity;
-import com.cloudpi.cloudpi_backend.user.repositories.UserRepository;
+import com.cloudpi.cloudpi_backend.user.domain.entities.UserDetailsEntity;
+import com.cloudpi.cloudpi_backend.user.domain.entities.UserEntity;
+import com.cloudpi.cloudpi_backend.user.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -47,7 +46,7 @@ public class AddRootUser {
     @Autowired
     private DiscRepository discRepository;
     @Autowired
-    private VirtualDriveRepository virtualDriveRepository;
+    private FilesystemRootRepo filesystemRootRepo;
     @Autowired
     private DirectoryService dirService;
     @Autowired
@@ -98,18 +97,18 @@ public class AddRootUser {
 
         var root = userRepository.findByUsername("root")
                 .orElseThrow();
-        var virtualDrive = new VirtualDriveEntity();
+        var virtualDrive = new VFilesystemRoot();
         virtualDrive.setAssignedCapacity(10_000_000L);
         virtualDrive.setOwner(root);
 
-        var dir = new DirectoryEntity(
+        var dir = new Directory(
                 null,
                 virtualDrive,
                 "root"
         );
         virtualDrive.setRootDirectory(dir);
 
-        virtualDriveRepository.save(virtualDrive);
+        filesystemRootRepo.save(virtualDrive);
     }
 
     public void addRootDirs() {
@@ -121,12 +120,12 @@ public class AddRootUser {
                         root.getUsername(),
                         root.getPassword(),
                         root.getAuthorities()));
-        dirService.createDirectory(new VirtualPath("root/dir1"));
-        dirService.createDirectory(new VirtualPath("root/dir2"));
-        dirService.createDirectory(new VirtualPath("root/dir1/dir12"));
-        dirService.createDirectory(new VirtualPath("root/dir1/dir11"));
-        dirService.createDirectory(new VirtualPath("root/dir1/dir11/dir111"));
-        dirService.createDirectory(new VirtualPath("root/dir2/dir21"));
+        dirService.create(new VirtualPath("root/dir1"));
+        dirService.create(new VirtualPath("root/dir2"));
+        dirService.create(new VirtualPath("root/dir1/dir12"));
+        dirService.create(new VirtualPath("root/dir1/dir11"));
+        dirService.create(new VirtualPath("root/dir1/dir11/dir111"));
+        dirService.create(new VirtualPath("root/dir2/dir21"));
         fileInDBService.createFile(new CreateFileDTO(
                 new VirtualPath("root/file1"), 5253343L, FileType.IMAGE));
         fileInDBService.createFile(new CreateFileDTO(

@@ -9,8 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserPublicIdDTO {
     private String username;
-    private String nickname;
-    private AccountType accountType;
     private Boolean isLocked;
     private String pathToProfilePicture;
 }

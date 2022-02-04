@@ -2,9 +2,8 @@ package com.cloudpi.cloudpi_backend.files.filesystem.services;
 
 import com.cloudpi.cloudpi_backend.files.filesystem.pojo.VirtualPath;
 import com.cloudpi.cloudpi_backend.files.utils.AddBasicDiscDrive;
-import com.cloudpi.cloudpi_backend.user.dto.AccountType;
-import com.cloudpi.cloudpi_backend.user.dto.CreateUserVal;
 import com.cloudpi.cloudpi_backend.user.services.UserService;
+import com.cloudpi.cloudpi_backend.user.services.dto.CreateUser;
 import com.cloudpi.cloudpi_backend.utils.mock_mvc_users.WithUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,10 +49,10 @@ class CreateDirectory extends DirectoryServiceTest {
     void setUp() {
         setRootAuth();
         userService.createUserWithDefaultAuthorities(
-                new CreateUserVal("root", "123", "mighty root", AccountType.ROOT, null)
+                new CreateUser("root", "123", "mighty root", AccountType.ROOT, null)
         );
         userService.createUserWithDefaultAuthorities(
-                new CreateUserVal("bob", "123","super bob", AccountType.USER, null)
+                new CreateUser("bob", "123", "super bob", AccountType.USER, null)
         );
         clearAuth();
     }
@@ -65,10 +64,10 @@ class CreateDirectory extends DirectoryServiceTest {
         var newDirPath = new VirtualPath("bob/newDir");
 
         //when
-        directoryService.createDirectory(newDirPath);
+        directoryService.create(newDirPath);
 
         //then
-        assert directoryService.getDirectoryDto(newDirPath) != null;
+        assert directoryService.get(newDirPath) != null;
     }
 
     @Test
@@ -76,11 +75,11 @@ class CreateDirectory extends DirectoryServiceTest {
     void should_throw_PathAlreadyExistException_when_path_is_already_taken() {
         //given
         var newDirPath = new VirtualPath("bob/newDir");
-        directoryService.createDirectory(newDirPath);
+        directoryService.create(newDirPath);
         //then
         Assertions.assertThrows(PersistenceException.class, () -> {
             //when
-            directoryService.createDirectory(newDirPath);
+            directoryService.create(newDirPath);
         });
     }
 
